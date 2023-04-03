@@ -1,4 +1,4 @@
-package com.messenger.authandprofile.application.controller;
+package com.messenger.authandprofile.presentation.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ public class AuthController {
     @GetMapping("{email:String}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public String GetUser(@PathVariable String email) {
+    public String getUser(@PathVariable String email) {
         return email;
     }
 
@@ -21,7 +21,7 @@ public class AuthController {
 
     @PutMapping("edit")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void EditUser() {
+    public void editUser() {
 
     }
 }

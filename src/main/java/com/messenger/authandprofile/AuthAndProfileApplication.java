@@ -1,4 +1,4 @@
-package com.messenger.auth_and_profile;
+package com.messenger.authandprofile;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
