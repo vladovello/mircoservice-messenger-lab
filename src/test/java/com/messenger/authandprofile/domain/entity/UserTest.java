@@ -1,8 +1,9 @@
-package com.messenger.authandprofile.domain;
+package com.messenger.authandprofile.domain.entity;
 
-import com.messenger.authandprofile.domain.model.User;
-import com.messenger.authandprofile.domain.valueobject.Email;
-import com.messenger.authandprofile.domain.valueobject.Password;
+import com.messenger.authandprofile.domain.model.valueobject.Email;
+import com.messenger.authandprofile.domain.model.valueobject.Login;
+import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
+import com.messenger.authandprofile.domain.model.entity.User;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ class UserTest {
     @SneakyThrows
     @Test
     void when_CreateWithEmptyUUID_Expect_IdSet() {
-        var user = new User(new Email("user@mail.com"), new Password("aAb@cC123"));
+        var user = User.registerUser(new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
         assertNotNull(user.getId());
     }
 
@@ -22,7 +23,7 @@ class UserTest {
     @Test
     void when_CreateWithUUID_Expect_IdEqualsSetId() {
         var id = UUID.randomUUID();
-        var user = new User(id, new Email("user@mail.com"), new Password("aAb@cC123"));
+        var user = createBasicUserWithId(id);
         assertEquals(user.getId(), id);
     }
 
@@ -32,8 +33,8 @@ class UserTest {
         var id1 = UUID.fromString("e1c2a3c5-c1f6-4c21-adb2-44998ac8e7e8");
         var id2 = UUID.fromString("abcde544-c1f6-4c21-adb2-44998ac8e7e8");
 
-        var user1 = new User(id1, new Email("user@mail.com"), new Password("aAb@cC123"));
-        var user2 = new User(id2, new Email("user@mail.com"), new Password("aAb@cC123"));
+        var user1 = createBasicUserWithId(id1);
+        var user2 = createBasicUserWithId(id2);
 
         assertNotEquals(user1, user2);
     }
@@ -44,9 +45,14 @@ class UserTest {
         var id1 = UUID.fromString("e1c2a3c5-c1f6-4c21-adb2-44998ac8e7e8");
         var id2 = UUID.fromString("e1c2a3c5-c1f6-4c21-adb2-44998ac8e7e8");
 
-        var user1 = new User(id1, new Email("user1@mail.com"), new Password("aAb@cC123"));
-        var user2 = new User(id2, new Email("user2@mail.com"), new Password("123aAb@cC12345"));
+        var user1 = createBasicUserWithId(id1);
+        var user2 = createBasicUserWithId(id2);
 
         assertEquals(user1, user2);
+    }
+
+    @SneakyThrows
+    private User createBasicUserWithId(UUID id) {
+        return User.loginUser(id, new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
     }
 }

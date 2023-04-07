@@ -1,41 +1,20 @@
-package com.messenger.authandprofile.domain.valueobject;
+package com.messenger.authandprofile.domain.model.valueobject;
 
-import com.messenger.authandprofile.domain.exception.InvalidEmail;
+import com.messenger.authandprofile.domain.exception.email.InvalidEmailException;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Value;
 
 import java.util.regex.Pattern;
 
-public final class Email {
-    @Getter
-    private final String address;
+@Value
+public class Email {
+    @Getter String address;
 
-    public Email(@NonNull final String emailString) throws InvalidEmail {
+    public Email(@NonNull final String emailString) throws InvalidEmailException {
         final var isMatch = EmailPattern.PATTERN.matcher(emailString).matches();
-
-        if (!isMatch) throw new InvalidEmail(emailString);
-
+        if (!isMatch) throw new InvalidEmailException(emailString);
         address = emailString;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Email)) {
-            return false;
-        }
-
-        Email email1 = (Email) o;
-
-        return getAddress().equals(email1.getAddress());
-    }
-
-    @Override
-    public int hashCode() {
-        return getAddress().hashCode();
     }
 
     private static final class EmailPattern {

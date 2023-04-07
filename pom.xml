@@ -32,28 +32,34 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <!-- Spring boot starters |END| -->
 
-<!--        &lt;!&ndash; Jakarta |START| &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.annotation</groupId>-->
-<!--            <artifactId>jakarta.annotation-api</artifactId>-->
-<!--            <version>${jakarta.version}</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; Jakarta |START| &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>jakarta.annotation</groupId>-->
+        <!--            <artifactId>jakarta.annotation-api</artifactId>-->
+        <!--            <version>${jakarta.version}</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.hibernate.validator</groupId>-->
-<!--            <artifactId>hibernate-validator</artifactId>-->
-<!--            <version>6.0.21.Final</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; Jakarta |END| &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.hibernate.validator</groupId>-->
+        <!--            <artifactId>hibernate-validator</artifactId>-->
+        <!--            <version>6.0.21.Final</version>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; Jakarta |END| &ndash;&gt;-->
 
+        <!-- Lombok |START| -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Lombok |END| -->
 
         <!-- Pipelinr |START| -->
         <dependency>
@@ -62,6 +68,17 @@
             <version>0.8</version>
         </dependency>
         <!-- Pipelinr |END| -->
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
