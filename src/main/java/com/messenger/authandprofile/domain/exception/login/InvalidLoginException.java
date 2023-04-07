@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.exception.login;
 
-import com.messenger.authandprofile.domain.exception.common.InvalidDataException;
+import com.messenger.authandprofile.shared.exception.InvalidDataException;
 
 public class InvalidLoginException extends InvalidDataException {
     public InvalidLoginException() {

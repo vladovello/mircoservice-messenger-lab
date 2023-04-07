@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class PhoneNumber {
     String number;
 
-    public PhoneNumber(String number) throws InvalidPhoneNumberException {
+    public PhoneNumber(@NonNull String number) throws InvalidPhoneNumberException {
         final var isMatch = PhoneNumberPattern.PATTERN.matcher(number).matches();
         if (!isMatch) throw new InvalidPhoneNumberException(number);
         this.number = extractPhoneNumber(number);

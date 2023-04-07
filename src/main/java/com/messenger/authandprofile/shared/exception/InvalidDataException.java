@@ -1,4 +1,4 @@
-package com.messenger.authandprofile.domain.exception.common;
+package com.messenger.authandprofile.shared.exception;
 
 public class InvalidDataException extends RuntimeException {
     public InvalidDataException() {

@@ -1,10 +1,11 @@
 package com.messenger.authandprofile.domain.model.valueobject;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
 public class FullName {
-    String firstName;
+    @NonNull String firstName;
     String middleName;
-    String lastName;
+    @NonNull String lastName;
 }

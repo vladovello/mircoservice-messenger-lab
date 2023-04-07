@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.exception.phonenumber;
 
-import com.messenger.authandprofile.domain.exception.common.InvalidDataException;
+import com.messenger.authandprofile.shared.exception.InvalidDataException;
 
 public class InvalidPhoneNumberException extends InvalidDataException {
     public InvalidPhoneNumberException(String phoneNumber) {

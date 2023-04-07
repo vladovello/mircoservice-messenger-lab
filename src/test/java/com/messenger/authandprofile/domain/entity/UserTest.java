@@ -1,9 +1,10 @@
 package com.messenger.authandprofile.domain.entity;
 
-import com.messenger.authandprofile.domain.model.valueobject.Email;
-import com.messenger.authandprofile.domain.model.valueobject.Login;
-import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
 import com.messenger.authandprofile.domain.model.entity.User;
+import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
+import com.messenger.authandprofile.domain.model.valueobject.Email;
+import com.messenger.authandprofile.domain.model.valueobject.FullName;
+import com.messenger.authandprofile.domain.model.valueobject.Login;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,8 @@ class UserTest {
     @SneakyThrows
     @Test
     void when_CreateWithEmptyUUID_Expect_IdSet() {
-        var user = User.registerUser(new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
+        var user = User.registerUser(new Login("ahah"), new Email("user@mail.com"),
+                new FullName("Peter", "Petrov", "Petrovich"), new BasicPassword("aAb@cC123"));
         assertNotNull(user.getId());
     }
 
@@ -53,6 +55,7 @@ class UserTest {
 
     @SneakyThrows
     private User createBasicUserWithId(UUID id) {
-        return User.reconstructUser(id, new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
+        return User.reconstructUser(id, new Login("ahah"), new Email("user@mail.com"),
+                new FullName("Peter", "Petrov", "Petrovich"), new BasicPassword("aAb@cC123"));
     }
 }

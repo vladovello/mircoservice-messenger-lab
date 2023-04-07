@@ -13,7 +13,7 @@ public class BirthDate {
 
     LocalDate date;
 
-    public BirthDate(final LocalDate date) throws InvalidBirthDateException {
+    public BirthDate(@NonNull final LocalDate date) throws InvalidBirthDateException {
         if (!isValidBirthDate(date)) throw new InvalidBirthDateException(date);
         this.date = date;
     }
