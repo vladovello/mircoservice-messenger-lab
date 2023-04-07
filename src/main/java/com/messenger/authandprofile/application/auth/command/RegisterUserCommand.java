@@ -33,7 +33,9 @@ public class RegisterUserCommand implements Command<UserWithTokenDto> {
         private final UserMapper userMapper;
         private final TokenService tokenService;
 
-        public RegisterUserCommandHandler(UserRepository userRepository, UserMapper userMapper, TokenService tokenService) {
+        public RegisterUserCommandHandler(
+                UserRepository userRepository, UserMapper userMapper, TokenService tokenService
+        ) {
             this.userRepository = userRepository;
             this.userMapper = userMapper;
             this.tokenService = tokenService;
@@ -48,7 +50,12 @@ public class RegisterUserCommand implements Command<UserWithTokenDto> {
                 UserNotFoundException.throwUserIsAlreadyExistsByEmail(email);
             }
 
-            var user = User.registerUser(new Login(email), new Email(email), new HashedPassword(new BasicPassword(password)));
+            var user = new User.Builder(new Login(email), new Email(email),
+                    new HashedPassword(new BasicPassword(password)))
+//                    .withFullName(new FullName("", "", ""))
+//                    .withPhoneNumber(new PhoneNumber(""))
+//                    .withCity("")
+                    .registerUser();
             userRepository.saveUser(user);
 
             var token = tokenService.generateAccessToken(user);

@@ -53,6 +53,6 @@ class UserTest {
 
     @SneakyThrows
     private User createBasicUserWithId(UUID id) {
-        return User.loginUser(id, new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
+        return User.reconstructUser(id, new Login("ahah"), new Email("user@mail.com"), new BasicPassword("aAb@cC123"));
     }
 }
