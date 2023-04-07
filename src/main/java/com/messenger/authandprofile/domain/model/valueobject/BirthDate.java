@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 @Value
 public class BirthDate {
-    static final int MIN_AGE = 14;
-    static final LocalDate MIN_BIRTH_DATE = LocalDate.of(1900, 1, 10);
+    static final short MIN_AGE = 14;
+    static final short MAX_AGE = 150;
 
     LocalDate date;
 
@@ -19,6 +19,7 @@ public class BirthDate {
     }
 
     private boolean isValidBirthDate(@NonNull final LocalDate birthDate) {
-        return birthDate.isAfter(MIN_BIRTH_DATE) && birthDate.isBefore(LocalDate.now().minusYears(MIN_AGE));
+        var now = LocalDate.now();
+        return !birthDate.isBefore(now.minusYears(MAX_AGE)) && !birthDate.isAfter(now.minusYears(MIN_AGE));
     }
 }

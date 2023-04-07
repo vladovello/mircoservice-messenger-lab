@@ -3,38 +3,26 @@ package com.messenger.authandprofile.domain.valueobject;
 import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateException;
 import com.messenger.authandprofile.domain.model.valueobject.BirthDate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BirthDateTest {
-    @Test
-    void when_BirthDateIsInValidRange_Expect_ObjectCreating() {
-        try {
-            var date = LocalDate.of(2000, 1, 1);
-            var birthDate = new BirthDate(date);
-            assertEquals(birthDate.getDate(), date);
-        } catch (InvalidBirthDateException e) {
-            fail();
-        }
+    @ParameterizedTest
+    @ValueSource(ints = {20, 14, 150})
+    void when_BirthDateIsInValidRange_Expect_ObjectCreating(int age) {
+        var date = LocalDate.now().minusYears(age);
+        assertDoesNotThrow(() -> new BirthDate(date));
     }
 
-    @Test
-    void when_BirthDateIsTooOld_Except_ThrowingException() {
-        var date = LocalDate.of(1890, 1, 1);
-        assertThrows(InvalidBirthDateException.class, () -> new BirthDate(date));
-    }
-
-    @Test
-    void when_BirthDateIsTooYoung_Except_ThrowingException() {
-        var date = LocalDate.now();
-        assertThrows(InvalidBirthDateException.class, () -> new BirthDate(date));
-    }
-
-    @Test
-    void when_BirthDateIsEqualsToLowerBound_Except_ObjectCreating() {
-        var date = BirthDate.MIN_BIRTH_DATE;
+    @ParameterizedTest
+    @ValueSource(ints = {13, 151})
+    void when_BirthDateIsOutOfRange_Except_ThrowingException(int age) {
+        var date = LocalDate.now().minusYears(age);
         assertThrows(InvalidBirthDateException.class, () -> new BirthDate(date));
     }
 }
