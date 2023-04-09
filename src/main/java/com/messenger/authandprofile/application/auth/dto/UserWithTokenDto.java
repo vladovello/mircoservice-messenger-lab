@@ -12,7 +12,8 @@ public class UserWithTokenDto {
     @NonNull String login;
     @NonNull String email;
     @NonNull String registrationDate;
-    @NonNull String token;
+    @NonNull String accessToken;
+    @NonNull String refreshToken;
     String fullName;
     String phoneNumber;
     LocalDate birthDate;
