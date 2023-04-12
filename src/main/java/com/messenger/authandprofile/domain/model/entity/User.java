@@ -9,6 +9,12 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.UUID;
 
+// TODO: 10.04.2023 separate user into Account and Profile. Think of how to deal with common and not related data
+// (in registration we'll use email, login, registration date and so on - fields common both for Account and Profile.
+// Also we would have full name and city field - the ones, not needed in Account)
+// We can implement this using different repositories: AccountRepo and ProfileRepo.
+// At the same time, AccountRepo will call the ProfileRepo when saving registered user.
+// Editing the profile will throw event which account service will listen to sync its data
 @Getter
 @Setter(AccessLevel.PRIVATE)
 public class User {
@@ -24,14 +30,9 @@ public class User {
     private PhoneNumber phoneNumber;
     private BirthDate birthDate;
     private String city;
-    private UUID avatarId;
+    private UUID avatar;
 
-    protected User(
-            @NonNull Login login,
-            @NonNull Email email,
-            @NonNull FullName fullName,
-            @NonNull Password password
-    ) {
+    protected User(@NonNull Login login, @NonNull Email email, @NonNull FullName fullName, @NonNull Password password) {
         setLogin(login);
         setEmail(email);
         setFullName(fullName);
@@ -39,26 +40,23 @@ public class User {
         setRegistrationDate(LocalDate.now());
     }
 
-    // TODO: 08.04.2023 подумать, что лучше: использовать билдер или добавить сеттеры для опциональных полей
-    public static @NonNull User registerUser(
-            @NonNull Login login,
+    public static @NonNull User.UserBuilder builder(@NonNull Login login,
             @NonNull Email email,
             @NonNull FullName fullName,
-            @NonNull Password password
-    ) {
-        return new User(login, email, fullName, password);
+            @NonNull Password password) {
+        return new UserBuilder(login, email, fullName, password);
     }
 
-    public static @NonNull User reconstructUser(
-            @NonNull UUID id,
-            @NonNull Login login,
-            @NonNull Email email,
-            @NonNull FullName fullName,
-            @NonNull Password password
-    ) {
-        var user = new User(login, email, fullName, password);
-        user.setId(id);
-        return user;
+    public void updateUserProfile(@NonNull FullName fullName,
+            @NonNull BirthDate birthDate,
+            @NonNull PhoneNumber phoneNumber,
+            @NonNull String city,
+            @NonNull UUID avatar) {
+        setFullName(fullName);
+        setBirthDate(birthDate);
+        setPhoneNumber(phoneNumber);
+        setCity(city);
+        setAvatar(avatar);
     }
 
     protected void generateId() {
@@ -80,30 +78,28 @@ public class User {
         return getId().hashCode();
     }
 
-    public static class Builder {
+    public static class UserBuilder {
         private final User user;
 
-        public Builder(
-                @NonNull Login login,
+        protected UserBuilder(@NonNull Login login,
                 @NonNull Email email,
                 @NonNull FullName fullName,
-                @NonNull Password password
-        ) {
+                @NonNull Password password) {
             this.user = new User(login, email, fullName, password);
         }
 
-        public Builder withPhoneNumber(PhoneNumber phoneNumber) {
+        public UserBuilder withPhoneNumber(PhoneNumber phoneNumber) {
             if (phoneNumber != null) this.user.setPhoneNumber(phoneNumber);
             return this;
         }
 
-        public Builder withCity(String city) {
+        public UserBuilder withCity(String city) {
             if (city != null) this.user.setCity(city);
             return this;
         }
 
-        public Builder withAvatar(UUID avatarId) {
-            if (avatarId != null) this.user.setAvatarId(avatarId);
+        public UserBuilder withAvatar(UUID avatarId) {
+            if (avatarId != null) this.user.setAvatar(avatarId);
             return this;
         }
 

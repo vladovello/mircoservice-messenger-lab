@@ -2,11 +2,16 @@ package com.messenger.authandprofile.application.auth.command;
 
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.dto.TokenPairDto;
-import lombok.Value;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
-@Value
+@Data
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefreshCommand implements Command<TokenPairDto> {
     UUID userId;
     String refreshToken;

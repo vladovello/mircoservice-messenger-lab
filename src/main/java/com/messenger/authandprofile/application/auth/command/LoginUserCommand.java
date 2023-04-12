@@ -2,11 +2,15 @@ package com.messenger.authandprofile.application.auth.command;
 
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.dto.UserWithTokenDto;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-@Value
+@Data
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginUserCommand implements Command<UserWithTokenDto> {
-    @NonNull String login;
-    @NonNull String password;
+    String login;
+    String password;
 }

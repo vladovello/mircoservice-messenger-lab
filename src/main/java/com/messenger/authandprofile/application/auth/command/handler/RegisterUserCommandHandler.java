@@ -34,13 +34,13 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
             throw UserAlreadyExistsException.createUserIsAlreadyExistsByEmail(command.getEmail());
         }
 
-        var user = new User.Builder(new Login(command.getLogin()), new Email(command.getLogin()),
+        var user = User.builder(new Login(command.getLogin()), new Email(command.getLogin()),
                 new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
                 new HashedPassword(new BasicPassword(command.getPassword())))
                 .withPhoneNumber(new PhoneNumber(command.getPhoneNumber()))
                 .withCity(command.getCity())
                 .registerUser();
-        userRepository.saveUser(user);
+        userRepository.addUser(user);
 
         var token = tokenService.generateTokens(user);
 

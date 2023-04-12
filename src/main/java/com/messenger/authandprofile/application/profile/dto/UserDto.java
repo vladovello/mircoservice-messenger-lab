@@ -12,7 +12,9 @@ public class UserDto {
     @NonNull String login;
     @NonNull String email;
     @NonNull String registrationDate;
-    String fullName;
+    String firstName;
+    String middleName;
+    String lastName;
     String phoneNumber;
     LocalDate birthDate;
     String city;

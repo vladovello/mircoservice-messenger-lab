@@ -16,8 +16,12 @@ class UserTest {
     @SneakyThrows
     @Test
     void when_CreateWithEmptyUUID_Expect_IdSet() {
-        var user = User.registerUser(new Login("ahah"), new Email("user@mail.com"),
-                new FullName("Peter", "Petrov", "Petrovich"), new BasicPassword("aAb@cC123"));
+        var user = User.builder(
+                new Login("ahah"),
+                new Email("user@mail.com"),
+                new FullName("Peter", "Petrov", "Petrovich"),
+                new BasicPassword("aAb@cC123")
+        ).registerUser();
         assertNotNull(user.getId());
     }
 
@@ -55,7 +59,11 @@ class UserTest {
 
     @SneakyThrows
     private User createBasicUserWithId(UUID id) {
-        return User.reconstructUser(id, new Login("ahah"), new Email("user@mail.com"),
-                new FullName("Peter", "Petrov", "Petrovich"), new BasicPassword("aAb@cC123"));
+        return User.builder(
+                new Login("ahah"),
+                new Email("user@mail.com"),
+                new FullName("Peter", "Petrov", "Petrovich"),
+                new BasicPassword("aAb@cC123")
+        ).reconstructUser(id);
     }
 }
