@@ -13,10 +13,14 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>auth_and_profile</name>
     <description>auth_and_profile</description>
+
     <properties>
         <java.version>11</java.version>
         <jakarta.version>2.1.1</jakarta.version>
+        <postgres.version>42.6.0</postgres.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
+
     <dependencies>
         <!-- Spring boot starters |START| -->
         <dependency>
@@ -36,22 +40,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
         <!-- Spring boot starters |END| -->
-
-        <!--        &lt;!&ndash; Jakarta |START| &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>jakarta.annotation</groupId>-->
-        <!--            <artifactId>jakarta.annotation-api</artifactId>-->
-        <!--            <version>${jakarta.version}</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.hibernate.validator</groupId>-->
-        <!--            <artifactId>hibernate-validator</artifactId>-->
-        <!--            <version>6.0.21.Final</version>-->
-        <!--        </dependency>-->
-        <!--        &lt;!&ndash; Jakarta |END| &ndash;&gt;-->
 
         <!-- Lombok |START| -->
         <dependency>
@@ -69,10 +67,38 @@
         </dependency>
         <!-- Pipelinr |END| -->
 
+        <!-- PostgreSQL |START| -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgres.version}</version>
+        </dependency>
+        <!-- PostgreSQL |END| -->
+
+        <!-- JJWT |START| -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- JJWT |END| -->
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

@@ -3,13 +3,14 @@ package com.messenger.authandprofile.application.auth.command.handler;
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.command.LoginUserCommand;
 import com.messenger.authandprofile.application.auth.dto.UserWithTokenDto;
-import com.messenger.authandprofile.application.auth.exception.PasswordsDoesNotMatchException;
+import com.messenger.authandprofile.application.auth.exception.PasswordsDoNotMatchException;
 import com.messenger.authandprofile.application.auth.model.HashedPassword;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import lombok.NonNull;
 
 @SuppressWarnings("unused")
 public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, UserWithTokenDto> {
@@ -28,7 +29,7 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
     }
 
     @Override
-    public UserWithTokenDto handle(LoginUserCommand command) {
+    public UserWithTokenDto handle(@NonNull LoginUserCommand command) {
         var user = userRepository.findUserByLogin(command.getLogin());
 
         if (user == null) {
@@ -37,7 +38,7 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
 
         var hashedPassword = new HashedPassword(new BasicPassword(command.getPassword()));
         if (!hashedPassword.equals(user.getPassword())) {
-            throw new PasswordsDoesNotMatchException();
+            throw new PasswordsDoNotMatchException();
         }
 
         var token = tokenService.generateTokens(user);

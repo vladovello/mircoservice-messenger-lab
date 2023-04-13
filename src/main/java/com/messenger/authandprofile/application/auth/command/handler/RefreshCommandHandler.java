@@ -33,7 +33,7 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, To
      */
     @Override
     public TokenPairDto handle(@NonNull RefreshCommand command) {
-        if (tokenService.wasRefreshTokenUsed(command.getRefreshToken())) {
+        if (tokenService.isRefreshTokenInvalidated(command.getRefreshToken())) {
             tokenService.invalidateRefreshTokenFamily(command.getUserId());
             return null;
         }
