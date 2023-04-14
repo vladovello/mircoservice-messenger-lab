@@ -8,7 +8,7 @@ import lombok.NonNull;
 
 public interface UserMapper {
     UserDto mapToUserDto(@NonNull User userDto);
-    User mapToUser(@NonNull UserDto user);
+    User mapToDomainModel(@NonNull UserDto user);
     UserWithTokenDto mapToUserWithTokenDto(@NonNull User user, @NonNull TokenPair token);
-    User mapToUser(@NonNull UserWithTokenDto userWithTokenDto);
+    User mapToDomainModel(@NonNull UserWithTokenDto userWithTokenDto);
 }

@@ -4,7 +4,7 @@ import com.messenger.authandprofile.application.auth.model.TokenPair;
 import com.messenger.authandprofile.infra.auth.jwt.JwtBearerTokenParameters;
 import io.jsonwebtoken.Jwts;
 import lombok.NonNull;
-import org.springframework.stereotype.Service;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -29,12 +29,13 @@ public final class JwtBearerTokenFactoryImpl implements JwtBearerTokenFactory {
         return generateToken(claims, refreshJwtBearerTokenParameters);
     }
 
+    @Contract("_, _ -> new")
     @Override
-    public TokenPair generateTokenPair(Map<String, ?> refreshTokenClaims, Map<String, ?> accessTokenClaims) {
+    public @NonNull TokenPair generateTokenPair(Map<String, ?> refreshTokenClaims, Map<String, ?> accessTokenClaims) {
         return new TokenPair(generateAccessToken(accessTokenClaims), generateRefreshToken(refreshTokenClaims));
     }
 
-    private String generateToken(Map<String, ?> claims, @NonNull JwtBearerTokenParameters options) {
+    private String generateToken(@NonNull Map<String, ?> claims, @NonNull JwtBearerTokenParameters options) {
         return Jwts.builder()
                 .setIssuer(options.getIssuer())
                 .setExpiration(options.getExpirationDate())

@@ -17,6 +17,7 @@ public class GetOtherProfileInfoQueryHandler implements Command.Handler<GetOther
         this.userMapper = userMapper;
     }
 
+    // TODO: 14.04.2023 change to `OtherUserProfileDto`
     @Override
     public UserDto handle(@NonNull GetOtherProfileInfoQuery query) {
         var user = domainUserService.getOtherUserProfile(query.getSelfId(), query.getOtherId());

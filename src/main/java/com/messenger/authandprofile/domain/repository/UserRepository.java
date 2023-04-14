@@ -4,14 +4,15 @@ import com.messenger.authandprofile.application.profile.model.parameter.UserFilt
 import com.messenger.authandprofile.domain.model.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository {
-    User findUserById(UUID id);
+    Optional<User> findUserById(UUID id);
 
-    User findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
 
-    User findUserByLogin(String login);
+    Optional<User> findUserByLogin(String login);
 
     List<User> findAllUsersPaginatedWithParams(int pageNumber, int pageSize, UserFilterParams userFilterParams);
 

@@ -20,12 +20,12 @@ public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfPr
 
     @Override
     public UserDto handle(@NonNull GetSelfProfileInfoQuery query) {
-        var user = userRepository.findUserById(query.getId());
+        var optionalUser = userRepository.findUserById(query.getId());
 
-        if (user == null) {
+        if (optionalUser.isEmpty()) {
             throw UserNotFoundException.createUserNotFoundByIdException(query.getId());
         }
 
-        return userMapper.mapToUserDto(user);
+        return userMapper.mapToUserDto(optionalUser.get());
     }
 }

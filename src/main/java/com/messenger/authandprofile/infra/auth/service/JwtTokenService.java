@@ -7,11 +7,12 @@ import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.infra.auth.jwt.tokenfactory.JwtBearerTokenFactory;
 import com.messenger.authandprofile.infra.auth.persistence.InvalidAccessTokenRepository;
 import com.messenger.authandprofile.infra.auth.persistence.RefreshTokenRepository;
-import com.messenger.authandprofile.infra.auth.persistence.entity.InvalidAccessToken;
-import com.messenger.authandprofile.infra.auth.persistence.entity.RefreshToken;
+import com.messenger.authandprofile.infra.auth.persistence.entity.InvalidAccessTokenEntity;
+import com.messenger.authandprofile.infra.auth.persistence.entity.RefreshTokenEntity;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,26 +32,16 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public TokenPair generateTokens(@NonNull User user) {
-        var claims = Map.of("id", user.getId());
-        var accessToken = generateAccessToken(claims, user.getId());
+        var claims = createAccessTokenClaims(user);
+        var accessToken = generateAccessToken(claims);
         var refreshToken = generateRefreshToken(claims, user.getId());
 
         return new TokenPair(accessToken, refreshToken);
     }
 
-    private String generateAccessToken(Map<String, ?> claims, UUID subject) {
-        return jwtBearerTokenFactory.generateAccessToken(claims);
-    }
-
-    private String generateRefreshToken(Map<String, ?> claims, UUID subject) {
-        var refreshToken = jwtBearerTokenFactory.generateRefreshToken(claims);
-        refreshTokenRepository.save(new RefreshToken(refreshToken, subject));
-        return refreshToken;
-    }
-
     @Override
     public void invalidateAccessToken(@NonNull String accessToken) {
-        invalidAccessTokenRepository.save(new InvalidAccessToken(accessToken));
+        invalidAccessTokenRepository.save(new InvalidAccessTokenEntity(accessToken));
     }
 
     @Override
@@ -81,5 +72,23 @@ public class JwtTokenService implements TokenService {
     @Override
     public boolean isRefreshTokenInvalidated(@NonNull String refreshToken) {
         return refreshTokenRepository.existsByIdAndInvalid(refreshToken, true);
+    }
+
+    private @NonNull Map<String, ?> createAccessTokenClaims(@NonNull User user) {
+        var claims = new HashMap<String, Object>();
+        // TODO: 14.04.2023 move creating different access tokens to specific factories
+        // maybe pass concrete fabric as argument to `generateToken(AbstractFactory factory)` method
+        claims.put("id", user.getId());
+        return claims;
+    }
+
+    private String generateAccessToken(Map<String, ?> claims) {
+        return jwtBearerTokenFactory.generateAccessToken(claims);
+    }
+
+    private String generateRefreshToken(Map<String, ?> claims, UUID subject) {
+        var refreshToken = jwtBearerTokenFactory.generateRefreshToken(claims);
+        refreshTokenRepository.save(new RefreshTokenEntity(refreshToken, subject));
+        return refreshToken;
     }
 }

@@ -38,13 +38,13 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, To
             return null;
         }
 
-        var user = userRepository.findUserById(command.getUserId());
+        var optionalUser = userRepository.findUserById(command.getUserId());
 
-        if (user == null) {
+        if (optionalUser.isEmpty()) {
             throw UserNotFoundException.createUserNotFoundByIdException(command.getUserId());
         }
 
-        var tokenPair = tokenService.generateTokens(user);
+        var tokenPair = tokenService.generateTokens(optionalUser.get());
         tokenService.invalidateRefreshToken(command.getRefreshToken());
 
         return tokenPairMapper.mapToTokenPairDto(tokenPair);

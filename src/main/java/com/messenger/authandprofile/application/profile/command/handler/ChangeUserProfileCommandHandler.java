@@ -23,12 +23,14 @@ public class ChangeUserProfileCommandHandler implements Command.Handler<ChangeUs
 
     @Override
     public UserDto handle(@NonNull ChangeUserProfileCommand command) {
-        var user = userRepository.findUserById(command.getId());
+        var optionalUser = userRepository.findUserById(command.getId());
 
-        if (user == null) {
+        if (optionalUser.isEmpty()) {
             throw UserNotFoundException.createUserNotFoundByIdException(command.getId());
         }
 
+        var user = optionalUser.get();
+        
         user.updateUserProfile(
                 new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
                 new BirthDate(command.getBirthDate()),

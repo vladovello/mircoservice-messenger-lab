@@ -6,12 +6,12 @@ import com.messenger.authandprofile.application.profile.model.parameter.param.Di
 import com.messenger.authandprofile.application.profile.model.parameter.param.IntervalParam;
 import lombok.Data;
 import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 
 import java.time.LocalDate;
 
 @Data
 public class UserFilterParams {
-    private DiscreteParam<String> email;
     private DiscreteParam<String> login;
     private DiscreteParam<String> fullName;
     private DiscreteParam<String> phoneNumber;
@@ -19,7 +19,8 @@ public class UserFilterParams {
     private IntervalParam<LocalDate> birthDate;
     private DiscreteParam<String> city;
 
-    public static UserFilterParamsBuilder builder() {
+    @Contract(" -> new")
+    public static @NonNull UserFilterParamsBuilder builder() {
         return new UserFilterParamsBuilder();
     }
 
@@ -30,38 +31,33 @@ public class UserFilterParams {
             params = new UserFilterParams();
         }
 
-        public UserFilterParamsBuilder withEmail(@NonNull DiscreteParamDto<String> param) {
-            params.email = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
-            return this;
-        }
-
         public UserFilterParamsBuilder withLogin(@NonNull DiscreteParamDto<String> param) {
-            params.email = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
+            params.login = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
             return this;
         }
 
         public UserFilterParamsBuilder withFullName(@NonNull DiscreteParamDto<String> param) {
-            params.email = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
+            params.fullName = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
             return this;
         }
 
         public UserFilterParamsBuilder withPhoneNumber(@NonNull DiscreteParamDto<String> param) {
-            params.email = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
+            params.phoneNumber = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
             return this;
         }
 
         public UserFilterParamsBuilder withRegistrationDate(@NonNull IntervalParamDto<LocalDate> param) {
-            this.params.registrationDate = new IntervalParam<>(param.getFrom(), param.getTo(), param.getSortingOrder());
+            params.registrationDate = new IntervalParam<>(param.getFrom(), param.getTo(), param.getSortingOrder());
             return this;
         }
 
         public UserFilterParamsBuilder withBirthDate(@NonNull IntervalParamDto<LocalDate> param) {
-            this.params.birthDate = new IntervalParam<>(param.getFrom(), param.getTo(), param.getSortingOrder());
+            params.birthDate = new IntervalParam<>(param.getFrom(), param.getTo(), param.getSortingOrder());
             return this;
         }
 
         public UserFilterParamsBuilder withCity(@NonNull DiscreteParamDto<String> param) {
-            params.email = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
+            params.city = new DiscreteParam<>(param.getValue(), param.getSortingOrder());
             return this;
         }
 

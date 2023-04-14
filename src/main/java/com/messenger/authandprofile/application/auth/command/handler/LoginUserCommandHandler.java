@@ -30,11 +30,13 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
 
     @Override
     public UserWithTokenDto handle(@NonNull LoginUserCommand command) {
-        var user = userRepository.findUserByLogin(command.getLogin());
+        var optionalUser = userRepository.findUserByLogin(command.getLogin());
 
-        if (user == null) {
+        if (optionalUser.isEmpty()) {
             throw UserNotFoundException.createUserNotFoundByLoginException(command.getLogin());
         }
+
+        var user = optionalUser.get();
 
         var hashedPassword = new HashedPassword(new BasicPassword(command.getPassword()));
         if (!hashedPassword.equals(user.getPassword())) {

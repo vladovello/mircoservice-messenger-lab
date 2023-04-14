@@ -7,18 +7,11 @@ public final class TokenValidator {
     private TokenValidator() {
     }
 
-    // TODO: 13.04.2023 add proper exceptions
+    // TODO: 14.04.2023 logging
     public static boolean validate(String token, @NonNull JwtBearerTokenParameters jwtBearerTokenParameters) {
-        var isSigValid = jwtBearerTokenParameters.getSignatureValidator().validate(token, jwtBearerTokenParameters);
-        if (!isSigValid) {
-            throw new RuntimeException();
-        }
+        var result = jwtBearerTokenParameters.getSignatureValidator().validate(token, jwtBearerTokenParameters);
+        result = result && jwtBearerTokenParameters.getLifetimeValidator().validate(token, jwtBearerTokenParameters);
 
-        var isLifetimeValid = jwtBearerTokenParameters.getLifetimeValidator().validate(token, jwtBearerTokenParameters);
-        if (!isLifetimeValid) {
-            throw new RuntimeException();
-        }
-
-        return true;
+        return result;
     }
 }

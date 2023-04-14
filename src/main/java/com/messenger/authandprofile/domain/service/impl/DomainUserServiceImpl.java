@@ -19,6 +19,13 @@ public class DomainUserServiceImpl implements DomainUserService {
     @Override
     public User getOtherUserProfile(UUID selfUserId, UUID otherUserId) {
         var isSelfInBlackList = friendRepository.isUserInOthersBlacklist(selfUserId, otherUserId);
-        return isSelfInBlackList ? null : userRepository.findUserById(otherUserId);
+
+        if (isSelfInBlackList) {
+            return null;
+        } else {
+            var optionalUser = userRepository.findUserById(otherUserId);
+            return optionalUser.orElse(null);
+
+        }
     }
 }

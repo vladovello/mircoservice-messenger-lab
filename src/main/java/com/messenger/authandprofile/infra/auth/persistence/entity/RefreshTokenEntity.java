@@ -12,7 +12,7 @@ import java.util.UUID;
         indexes = @Index(columnList = "userId")
 )
 @Getter
-public class RefreshToken {
+public class RefreshTokenEntity {
     @Id
     @Column(nullable = false)
     @Setter
@@ -25,11 +25,11 @@ public class RefreshToken {
     @Column(nullable = false)
     private boolean isInvalid;
 
-    public RefreshToken() {
+    public RefreshTokenEntity() {
         // For JPA
     }
 
-    public RefreshToken(@NonNull String token, @NonNull UUID userId) {
+    public RefreshTokenEntity(@NonNull String token, @NonNull UUID userId) {
         this.token = token;
         this.userId = userId;
         this.isInvalid = false;

@@ -11,17 +11,17 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-public class InvalidAccessToken {
+public class InvalidAccessTokenEntity {
     @Id
     @Column(name = "token", nullable = false)
     @NonNull
     private String token;
 
-    public InvalidAccessToken() {
+    public InvalidAccessTokenEntity() {
         // For JPA
     }
 
-    public InvalidAccessToken(@NonNull String token) {
+    public InvalidAccessTokenEntity(@NonNull String token) {
         this.token = token;
     }
 }
