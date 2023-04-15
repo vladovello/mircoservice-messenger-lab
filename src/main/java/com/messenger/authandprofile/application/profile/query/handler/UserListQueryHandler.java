@@ -6,6 +6,7 @@ import com.messenger.authandprofile.application.profile.model.parameter.UserFilt
 import com.messenger.authandprofile.application.profile.query.UserListQuery;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +22,9 @@ public class UserListQueryHandler implements Command.Handler<UserListQuery, List
     }
 
     @Override
-    public List<UserDto> handle(UserListQuery query) {
+    public List<UserDto> handle(@NonNull UserListQuery query) {
         var filterParameters = UserFilterParams.builder()
                 .withLogin(query.getLogin())
-                .withEmail(query.getEmail())
                 .withFullName(query.getFullName())
                 .withPhoneNumber(query.getPhoneNumber())
                 .withCity(query.getCity())

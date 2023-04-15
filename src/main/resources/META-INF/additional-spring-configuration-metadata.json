@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "services"
+    }
+  ],
+  "properties": [
+    {
+      "name": "services.friends.timeout",
+      "type": "java.lang.Integer",
+      "description": "Timeout for connection."
+    },
+    {
+      "name": "services.friends.url",
+      "type": "java.lang.String",
+      "description": "Connection string for accessing some microservice."
+    }
+  ]
+}

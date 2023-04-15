@@ -11,14 +11,15 @@ import java.util.UUID;
 @Table(
         indexes = @Index(columnList = "userId")
 )
-@Getter
 public class RefreshTokenEntity {
     @Id
     @Column(nullable = false)
+    @Getter
     @Setter
     private String token;
 
     @Column(nullable = false)
+    @Getter
     @Setter
     private UUID userId;
 
@@ -33,6 +34,10 @@ public class RefreshTokenEntity {
         this.token = token;
         this.userId = userId;
         this.isInvalid = false;
+    }
+
+    public Boolean isInvalid() {
+        return isInvalid;
     }
 
     public void setInvalid() {

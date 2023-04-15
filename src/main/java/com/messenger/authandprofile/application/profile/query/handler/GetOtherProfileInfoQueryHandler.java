@@ -7,8 +7,10 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.service.DomainUserService;
 import lombok.NonNull;
 
+import java.util.Optional;
+
 @SuppressWarnings("unused")
-public class GetOtherProfileInfoQueryHandler implements Command.Handler<GetOtherProfileInfoQuery, UserDto> {
+public class GetOtherProfileInfoQueryHandler implements Command.Handler<GetOtherProfileInfoQuery, Optional<UserDto>> {
     private final DomainUserService domainUserService;
     private final UserMapper userMapper;
 
@@ -19,8 +21,8 @@ public class GetOtherProfileInfoQueryHandler implements Command.Handler<GetOther
 
     // TODO: 14.04.2023 change to `OtherUserProfileDto`
     @Override
-    public UserDto handle(@NonNull GetOtherProfileInfoQuery query) {
-        var user = domainUserService.getOtherUserProfile(query.getSelfId(), query.getOtherId());
-        return userMapper.mapToUserDto(user);
+    public Optional<UserDto> handle(@NonNull GetOtherProfileInfoQuery query) {
+        var optionalUser = domainUserService.getOtherUserProfile(query.getSelfId(), query.getOtherId());
+        return optionalUser.map(userMapper::mapToUserDto);
     }
 }

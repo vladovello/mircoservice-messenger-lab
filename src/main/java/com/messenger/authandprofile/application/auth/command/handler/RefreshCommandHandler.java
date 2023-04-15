@@ -9,8 +9,10 @@ import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
 
+import java.util.Optional;
+
 @SuppressWarnings("unused")
-public class RefreshCommandHandler implements Command.Handler<RefreshCommand, TokenPairDto> {
+public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Optional<TokenPairDto>> {
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final TokenPairMapper tokenPairMapper;
@@ -32,10 +34,10 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, To
      *   3.2. Генерируем новую пару токенов и возвращаем их пользователю
      */
     @Override
-    public TokenPairDto handle(@NonNull RefreshCommand command) {
+    public Optional<TokenPairDto> handle(@NonNull RefreshCommand command) {
         if (tokenService.isRefreshTokenInvalidated(command.getRefreshToken())) {
             tokenService.invalidateRefreshTokenFamily(command.getUserId());
-            return null;
+            return Optional.empty();
         }
 
         var optionalUser = userRepository.findUserById(command.getUserId());
@@ -47,6 +49,6 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, To
         var tokenPair = tokenService.generateTokens(optionalUser.get());
         tokenService.invalidateRefreshToken(command.getRefreshToken());
 
-        return tokenPairMapper.mapToTokenPairDto(tokenPair);
+        return Optional.ofNullable(tokenPairMapper.mapToTokenPairDto(tokenPair));
     }
 }

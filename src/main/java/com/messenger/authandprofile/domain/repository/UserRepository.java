@@ -1,6 +1,7 @@
 package com.messenger.authandprofile.domain.repository;
 
 import com.messenger.authandprofile.application.profile.model.parameter.UserFilterParams;
+import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.entity.User;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface UserRepository {
 
     void addUser(User user);
 
-    void updateUser(UUID id, User updatedUser);
+    void updateUser(UUID id, User updatedUser) throws UserNotFoundException;
 
     void deleteUserById(UUID id);
 }

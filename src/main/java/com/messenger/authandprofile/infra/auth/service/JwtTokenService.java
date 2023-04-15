@@ -60,7 +60,7 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public void invalidateRefreshTokenFamily(@NonNull UUID userId) {
-        var refreshTokenFamily = refreshTokenRepository.findAllByUserIdAndInvalid(userId, false);
+        var refreshTokenFamily = refreshTokenRepository.findAllByUserIdAndIsInvalid(userId, false);
 
         for (var refreshToken : refreshTokenFamily) {
             refreshToken.setInvalid();
@@ -71,13 +71,14 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public boolean isRefreshTokenInvalidated(@NonNull String refreshToken) {
-        return refreshTokenRepository.existsByIdAndInvalid(refreshToken, true);
+        var optionalToken = refreshTokenRepository.findById(refreshToken);
+        return optionalToken.map(RefreshTokenEntity::isInvalid).orElse(false);
     }
 
+    // TODO: 14.04.2023 move creating different access tokens to specific factories or builders
+    // maybe pass concrete fabric as argument to `generateToken(AbstractFactory factory)` method
     private @NonNull Map<String, ?> createAccessTokenClaims(@NonNull User user) {
         var claims = new HashMap<String, Object>();
-        // TODO: 14.04.2023 move creating different access tokens to specific factories
-        // maybe pass concrete fabric as argument to `generateToken(AbstractFactory factory)` method
         claims.put("id", user.getId());
         return claims;
     }

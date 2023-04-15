@@ -3,3 +3,23 @@ server:
     include-message: always
     include-binding-errors: always
   port: 1111
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authandprofile
+    username: root
+    password: cvsecure
+    driverClassName: org.postgresql.Driver
+
+services:
+  friends:
+    url: "https://localhost:8081"
+    timeout: 5000

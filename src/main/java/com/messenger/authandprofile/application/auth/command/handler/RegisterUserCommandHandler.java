@@ -10,6 +10,7 @@ import com.messenger.authandprofile.domain.exception.user.UserAlreadyExistsExcep
 import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.model.valueobject.*;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import lombok.NonNull;
 
 @SuppressWarnings("unused")
 public class RegisterUserCommandHandler implements Command.Handler<RegisterUserCommand, UserWithTokenDto> {
@@ -25,9 +26,8 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
         this.tokenService = tokenService;
     }
 
-    // TODO: 06.04.2023 Think about changing everything to OneOf<> (if it is convenient)
     @Override
-    public UserWithTokenDto handle(RegisterUserCommand command) {
+    public UserWithTokenDto handle(@NonNull RegisterUserCommand command) {
         if (userRepository.isExistsByLogin(command.getLogin())) {
             throw UserAlreadyExistsException.createUserIsAlreadyExistsByLogin(command.getLogin());
         } else if (userRepository.isExistsByEmail(command.getEmail())) {

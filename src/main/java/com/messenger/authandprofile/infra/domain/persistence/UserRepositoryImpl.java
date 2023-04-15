@@ -1,9 +1,14 @@
 package com.messenger.authandprofile.infra.domain.persistence;
 
 import com.messenger.authandprofile.application.profile.model.parameter.UserFilterParams;
+import com.messenger.authandprofile.application.profile.model.parameter.order.SortingOrder;
+import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import com.messenger.authandprofile.infra.domain.persistence.mapper.UserEntityMapper;
+import lombok.NonNull;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,32 +45,61 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAllUsersPaginatedWithParams(int pageNumber, int pageSize, UserFilterParams userFilterParams) {
+        var pageRequest = PageRequest.of(pageNumber, pageSize, getUserFilterParamsSorting(userFilterParams));
 
-        return null;
+        var pageUsers = userRepositoryJpa.findAll(pageRequest, UserSpecifications.filterUsers(userFilterParams));
+
+        return pageUsers.map(userEntityMapper::mapToDomainModel).getContent();
     }
 
     @Override
     public boolean isExistsByEmail(String email) {
-        return false;
+        return userRepositoryJpa.existsByEmail(email);
     }
 
     @Override
     public boolean isExistsByLogin(String login) {
-        return false;
+        return userRepositoryJpa.existsByLogin(login);
     }
 
     @Override
     public void addUser(User user) {
-
+        userRepositoryJpa.save(userEntityMapper.mapToUserEntity(user));
     }
 
     @Override
     public void updateUser(UUID id, User updatedUser) {
-
+        var optionalUserEntity = userRepositoryJpa.findById(id);
+        optionalUserEntity.ifPresentOrElse(userEntity -> {
+            userEntityMapper.mapDomainToUserEntity(updatedUser, userEntity);
+            userRepositoryJpa.save(userEntity);
+        }, () -> {
+            throw UserNotFoundException.createUserNotFoundByIdException(id);
+        });
     }
 
     @Override
     public void deleteUserById(UUID id) {
+        userRepositoryJpa.deleteById(id);
+    }
 
+    private @NonNull Sort getUserFilterParamsSorting(@NonNull UserFilterParams userFilterParams) {
+        return getSortParam("login", userFilterParams.getLogin().getSortingOrder())
+                .and(getSortParam("fullName", userFilterParams.getFullName().getSortingOrder()))
+                .and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder()))
+                .and(getSortParam("registrationDate", userFilterParams.getRegistrationDate().getSortingOrder()))
+                .and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder()))
+                .and(getSortParam("city", userFilterParams.getCity().getSortingOrder()));
+    }
+
+    private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {
+        switch (sortingOrder) {
+            case ASC:
+                return Sort.by(Sort.Direction.ASC, propertyName);
+            case DESC:
+                return Sort.by(Sort.Direction.DESC, propertyName);
+            default:
+                throw new AssertionError(sortingOrder);
+        }
     }
 }

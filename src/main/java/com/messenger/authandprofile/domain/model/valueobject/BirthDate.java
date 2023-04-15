@@ -18,6 +18,14 @@ public class BirthDate {
         this.date = date;
     }
 
+    public static @NonNull LocalDate getMinBirthDate() {
+        return LocalDate.now().minusYears(MAX_AGE);
+    }
+
+    public static @NonNull LocalDate getMaxBirthDate() {
+        return LocalDate.now().minusYears(MIN_AGE);
+    }
+
     private boolean isValidBirthDate(@NonNull final LocalDate birthDate) {
         var now = LocalDate.now();
         return !birthDate.isBefore(now.minusYears(MAX_AGE)) && !birthDate.isAfter(now.minusYears(MIN_AGE));

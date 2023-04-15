@@ -7,4 +7,5 @@ import lombok.NonNull;
 public interface UserEntityMapper {
     User mapToDomainModel(@NonNull UserEntity userEntity);
     UserEntity mapToUserEntity(@NonNull User user);
+    void mapDomainToUserEntity(@NonNull User user, @NonNull UserEntity userEntity);
 }

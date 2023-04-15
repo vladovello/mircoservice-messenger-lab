@@ -42,4 +42,19 @@ public class UserEntityMapperImpl implements UserEntityMapper {
                 .withAvatar(user.getAvatar())
                 .build();
     }
+
+    @Override
+    public void mapDomainToUserEntity(@NonNull User user, @NonNull UserEntity userEntity) {
+        userEntity.setLogin(user.getLogin().getValue());
+        userEntity.setEmail(user.getEmail().getAddress());
+        userEntity.setFirstName(user.getFullName().getFirstName());
+        userEntity.setMiddleName(user.getFullName().getMiddleName());
+        userEntity.setLastName(user.getFullName().getLastName());
+        userEntity.setPassword(user.getPassword().getValue());
+        userEntity.setRegistrationDate(user.getRegistrationDate());
+        userEntity.setPhoneNumber(user.getPhoneNumber().getNumber());
+        userEntity.setBirthDate(user.getBirthDate().getDate());
+        userEntity.setCity(user.getCity());
+        userEntity.setAvatar(user.getAvatar());
+    }
 }

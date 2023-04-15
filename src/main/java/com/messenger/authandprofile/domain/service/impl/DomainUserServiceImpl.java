@@ -4,7 +4,9 @@ import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.repository.FriendRepository;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import com.messenger.authandprofile.domain.service.DomainUserService;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class DomainUserServiceImpl implements DomainUserService {
@@ -17,15 +19,8 @@ public class DomainUserServiceImpl implements DomainUserService {
     }
 
     @Override
-    public User getOtherUserProfile(UUID selfUserId, UUID otherUserId) {
+    public Optional<User> getOtherUserProfile(UUID selfUserId, UUID otherUserId) {
         var isSelfInBlackList = friendRepository.isUserInOthersBlacklist(selfUserId, otherUserId);
-
-        if (isSelfInBlackList) {
-            return null;
-        } else {
-            var optionalUser = userRepository.findUserById(otherUserId);
-            return optionalUser.orElse(null);
-
-        }
+        return isSelfInBlackList ? Optional.empty() : userRepository.findUserById(otherUserId);
     }
 }

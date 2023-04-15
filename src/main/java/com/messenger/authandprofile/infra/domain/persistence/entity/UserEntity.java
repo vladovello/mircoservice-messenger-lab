@@ -48,7 +48,7 @@ public class UserEntity {
     private String lastName;
 
     @Column(nullable = false)
-    @Formula("concat(firstName, ' ', middleName, ' ', lastName)")
+//    @Formula("concat(firstName, ' ', middleName, ' ', lastName)")
     private String fullName;
 
     @Column(nullable = false)
