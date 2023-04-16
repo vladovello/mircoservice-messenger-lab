@@ -3,7 +3,6 @@ package com.messenger.authandprofile.application.auth.command.handler;
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.command.RegisterUserCommand;
 import com.messenger.authandprofile.application.auth.dto.UserWithTokenDto;
-import com.messenger.authandprofile.application.auth.model.HashedPassword;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserAlreadyExistsException;
@@ -35,8 +34,9 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
         }
 
         var user = User.builder(new Login(command.getLogin()), new Email(command.getLogin()),
-                new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
-                new HashedPassword(new BasicPassword(command.getPassword())))
+                        new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
+                        new BasicPassword(command.getPassword())
+                )
                 .withPhoneNumber(new PhoneNumber(command.getPhoneNumber()))
                 .withCity(command.getCity())
                 .registerUser();

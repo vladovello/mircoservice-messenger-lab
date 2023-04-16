@@ -24,7 +24,7 @@ public class RefreshTokenEntity {
     private UUID userId;
 
     @Column(nullable = false)
-    private boolean isInvalid;
+    private boolean invalid;
 
     public RefreshTokenEntity() {
         // For JPA
@@ -33,14 +33,14 @@ public class RefreshTokenEntity {
     public RefreshTokenEntity(@NonNull String token, @NonNull UUID userId) {
         this.token = token;
         this.userId = userId;
-        this.isInvalid = false;
+        this.invalid = false;
     }
 
-    public Boolean isInvalid() {
-        return isInvalid;
+    public Boolean getInvalid() {
+        return invalid;
     }
 
     public void setInvalid() {
-        isInvalid = true;
+        invalid = true;
     }
 }

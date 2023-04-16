@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DomainConfig {
-    @Bean
+    @Bean(name = "domainUserServiceImpl")
     public DomainUserService domainUserService(@Autowired UserRepository userRepository,
             @Autowired FriendRepository friendRepository) {
         return new DomainUserServiceImpl(userRepository, friendRepository);

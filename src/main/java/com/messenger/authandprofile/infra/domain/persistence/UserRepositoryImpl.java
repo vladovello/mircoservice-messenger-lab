@@ -9,6 +9,7 @@ import com.messenger.authandprofile.infra.domain.persistence.mapper.UserEntityMa
 import lombok.NonNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,10 +20,14 @@ import java.util.UUID;
 public class UserRepositoryImpl implements UserRepository {
     private final UserRepositoryJpa userRepositoryJpa;
     private final UserEntityMapper userEntityMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserRepositoryImpl(UserRepositoryJpa userRepositoryJpa, UserEntityMapper userEntityMapper) {
+    public UserRepositoryImpl(
+            UserRepositoryJpa userRepositoryJpa, UserEntityMapper userEntityMapper, PasswordEncoder passwordEncoder
+    ) {
         this.userRepositoryJpa = userRepositoryJpa;
         this.userEntityMapper = userEntityMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAllUsersPaginatedWithParams(int pageNumber, int pageSize, UserFilterParams userFilterParams) {
         var pageRequest = PageRequest.of(pageNumber, pageSize, getUserFilterParamsSorting(userFilterParams));
 
-        var pageUsers = userRepositoryJpa.findAll(pageRequest, UserSpecifications.filterUsers(userFilterParams));
+        var pageUsers = userRepositoryJpa.findAll(UserSpecifications.filterUsers(userFilterParams), pageRequest);
 
         return pageUsers.map(userEntityMapper::mapToDomainModel).getContent();
     }
@@ -64,7 +69,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void addUser(User user) {
-        userRepositoryJpa.save(userEntityMapper.mapToUserEntity(user));
+        var userEntity = userEntityMapper.mapToUserEntity(user);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userRepositoryJpa.save(userEntity);
     }
 
     @Override
@@ -84,12 +91,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private @NonNull Sort getUserFilterParamsSorting(@NonNull UserFilterParams userFilterParams) {
-        return getSortParam("login", userFilterParams.getLogin().getSortingOrder())
-                .and(getSortParam("fullName", userFilterParams.getFullName().getSortingOrder()))
-                .and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder()))
-                .and(getSortParam("registrationDate", userFilterParams.getRegistrationDate().getSortingOrder()))
-                .and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder()))
-                .and(getSortParam("city", userFilterParams.getCity().getSortingOrder()));
+        return getSortParam("login", userFilterParams.getLogin().getSortingOrder()).and(getSortParam(
+                "fullName",
+                userFilterParams.getFullName().getSortingOrder()
+        )).and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder())).and(getSortParam(
+                "registrationDate",
+                userFilterParams.getRegistrationDate().getSortingOrder()
+        )).and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder())).and(getSortParam(
+                "city",
+                userFilterParams.getCity().getSortingOrder()
+        ));
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {

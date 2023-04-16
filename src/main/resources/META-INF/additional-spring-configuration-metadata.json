@@ -6,14 +6,29 @@
   ],
   "properties": [
     {
-      "name": "services.friends.timeout",
+      "name": "app.services.friends.url",
+      "type": "java.lang.String",
+      "description": "Connection string for accessing some microservice."
+    },
+    {
+      "name": "app.services.friends.timeout",
       "type": "java.lang.Integer",
       "description": "Timeout for connection."
     },
     {
-      "name": "services.friends.url",
+      "name": "app.services.friends.api-key",
       "type": "java.lang.String",
-      "description": "Connection string for accessing some microservice."
+      "description": "Api key to authorize on friends microservice."
+    },
+    {
+      "name": "app.security.integrations.api-key",
+      "type": "java.lang.String",
+      "description": "Api key for authorizing external clients."
+    },
+    {
+      "name": "app.security.integrations.root-path",
+      "type": "java.lang.String",
+      "description": "Root path for integration requests."
     }
   ]
 }

@@ -4,7 +4,6 @@ import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.repository.FriendRepository;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import com.messenger.authandprofile.domain.service.DomainUserService;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;

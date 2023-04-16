@@ -4,20 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(
-        indexes = {
-                @Index(columnList = "login"),
-                @Index(columnList = "email"),
-                @Index(columnList = "fullName")
-        }
-)
+@Table(indexes = {@Index(columnList = "login"), @Index(columnList = "email"), @Index(columnList = "fullName")})
 @Getter
 @Builder(setterPrefix = "with")
 @AllArgsConstructor
@@ -35,21 +28,13 @@ public class UserEntity {
     @Setter
     private String email;
 
-    @Column(nullable = false)
-    @Setter
-    private String firstName;
+    @Column(nullable = false) private String firstName;
 
-    @Column
-    @Setter
-    private String middleName;
+    @Column private String middleName;
 
-    @Column(nullable = false)
-    @Setter
-    private String lastName;
+    @Column(nullable = false) private String lastName;
 
-    @Column(nullable = false)
-//    @Formula("concat(firstName, ' ', middleName, ' ', lastName)")
-    private String fullName;
+    @Column(nullable = false) private String fullName;
 
     @Column(nullable = false)
     @Setter
@@ -77,5 +62,24 @@ public class UserEntity {
 
     public UserEntity() {
         // For JPA
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+        setFullName();
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+        setFullName();
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+        setFullName();
+    }
+
+    private void setFullName() {
+        fullName = firstName + " " + middleName + " " + lastName;
     }
 }

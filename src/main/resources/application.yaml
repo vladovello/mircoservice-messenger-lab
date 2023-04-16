@@ -19,7 +19,17 @@ spring:
     password: cvsecure
     driverClassName: org.postgresql.Driver
 
-services:
-  friends:
-    url: "https://localhost:8081"
-    timeout: 5000
+app:
+  security:
+    # Add jwt-generation token configs
+    integrations:
+      # Maybe add life check as permitted endpoint
+      # Maybe move root-path to the upper level because I see no purpose in different paths for api and integration requests
+      root-path: /integration
+      # Move api keys to DB (as there is can be multiple api keys for different clients)
+      api-key: asd
+  services:
+    friends:
+      base-url: "https://localhost:8081"
+      timeout: 5000
+      api-key: "some-api-key"

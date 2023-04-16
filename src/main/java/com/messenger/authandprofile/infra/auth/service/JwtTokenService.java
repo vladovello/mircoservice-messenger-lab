@@ -5,9 +5,7 @@ import com.messenger.authandprofile.application.auth.model.TokenPair;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.infra.auth.jwt.tokenfactory.JwtBearerTokenFactory;
-import com.messenger.authandprofile.infra.auth.persistence.InvalidAccessTokenRepository;
 import com.messenger.authandprofile.infra.auth.persistence.RefreshTokenRepository;
-import com.messenger.authandprofile.infra.auth.persistence.entity.InvalidAccessTokenEntity;
 import com.messenger.authandprofile.infra.auth.persistence.entity.RefreshTokenEntity;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -20,14 +18,13 @@ import java.util.UUID;
 public class JwtTokenService implements TokenService {
     private final JwtBearerTokenFactory jwtBearerTokenFactory;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final InvalidAccessTokenRepository invalidAccessTokenRepository;
 
-    public JwtTokenService(JwtBearerTokenFactory jwtBearerTokenFactory,
-            RefreshTokenRepository refreshTokenRepository,
-            InvalidAccessTokenRepository invalidAccessTokenRepository) {
+    public JwtTokenService(
+            JwtBearerTokenFactory jwtBearerTokenFactory,
+            RefreshTokenRepository refreshTokenRepository
+    ) {
         this.jwtBearerTokenFactory = jwtBearerTokenFactory;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.invalidAccessTokenRepository = invalidAccessTokenRepository;
     }
 
     @Override
@@ -37,11 +34,6 @@ public class JwtTokenService implements TokenService {
         var refreshToken = generateRefreshToken(claims, user.getId());
 
         return new TokenPair(accessToken, refreshToken);
-    }
-
-    @Override
-    public void invalidateAccessToken(@NonNull String accessToken) {
-        invalidAccessTokenRepository.save(new InvalidAccessTokenEntity(accessToken));
     }
 
     @Override
@@ -60,7 +52,7 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public void invalidateRefreshTokenFamily(@NonNull UUID userId) {
-        var refreshTokenFamily = refreshTokenRepository.findAllByUserIdAndIsInvalid(userId, false);
+        var refreshTokenFamily = refreshTokenRepository.findAllByUserIdAndInvalid(userId, false);
 
         for (var refreshToken : refreshTokenFamily) {
             refreshToken.setInvalid();
@@ -71,8 +63,7 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public boolean isRefreshTokenInvalidated(@NonNull String refreshToken) {
-        var optionalToken = refreshTokenRepository.findById(refreshToken);
-        return optionalToken.map(RefreshTokenEntity::isInvalid).orElse(false);
+        return refreshTokenRepository.existsByTokenAndInvalid(refreshToken, true);
     }
 
     // TODO: 14.04.2023 move creating different access tokens to specific factories or builders

@@ -10,8 +10,6 @@ import java.util.UUID;
 public interface TokenService {
     TokenPair generateTokens(@NonNull User user);
 
-    void invalidateAccessToken(@NonNull String accessToken);
-
     void invalidateRefreshToken(@NonNull String refreshToken) throws RefreshTokenNotFoundException;
 
     void invalidateRefreshTokenFamily(@NonNull UUID userId);
