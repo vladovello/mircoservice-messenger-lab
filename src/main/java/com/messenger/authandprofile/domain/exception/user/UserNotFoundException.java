@@ -10,11 +10,11 @@ public class UserNotFoundException extends NotFoundException {
         super(message);
     }
 
-    public static @NonNull UserNotFoundException createUserNotFoundByIdException(@NonNull UUID id) {
+    public static @NonNull UserNotFoundException byId(@NonNull UUID id) {
         return new UserNotFoundException(String.format("User with id '%s' is not found", id));
     }
 
-    public static @NonNull UserNotFoundException createUserNotFoundByLoginException(@NonNull String login) {
+    public static @NonNull UserNotFoundException byLogin(@NonNull String login) {
         return new UserNotFoundException(String.format("User with login '%s' is not found", login));
     }
 }

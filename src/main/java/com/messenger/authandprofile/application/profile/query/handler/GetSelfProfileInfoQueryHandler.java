@@ -25,7 +25,7 @@ public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfPr
         var optionalUser = userRepository.findUserById(query.getId());
 
         if (optionalUser.isEmpty()) {
-            throw UserNotFoundException.createUserNotFoundByIdException(query.getId());
+            throw UserNotFoundException.byId(query.getId());
         }
 
         return userMapper.mapToUserDto(optionalUser.get());

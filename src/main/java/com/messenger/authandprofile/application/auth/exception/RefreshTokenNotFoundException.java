@@ -16,11 +16,4 @@ public class RefreshTokenNotFoundException extends RuntimeException {
     public RefreshTokenNotFoundException(Throwable cause) {
         super(cause);
     }
-
-    public RefreshTokenNotFoundException(String message,
-            Throwable cause,
-            boolean enableSuppression,
-            boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

@@ -81,7 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
             userEntityMapper.mapDomainToUserEntity(updatedUser, userEntity);
             userRepositoryJpa.save(userEntity);
         }, () -> {
-            throw UserNotFoundException.createUserNotFoundByIdException(id);
+            throw UserNotFoundException.byId(id);
         });
     }
 

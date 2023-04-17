@@ -28,7 +28,7 @@ public class ChangeUserProfileCommandHandler implements Command.Handler<ChangeUs
         var optionalUser = userRepository.findUserById(command.getId());
 
         if (optionalUser.isEmpty()) {
-            throw UserNotFoundException.createUserNotFoundByIdException(command.getId());
+            throw UserNotFoundException.byId(command.getId());
         }
 
         var user = optionalUser.get();

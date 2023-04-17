@@ -10,12 +10,13 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
 @Component
-public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, UserWithTokenDto> {
+public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, Either<UserNotFoundException, UserWithTokenDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final TokenService tokenService;
@@ -34,11 +35,11 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
     }
 
     @Override
-    public UserWithTokenDto handle(@NonNull LoginUserCommand command) {
+    public Either<UserNotFoundException, UserWithTokenDto> handle(@NonNull LoginUserCommand command) {
         var optionalUser = userRepository.findUserByLogin(command.getLogin());
 
         if (optionalUser.isEmpty()) {
-            throw UserNotFoundException.createUserNotFoundByLoginException(command.getLogin());
+            return Either.left(UserNotFoundException.byLogin(command.getLogin()));
         }
 
         var user = optionalUser.get();
@@ -50,6 +51,6 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
 
         var token = tokenService.generateTokens(user);
 
-        return userMapper.mapToUserWithTokenDto(user, token);
+        return Either.right(userMapper.mapToUserWithTokenDto(user, token));
     }
 }

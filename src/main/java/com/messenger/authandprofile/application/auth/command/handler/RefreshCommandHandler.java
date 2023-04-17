@@ -7,6 +7,7 @@ import com.messenger.authandprofile.application.auth.mapper.TokenPairMapper;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Component
-public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Optional<TokenPairDto>> {
+public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Either<UserNotFoundException, Optional<TokenPairDto>>> {
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final TokenPairMapper tokenPairMapper;
@@ -36,21 +37,20 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Op
      *   3.2. Генерируем новую пару токенов и возвращаем их пользователю
      */
     @Override
-    public Optional<TokenPairDto> handle(@NonNull RefreshCommand command) {
+    public Either<UserNotFoundException, Optional<TokenPairDto>> handle(@NonNull RefreshCommand command) {
         if (tokenService.isRefreshTokenInvalidated(command.getRefreshToken())) {
             tokenService.invalidateRefreshTokenFamily(command.getUserId());
-            return Optional.empty();
+            return Either.right(Optional.empty());
         }
 
         var optionalUser = userRepository.findUserById(command.getUserId());
-
         if (optionalUser.isEmpty()) {
-            throw UserNotFoundException.createUserNotFoundByIdException(command.getUserId());
+            return Either.left(UserNotFoundException.byId(command.getUserId()));
         }
 
         var tokenPair = tokenService.generateTokens(optionalUser.get());
         tokenService.invalidateRefreshToken(command.getRefreshToken());
 
-        return Optional.ofNullable(tokenPairMapper.mapToTokenPairDto(tokenPair));
+        return Either.right(Optional.ofNullable(tokenPairMapper.mapToTokenPairDto(tokenPair)));
     }
 }
