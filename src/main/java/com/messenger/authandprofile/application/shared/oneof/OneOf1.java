@@ -1,8 +1,12 @@
 package com.messenger.authandprofile.application.shared.oneof;
 
-import io.vavr.API;
+import io.vavr.control.Either;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
+
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class OneOf1<T1> implements OneOf {
     private final T1 value1;
@@ -26,5 +30,15 @@ public class OneOf1<T1> implements OneOf {
     @Override
     public int getIndex() {
         return index;
+    }
+
+    public void match(@NonNull Consumer<T1> f1) {
+        Objects.requireNonNull(f1, "f1 is null");
+        f1.accept(value1);
+    }
+
+    public <R> R match(@NonNull Function<T1, R> f1) {
+        Objects.requireNonNull(f1, "f1 is null");
+        return f1.apply(value1);
     }
 }
