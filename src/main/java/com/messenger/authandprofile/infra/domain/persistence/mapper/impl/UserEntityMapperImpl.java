@@ -7,6 +7,8 @@ import com.messenger.authandprofile.infra.domain.persistence.mapper.UserEntityMa
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class UserEntityMapperImpl implements UserEntityMapper {
     @Override
@@ -26,6 +28,16 @@ public class UserEntityMapperImpl implements UserEntityMapper {
 
     @Override
     public UserEntity mapToUserEntity(@NonNull User user) {
+        String phoneNumber = null;
+        LocalDate birthDate = null;
+
+        if (user.getPhoneNumber() != null) {
+            phoneNumber = user.getPhoneNumber().getNumber();
+        }
+        if (user.getBirthDate() != null) {
+            birthDate = user.getBirthDate().getDate();
+        }
+
         return UserEntity
                 .builder()
                 .withId(user.getId())
@@ -36,8 +48,8 @@ public class UserEntityMapperImpl implements UserEntityMapper {
                 .withLastName(user.getFullName().getLastName())
                 .withPassword(user.getPassword().getValue())
                 .withRegistrationDate(user.getRegistrationDate())
-                .withPhoneNumber(user.getPhoneNumber().getNumber())
-                .withBirthDate(user.getBirthDate().getDate())
+                .withPhoneNumber(phoneNumber)
+                .withBirthDate(birthDate)
                 .withCity(user.getCity())
                 .withAvatar(user.getAvatar())
                 .build();
@@ -45,6 +57,16 @@ public class UserEntityMapperImpl implements UserEntityMapper {
 
     @Override
     public void mapDomainToUserEntity(@NonNull User user, @NonNull UserEntity userEntity) {
+        String phoneNumber = null;
+        LocalDate birthDate = null;
+
+        if (user.getPhoneNumber() != null) {
+            phoneNumber = user.getPhoneNumber().getNumber();
+        }
+        if (user.getBirthDate() != null) {
+            birthDate = user.getBirthDate().getDate();
+        }
+
         userEntity.setLogin(user.getLogin().getValue());
         userEntity.setEmail(user.getEmail().getAddress());
         userEntity.setFirstName(user.getFullName().getFirstName());
@@ -52,8 +74,8 @@ public class UserEntityMapperImpl implements UserEntityMapper {
         userEntity.setLastName(user.getFullName().getLastName());
         userEntity.setPassword(user.getPassword().getValue());
         userEntity.setRegistrationDate(user.getRegistrationDate());
-        userEntity.setPhoneNumber(user.getPhoneNumber().getNumber());
-        userEntity.setBirthDate(user.getBirthDate().getDate());
+        userEntity.setPhoneNumber(phoneNumber);
+        userEntity.setBirthDate(birthDate);
         userEntity.setCity(user.getCity());
         userEntity.setAvatar(user.getAvatar());
     }

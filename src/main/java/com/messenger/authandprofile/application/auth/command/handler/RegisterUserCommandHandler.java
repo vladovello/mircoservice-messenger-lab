@@ -10,8 +10,10 @@ import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.model.valueobject.*;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
+@Component
 public class RegisterUserCommandHandler implements Command.Handler<RegisterUserCommand, UserWithTokenDto> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -33,10 +35,11 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
             throw UserAlreadyExistsException.createUserIsAlreadyExistsByEmail(command.getEmail());
         }
 
-        var user = User.builder(new Login(command.getLogin()), new Email(command.getLogin()),
+        var user = User.builder(new Login(command.getLogin()), new Email(command.getEmail()),
                         new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
                         new BasicPassword(command.getPassword())
                 )
+                .withBirthDate(new BirthDate(command.getBirthDate()))
                 .withPhoneNumber(new PhoneNumber(command.getPhoneNumber()))
                 .withCity(command.getCity())
                 .registerUser();

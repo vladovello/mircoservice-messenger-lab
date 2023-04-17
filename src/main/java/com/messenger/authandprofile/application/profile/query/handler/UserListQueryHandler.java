@@ -7,11 +7,13 @@ import com.messenger.authandprofile.application.profile.query.UserListQuery;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
+@Component
 public class UserListQueryHandler implements Command.Handler<UserListQuery, List<UserDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

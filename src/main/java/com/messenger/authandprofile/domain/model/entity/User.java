@@ -16,15 +16,15 @@ import java.util.UUID;
 // At the same time, AccountRepo will call the ProfileRepo when saving registered user.
 // Editing the profile will throw event which account service will listen to sync its data
 @Getter
-@Setter(value = AccessLevel.PRIVATE, onParam_ = {@NonNull})
+@Setter(value = AccessLevel.PRIVATE)
 public class User {
     // Required fields
-    private UUID id;
-    private Login login;
-    private Email email;
-    private FullName fullName;
-    private Password password;
-    private LocalDate registrationDate;
+    @NonNull private UUID id;
+    @NonNull private Login login;
+    @NonNull private Email email;
+    @NonNull private FullName fullName;
+    @NonNull private Password password;
+    @NonNull private LocalDate registrationDate;
 
     // Optional fields
     private PhoneNumber phoneNumber;
@@ -96,6 +96,11 @@ public class User {
 
         public UserBuilder withPhoneNumber(PhoneNumber phoneNumber) {
             if (phoneNumber != null) this.user.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
+        public UserBuilder withBirthDate(BirthDate birthDate) {
+            if (birthDate != null) this.user.setBirthDate(birthDate);
             return this;
         }
 

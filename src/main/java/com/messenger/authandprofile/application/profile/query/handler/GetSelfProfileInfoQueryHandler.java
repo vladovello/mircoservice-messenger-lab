@@ -7,8 +7,10 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
+@Component
 public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfProfileInfoQuery, UserDto> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

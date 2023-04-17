@@ -22,6 +22,16 @@ spring:
 app:
   security:
     # Add jwt-generation token configs
+    jwt:
+      key-pair:
+        secret-key: sadfdg7ufidogjsdgo
+        public-key: 899udf089u
+      access-token:
+        signing-algorithm: ES512
+        lifespan: 00:05:00
+      refresh-token:
+        signing-algorithm: ES512
+        lifespan: 10:00:00
     integrations:
       # Maybe add life check as permitted endpoint
       # Maybe move root-path to the upper level because I see no purpose in different paths for api and integration requests
@@ -30,6 +40,6 @@ app:
       api-key: asd
   services:
     friends:
-      base-url: "https://localhost:8081"
+      base-url: https://localhost:8081
       timeout: 5000
-      api-key: "some-api-key"
+      api-key: some-api-key

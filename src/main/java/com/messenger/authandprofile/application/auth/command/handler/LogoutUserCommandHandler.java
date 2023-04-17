@@ -6,8 +6,10 @@ import com.messenger.authandprofile.application.auth.command.LogoutUserCommand;
 import com.messenger.authandprofile.application.auth.exception.RefreshTokenNotFoundException;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
+@Component
 public class LogoutUserCommandHandler implements Command.Handler<LogoutUserCommand, Voidy> {
     private final TokenService tokenService;
 

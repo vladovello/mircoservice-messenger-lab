@@ -10,8 +10,10 @@ import com.messenger.authandprofile.domain.model.valueobject.FullName;
 import com.messenger.authandprofile.domain.model.valueobject.PhoneNumber;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
+@Component
 public class ChangeUserProfileCommandHandler implements Command.Handler<ChangeUserProfileCommand, UserDto> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

@@ -5,10 +5,7 @@ import com.messenger.authandprofile.infra.auth.jwt.validator.LifetimeValidator;
 import com.messenger.authandprofile.infra.auth.jwt.validator.SignatureValidator;
 import com.messenger.authandprofile.infra.auth.jwt.validator.defaultimpl.BasicLifetimeValidator;
 import com.messenger.authandprofile.infra.auth.jwt.validator.defaultimpl.BasicSignatureValidator;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import org.jetbrains.annotations.Contract;
 
 import javax.crypto.SecretKey;
@@ -18,22 +15,34 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 public class JwtBearerTokenParameters {
     private static final int NANO_TO_MILLIS_DIV = 1_000_000;
 
-    private String issuer = "localhost";
-    private LocalTime lifespan = LocalTime.of(0, 5, 0);
+    @Setter private String issuer = "localhost";
+    @Setter private LocalTime lifespan = LocalTime.of(0, 5, 0);
 
-    @Setter(value = AccessLevel.PRIVATE) private SecretKey signingKey;
-    @Setter(value = AccessLevel.PRIVATE) private KeyPair keyPair;
+    private SecretKey signingKey;
+    private KeyPair keyPair;
 
-    private SignatureValidator signatureValidator = new BasicSignatureValidator();
-    private LifetimeValidator lifetimeValidator = new BasicLifetimeValidator();
+    @Setter private SignatureValidator signatureValidator = new BasicSignatureValidator();
+    @Setter private LifetimeValidator lifetimeValidator = new BasicLifetimeValidator();
 
     @Contract(" -> new")
     public @NonNull Date getExpirationDate() {
         return new Date(Calendar.getInstance().getTimeInMillis() + lifespan.toNanoOfDay() / NANO_TO_MILLIS_DIV);
+    }
+
+    public Key getSigningKey() {
+        if (signingKey == null && keyPair == null) {
+            return null;
+        } else if (signingKey != null) {
+            return signingKey;
+        }
+
+        return keyPair.getPrivate();
     }
 
     public void setSymmetricKey(SecretKey secretKey) {

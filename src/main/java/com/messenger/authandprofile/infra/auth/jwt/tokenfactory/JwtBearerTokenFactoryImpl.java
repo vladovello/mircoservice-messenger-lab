@@ -10,13 +10,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public final class JwtBearerTokenFactoryImpl implements JwtBearerTokenFactory {
-    private JwtBearerTokenParameters accessJwtBearerTokenParameters;
-    private JwtBearerTokenParameters refreshJwtBearerTokenParameters;
+    private final JwtBearerTokenParameters accessJwtBearerTokenParameters = new JwtBearerTokenParameters();
+    private final JwtBearerTokenParameters refreshJwtBearerTokenParameters = new JwtBearerTokenParameters();
 
-    public JwtBearerTokenFactoryImpl(@NonNull Consumer<JwtBearerTokenParameters> accessTokenOptions,
-            @NonNull Consumer<JwtBearerTokenParameters> refreshTokenOptions) {
-        accessTokenOptions.accept(new JwtBearerTokenParameters());
-        refreshTokenOptions.accept(new JwtBearerTokenParameters());
+    public JwtBearerTokenFactoryImpl(
+            @NonNull Consumer<JwtBearerTokenParameters> accessTokenOptions,
+            @NonNull Consumer<JwtBearerTokenParameters> refreshTokenOptions
+    ) {
+        accessTokenOptions.accept(accessJwtBearerTokenParameters);
+        refreshTokenOptions.accept(refreshJwtBearerTokenParameters);
     }
 
     @Override

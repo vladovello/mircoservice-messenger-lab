@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(indexes = {@Index(columnList = "login"), @Index(columnList = "email"), @Index(columnList = "fullName")})
+@Table(indexes = {@Index(columnList = "login", unique = true), @Index(columnList = "email", unique = true), @Index(columnList = "fullName")})
 @Getter
 @Builder(setterPrefix = "with")
 @AllArgsConstructor
@@ -20,11 +20,11 @@ public class UserEntity {
     @Setter
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Setter
     private String login;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Setter
     private String email;
 
@@ -81,5 +81,29 @@ public class UserEntity {
 
     private void setFullName() {
         fullName = firstName + " " + middleName + " " + lastName;
+    }
+
+    public static class UserEntityBuilder {
+        public UserEntityBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            setFullName();
+            return this;
+        }
+
+        public UserEntityBuilder withMiddleName(String middleName) {
+            this.middleName = middleName;
+            setFullName();
+            return this;
+        }
+
+        public UserEntityBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            setFullName();
+            return this;
+        }
+
+        private void setFullName() {
+            fullName = firstName + " " + middleName + " " + lastName;
+        }
     }
 }

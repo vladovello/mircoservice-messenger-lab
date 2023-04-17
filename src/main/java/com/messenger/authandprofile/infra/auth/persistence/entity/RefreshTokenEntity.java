@@ -13,7 +13,7 @@ import java.util.UUID;
 )
 public class RefreshTokenEntity {
     @Id
-    @Column(nullable = false)
+    @Column(length = 2000, nullable = false)
     @Getter
     @Setter
     private String token;

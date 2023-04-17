@@ -11,8 +11,10 @@ import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
+@Component
 public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, UserWithTokenDto> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

@@ -8,10 +8,12 @@ import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @SuppressWarnings("unused")
+@Component
 public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Optional<TokenPairDto>> {
     private final TokenService tokenService;
     private final UserRepository userRepository;

@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 @Value
 public class BasicPassword implements Password {
-    private static final String REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+    private static final String SPEC_CHARS = "@$!%*?&_.^+=\\-()\\[\\]{}:#";
+    private static final String REGEX = String.format("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[%s])[A-Za-z\\d%s]{8,}$", SPEC_CHARS, SPEC_CHARS);
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     @Getter
