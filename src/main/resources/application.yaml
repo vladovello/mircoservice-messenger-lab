@@ -9,7 +9,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL82Dialect
@@ -24,7 +24,7 @@ app:
     # Add jwt-generation token configs
     jwt:
       key-pair:
-        secret-key: sadfdg7ufidogjsdgo
+        private-key: sadfdg7ufidogjsdgo
         public-key: 899udf089u
       access-token:
         signing-algorithm: ES512

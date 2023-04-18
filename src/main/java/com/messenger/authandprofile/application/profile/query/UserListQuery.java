@@ -3,16 +3,15 @@ package com.messenger.authandprofile.application.profile.query;
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.profile.dto.DiscreteParamDto;
 import com.messenger.authandprofile.application.profile.dto.IntervalParamDto;
-import com.messenger.authandprofile.application.profile.dto.UserDto;
+import com.messenger.authandprofile.application.profile.model.UserListDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class UserListQuery implements Command<List<UserDto>> {
+public class UserListQuery implements Command<UserListDto> {
     private int pageSize;
     private int pageNumber;
 

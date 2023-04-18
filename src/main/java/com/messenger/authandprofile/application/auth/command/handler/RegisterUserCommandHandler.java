@@ -9,12 +9,14 @@ import com.messenger.authandprofile.domain.exception.user.UserAlreadyExistsExcep
 import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.model.valueobject.*;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
 @Component
-public class RegisterUserCommandHandler implements Command.Handler<RegisterUserCommand, UserWithTokenDto> {
+public class RegisterUserCommandHandler implements
+        Command.Handler<RegisterUserCommand, Either<Exception, UserWithTokenDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final TokenService tokenService;
@@ -28,16 +30,17 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
     }
 
     @Override
-    public UserWithTokenDto handle(@NonNull RegisterUserCommand command) {
+    public Either<Exception, UserWithTokenDto> handle(@NonNull RegisterUserCommand command) {
         if (userRepository.isExistsByLogin(command.getLogin())) {
-            throw UserAlreadyExistsException.createUserIsAlreadyExistsByLogin(command.getLogin());
+            return Either.left(UserAlreadyExistsException.createUserIsAlreadyExistsByLogin(command.getLogin()));
         } else if (userRepository.isExistsByEmail(command.getEmail())) {
-            throw UserAlreadyExistsException.createUserIsAlreadyExistsByEmail(command.getEmail());
+            return Either.left(UserAlreadyExistsException.createUserIsAlreadyExistsByEmail(command.getEmail()));
         }
 
+        // TODO: 18.04.2023 переписать на Either
         var user = User.builder(new Login(command.getLogin()), new Email(command.getEmail()),
                         new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
-                        new BasicPassword(command.getPassword())
+                        new RegexPassword(command.getPassword())
                 )
                 .withBirthDate(new BirthDate(command.getBirthDate()))
                 .withPhoneNumber(new PhoneNumber(command.getPhoneNumber()))
@@ -47,6 +50,6 @@ public class RegisterUserCommandHandler implements Command.Handler<RegisterUserC
 
         var token = tokenService.generateTokens(user);
 
-        return userMapper.mapToUserWithTokenDto(user, token);
+        return Either.right(userMapper.mapToUserWithTokenDto(user, token));
     }
 }

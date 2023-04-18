@@ -14,11 +14,19 @@ import java.security.KeyPair;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.Consumer;
 
 @Getter
 @ToString
 @EqualsAndHashCode
 public class JwtBearerTokenParameters {
+    public JwtBearerTokenParameters() {
+    }
+
+    public JwtBearerTokenParameters(@NonNull Consumer<JwtBearerTokenParameters> options) {
+        options.accept(this);
+    }
+
     private static final int NANO_TO_MILLIS_DIV = 1_000_000;
 
     @Setter private String issuer = "localhost";

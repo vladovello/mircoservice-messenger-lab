@@ -1,12 +1,19 @@
 package com.messenger.authandprofile.application.profile.query;
 
 import an.awesome.pipelinr.Command;
-import com.messenger.authandprofile.application.profile.dto.UserDto;
+import com.messenger.authandprofile.application.profile.dto.ProfileDto;
+import com.messenger.authandprofile.shared.model.Principal;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.UUID;
+import java.util.Optional;
 
+/**
+ * @apiNote @see block shows the exceptions may be thrown by this query
+ * @see com.messenger.authandprofile.application.profile.exception.ForbiddenException
+ */
 @Data
-public class GetSelfProfileInfoQuery implements Command<UserDto> {
-    private UUID id;
+@AllArgsConstructor
+public class GetSelfProfileInfoQuery implements Command<Optional<ProfileDto>> {
+    private Principal principal;
 }

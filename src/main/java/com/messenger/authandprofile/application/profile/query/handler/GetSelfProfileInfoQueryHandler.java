@@ -1,17 +1,18 @@
 package com.messenger.authandprofile.application.profile.query.handler;
 
 import an.awesome.pipelinr.Command;
-import com.messenger.authandprofile.application.profile.dto.UserDto;
+import com.messenger.authandprofile.application.profile.dto.ProfileDto;
 import com.messenger.authandprofile.application.profile.query.GetSelfProfileInfoQuery;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
-import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @SuppressWarnings("unused")
 @Component
-public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfProfileInfoQuery, UserDto> {
+public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfProfileInfoQuery, Optional<ProfileDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -21,13 +22,8 @@ public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfPr
     }
 
     @Override
-    public UserDto handle(@NonNull GetSelfProfileInfoQuery query) {
-        var optionalUser = userRepository.findUserById(query.getId());
-
-        if (optionalUser.isEmpty()) {
-            throw UserNotFoundException.byId(query.getId());
-        }
-
-        return userMapper.mapToUserDto(optionalUser.get());
+    public Optional<ProfileDto> handle(@NonNull GetSelfProfileInfoQuery query) {
+        var optionalUser = userRepository.findUserById(query.getPrincipal().getId());
+        return optionalUser.map(userMapper::mapToProfileDto);
     }
 }

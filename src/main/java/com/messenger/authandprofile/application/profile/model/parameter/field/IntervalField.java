@@ -1,7 +1,7 @@
 package com.messenger.authandprofile.application.profile.model.parameter.field;
 
 import com.google.common.collect.Range;
-import com.messenger.authandprofile.application.profile.model.parameter.exception.EmptyIntervalException;
+import com.messenger.authandprofile.application.profile.model.exception.EmptyIntervalException;
 import com.messenger.authandprofile.application.profile.model.parameter.order.Order;
 import com.messenger.authandprofile.application.profile.model.parameter.order.SortingOrder;
 import lombok.Getter;

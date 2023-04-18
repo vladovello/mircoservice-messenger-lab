@@ -1,6 +1,8 @@
 package com.messenger.authandprofile.application.auth.exception;
 
-public class RefreshTokenNotFoundException extends RuntimeException {
+import com.messenger.authandprofile.shared.exception.NotFoundException;
+
+public class RefreshTokenNotFoundException extends NotFoundException {
     public RefreshTokenNotFoundException() {
         super("The refresh token was not found");
     }

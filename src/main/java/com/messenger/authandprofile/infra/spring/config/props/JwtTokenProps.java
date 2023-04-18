@@ -12,5 +12,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JwtTokenProps {
     private AccessTokenProps accessToken;
     private RefreshTokenProps refreshToken;
-    private String secretKey;
+    private SymmetricKeyProps secretKey;
+    private AsymmetricKeyProps keyPair;
 }

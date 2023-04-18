@@ -1,6 +1,5 @@
 package com.messenger.authandprofile.application.shared.oneof;
 
-import io.vavr.control.Either;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 
@@ -40,5 +39,27 @@ public class OneOf1<T1> implements OneOf {
     public <R> R match(@NonNull Function<T1, R> f1) {
         Objects.requireNonNull(f1, "f1 is null");
         return f1.apply(value1);
+    }
+
+    public <R> OneOf1<R> mapT1(@NonNull Function<T1, R> f1) {
+        return OneOf1.fromT1(f1.apply(value1));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OneOf1)) return false;
+
+        var oneOf1 = (OneOf1<?>) o;
+
+        if (getIndex() != oneOf1.getIndex()) return false;
+        return Objects.equals(value1, oneOf1.value1);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value1 != null ? value1.hashCode() : 0;
+        result = 31 * result + getIndex();
+        return result;
     }
 }

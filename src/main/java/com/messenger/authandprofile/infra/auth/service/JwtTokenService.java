@@ -4,13 +4,13 @@ import com.messenger.authandprofile.application.auth.exception.RefreshTokenNotFo
 import com.messenger.authandprofile.application.auth.model.TokenPair;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.domain.model.entity.User;
-import com.messenger.authandprofile.infra.auth.jwt.tokenfactory.JwtBearerTokenFactory;
+import com.messenger.authandprofile.infra.auth.jwt.factory.JwtBearerTokenFactory;
+import com.messenger.authandprofile.infra.auth.jwt.factory.JwtClaimsFactory;
 import com.messenger.authandprofile.infra.auth.persistence.RefreshTokenRepository;
 import com.messenger.authandprofile.infra.auth.persistence.entity.RefreshTokenEntity;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public TokenPair generateTokens(@NonNull User user) {
-        var claims = createAccessTokenClaims(user);
+        var claims = JwtClaimsFactory.getUserClaims(user);
         var accessToken = generateAccessToken(claims);
         var refreshToken = generateRefreshToken(claims, user.getId());
 
@@ -64,14 +64,6 @@ public class JwtTokenService implements TokenService {
     @Override
     public boolean isRefreshTokenInvalidated(@NonNull String refreshToken) {
         return refreshTokenRepository.existsByTokenAndInvalid(refreshToken, true);
-    }
-
-    // TODO: 14.04.2023 move creating different access tokens to specific factories or builders
-    // maybe pass concrete fabric as argument to `generateToken(AbstractFactory factory)` method
-    private @NonNull Map<String, ?> createAccessTokenClaims(@NonNull User user) {
-        var claims = new HashMap<String, Object>();
-        claims.put("id", user.getId());
-        return claims;
     }
 
     private String generateAccessToken(Map<String, ?> claims) {

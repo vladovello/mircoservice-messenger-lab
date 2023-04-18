@@ -4,23 +4,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Value;
 
-import java.util.regex.Pattern;
-
 @Value
 public class BasicPassword implements Password {
-    private static final String SPEC_CHARS = "@$!%*?&_.^+=\\-()\\[\\]{}:#";
-    private static final String REGEX = String.format("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[%s])[A-Za-z\\d%s]{8,}$", SPEC_CHARS, SPEC_CHARS);
-    private static final Pattern PATTERN = Pattern.compile(REGEX);
-
     @Getter
     @NonNull
     String value;
 
-    public BasicPassword(@NonNull String value) throws IllegalArgumentException {
-        final var isMatch = PATTERN.matcher(value).matches();
-
-        if (!isMatch) throw new IllegalArgumentException("Given password is invalid");
-
+    public BasicPassword(@NonNull String value) {
         this.value = value;
     }
 }

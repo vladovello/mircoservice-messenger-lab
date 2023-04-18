@@ -2,15 +2,17 @@ package com.messenger.authandprofile.application.auth.command;
 
 import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Voidy;
-import lombok.AccessLevel;
+import io.vavr.control.Either;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
+/**
+ * @apiNote @see block shows exceptions may be thrown by this command
+ * @see com.messenger.authandprofile.application.auth.exception.RefreshTokenNotFoundException
+ */
 @Data
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class LogoutUserCommand implements Command<Voidy> {
-    String accessToken;
-    String refreshToken;
+public class LogoutUserCommand implements Command<Either<Exception, Voidy>> {
+    private String accessToken;
+    private String refreshToken;
 }

@@ -8,6 +8,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class OneOf2<T1, T2> implements OneOf {
+    private static final String F1_IS_NULL_MSG = "f1 is null";
+    private static final String F2_IS_NULL_MSG = "f2 is null";
+
     private final T1 value1;
     private final T2 value2;
     private final int index;
@@ -40,16 +43,48 @@ public class OneOf2<T1, T2> implements OneOf {
     }
 
     public void match(@NonNull Consumer<T1> f1, @NonNull Consumer<T2> f2) {
-        Objects.requireNonNull(f1, "f1 is null");
-        Objects.requireNonNull(f2, "f2 is null");
+        Objects.requireNonNull(f1, F1_IS_NULL_MSG);
+        Objects.requireNonNull(f2, F2_IS_NULL_MSG);
         if (index == 1) f1.accept(value1);
         f2.accept(value2);
     }
 
     public <R> R match(@NonNull Function<T1, R> f1, @NonNull Function<T2, R> f2) {
-        Objects.requireNonNull(f1, "f1 is null");
-        Objects.requireNonNull(f2, "f2 is null");
+        Objects.requireNonNull(f1, F1_IS_NULL_MSG);
+        Objects.requireNonNull(f2, F2_IS_NULL_MSG);
         if (index == 1) return f1.apply(value1);
         return f2.apply(value2);
+    }
+
+    public <R> OneOf2<R, T2> mapT1(@NonNull Function<T1, R> f1) {
+        Objects.requireNonNull(f1, F1_IS_NULL_MSG);
+        if (index == 1) return OneOf2.fromT1(f1.apply(value1));
+        return OneOf2.fromT2(value2);
+    }
+
+    public <R> OneOf2<T1, R> mapT2(@NonNull Function<T2, R> f2) {
+        Objects.requireNonNull(f2, F2_IS_NULL_MSG);
+        if (index == 1) return OneOf2.fromT1(value1);
+        return OneOf2.fromT2(f2.apply(value2));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OneOf2)) return false;
+
+        var oneOf2 = (OneOf2<?, ?>) o;
+
+        if (getIndex() != oneOf2.getIndex()) return false;
+        if (!Objects.equals(value1, oneOf2.value1)) return false;
+        return Objects.equals(value2, oneOf2.value2);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value1 != null ? value1.hashCode() : 0;
+        result = 31 * result + (value2 != null ? value2.hashCode() : 0);
+        result = 31 * result + getIndex();
+        return result;
     }
 }

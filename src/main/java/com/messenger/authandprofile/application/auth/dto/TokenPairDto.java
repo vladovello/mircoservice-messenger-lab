@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class TokenPairDto {
-    String refreshToken;
     String accessToken;
+    String refreshToken;
 }

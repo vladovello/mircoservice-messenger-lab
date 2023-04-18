@@ -1,4 +1,4 @@
-package com.messenger.authandprofile.application.profile.model.parameter.exception;
+package com.messenger.authandprofile.application.profile.model.exception;
 
 public class EmptyIntervalException extends RuntimeException {
     public EmptyIntervalException() {

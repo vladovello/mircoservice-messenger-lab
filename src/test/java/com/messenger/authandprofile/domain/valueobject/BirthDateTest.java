@@ -2,7 +2,6 @@ package com.messenger.authandprofile.domain.valueobject;
 
 import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateException;
 import com.messenger.authandprofile.domain.model.valueobject.BirthDate;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

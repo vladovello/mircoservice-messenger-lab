@@ -3,6 +3,7 @@ package com.messenger.authandprofile.application.auth.command.handler;
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.command.RefreshCommand;
 import com.messenger.authandprofile.application.auth.dto.TokenPairDto;
+import com.messenger.authandprofile.application.auth.exception.RefreshTokenReuseException;
 import com.messenger.authandprofile.application.auth.mapper.TokenPairMapper;
 import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
@@ -11,18 +12,15 @@ import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @SuppressWarnings("unused")
 @Component
-public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Either<UserNotFoundException, Optional<TokenPairDto>>> {
+public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Either<Exception, TokenPairDto>> {
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final TokenPairMapper tokenPairMapper;
 
     public RefreshCommandHandler(
-            TokenService tokenService, UserRepository userRepository,
-            TokenPairMapper tokenPairMapper
+            TokenService tokenService, UserRepository userRepository, TokenPairMapper tokenPairMapper
     ) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
@@ -37,10 +35,10 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Ei
      *   3.2. Генерируем новую пару токенов и возвращаем их пользователю
      */
     @Override
-    public Either<UserNotFoundException, Optional<TokenPairDto>> handle(@NonNull RefreshCommand command) {
+    public Either<Exception, TokenPairDto> handle(@NonNull RefreshCommand command) {
         if (tokenService.isRefreshTokenInvalidated(command.getRefreshToken())) {
             tokenService.invalidateRefreshTokenFamily(command.getUserId());
-            return Either.right(Optional.empty());
+            return Either.left(new RefreshTokenReuseException());
         }
 
         var optionalUser = userRepository.findUserById(command.getUserId());
@@ -48,9 +46,9 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Ei
             return Either.left(UserNotFoundException.byId(command.getUserId()));
         }
 
-        var tokenPair = tokenService.generateTokens(optionalUser.get());
         tokenService.invalidateRefreshToken(command.getRefreshToken());
+        var tokenPair = tokenService.generateTokens(optionalUser.get());
 
-        return Either.right(Optional.ofNullable(tokenPairMapper.mapToTokenPairDto(tokenPair)));
+        return Either.right(tokenPairMapper.mapToTokenPairDto(tokenPair));
     }
 }

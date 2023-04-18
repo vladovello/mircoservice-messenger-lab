@@ -17,7 +17,6 @@ public class PasswordHelperImpl implements PasswordHelper {
 
     @Override
     public boolean doPasswordsMatch(@NonNull User user, @NonNull Password password) {
-        var hashedPassword = passwordEncoder.encode(password.getValue());
-        return hashedPassword.equals(user.getPassword().getValue());
+        return passwordEncoder.matches(password.getValue(), user.getPassword().getValue());
     }
 }

@@ -1,4 +1,4 @@
-package com.messenger.authandprofile.infra.auth.jwt.tokenfactory;
+package com.messenger.authandprofile.infra.auth.jwt.factory;
 
 import com.messenger.authandprofile.application.auth.model.TokenPair;
 

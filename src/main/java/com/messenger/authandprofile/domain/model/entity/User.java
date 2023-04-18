@@ -27,6 +27,7 @@ public class User {
     @NonNull private LocalDate registrationDate;
 
     // Optional fields
+    // TODO: 18.04.2023 maybe change these getters to return optional
     private PhoneNumber phoneNumber;
     private BirthDate birthDate;
     private String city;

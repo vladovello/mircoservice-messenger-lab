@@ -1,4 +1,4 @@
-package com.messenger.authandprofile.infra.auth.jwt.tokenfactory;
+package com.messenger.authandprofile.infra.auth.jwt.factory;
 
 import com.messenger.authandprofile.application.auth.model.TokenPair;
 import com.messenger.authandprofile.infra.auth.jwt.JwtBearerTokenParameters;
@@ -7,18 +7,17 @@ import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 public final class JwtBearerTokenFactoryImpl implements JwtBearerTokenFactory {
-    private final JwtBearerTokenParameters accessJwtBearerTokenParameters = new JwtBearerTokenParameters();
-    private final JwtBearerTokenParameters refreshJwtBearerTokenParameters = new JwtBearerTokenParameters();
+    private final JwtBearerTokenParameters accessJwtBearerTokenParameters;
+    private final JwtBearerTokenParameters refreshJwtBearerTokenParameters;
 
     public JwtBearerTokenFactoryImpl(
-            @NonNull Consumer<JwtBearerTokenParameters> accessTokenOptions,
-            @NonNull Consumer<JwtBearerTokenParameters> refreshTokenOptions
+            @NonNull JwtBearerTokenParameters accessTokenOptions,
+            @NonNull JwtBearerTokenParameters refreshTokenOptions
     ) {
-        accessTokenOptions.accept(accessJwtBearerTokenParameters);
-        refreshTokenOptions.accept(refreshJwtBearerTokenParameters);
+        accessJwtBearerTokenParameters = accessTokenOptions;
+        refreshJwtBearerTokenParameters = refreshTokenOptions;
     }
 
     @Override

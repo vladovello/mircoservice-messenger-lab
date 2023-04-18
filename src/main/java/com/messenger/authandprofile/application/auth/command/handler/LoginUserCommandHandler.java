@@ -8,7 +8,7 @@ import com.messenger.authandprofile.application.auth.service.TokenService;
 import com.messenger.authandprofile.application.auth.util.PasswordHelper;
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
-import com.messenger.authandprofile.domain.model.valueobject.BasicPassword;
+import com.messenger.authandprofile.domain.model.valueobject.RegexPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import io.vavr.control.Either;
 import lombok.NonNull;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
 @Component
-public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, Either<UserNotFoundException, UserWithTokenDto>> {
+public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand, Either<Exception, UserWithTokenDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final TokenService tokenService;
@@ -35,7 +35,7 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
     }
 
     @Override
-    public Either<UserNotFoundException, UserWithTokenDto> handle(@NonNull LoginUserCommand command) {
+    public Either<Exception, UserWithTokenDto> handle(@NonNull LoginUserCommand command) {
         var optionalUser = userRepository.findUserByLogin(command.getLogin());
 
         if (optionalUser.isEmpty()) {
@@ -44,9 +44,9 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
 
         var user = optionalUser.get();
 
-        var doPasswordsMatch = passwordHelper.doPasswordsMatch(user, new BasicPassword(command.getPassword()));
+        var doPasswordsMatch = passwordHelper.doPasswordsMatch(user, new RegexPassword(command.getPassword()));
         if (!doPasswordsMatch) {
-            throw new PasswordsDoNotMatchException();
+            return Either.left(new PasswordsDoNotMatchException());
         }
 
         var token = tokenService.generateTokens(user);
