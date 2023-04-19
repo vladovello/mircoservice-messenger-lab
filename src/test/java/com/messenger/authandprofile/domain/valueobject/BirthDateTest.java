@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.valueobject;
 
-import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateException;
+import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateExceptionBusiness;
 import com.messenger.authandprofile.domain.model.valueobject.BirthDate;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,6 +22,6 @@ class BirthDateTest {
     @ValueSource(ints = {13, 151})
     void when_BirthDateIsOutOfRange_Except_ThrowingException(int age) {
         var date = LocalDate.now().minusYears(age);
-        assertThrows(InvalidBirthDateException.class, () -> new BirthDate(date));
+        assertThrows(InvalidBirthDateExceptionBusiness.class, () -> new BirthDate(date));
     }
 }

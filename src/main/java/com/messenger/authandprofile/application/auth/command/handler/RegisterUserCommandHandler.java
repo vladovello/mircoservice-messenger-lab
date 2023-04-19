@@ -37,7 +37,6 @@ public class RegisterUserCommandHandler implements
             return Either.left(UserAlreadyExistsException.createUserIsAlreadyExistsByEmail(command.getEmail()));
         }
 
-        // TODO: 18.04.2023 переписать на Either
         var user = User.builder(new Login(command.getLogin()), new Email(command.getEmail()),
                         new FullName(command.getFirstName(), command.getMiddleName(), command.getLastName()),
                         new RegexPassword(command.getPassword())

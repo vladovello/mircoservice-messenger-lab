@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.model.valueobject;
 
-import com.messenger.authandprofile.domain.exception.phonenumber.InvalidPhoneNumberException;
+import com.messenger.authandprofile.domain.exception.phonenumber.InvalidPhoneNumberExceptionBusiness;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 public class PhoneNumber {
     String number;
 
-    public PhoneNumber(@NonNull String number) throws InvalidPhoneNumberException {
+    public PhoneNumber(@NonNull String number) throws InvalidPhoneNumberExceptionBusiness {
         final var isMatch = PhoneNumberPattern.PATTERN.matcher(number).matches();
-        if (!isMatch) throw new InvalidPhoneNumberException(number);
+        if (!isMatch) throw new InvalidPhoneNumberExceptionBusiness(number);
         this.number = extractPhoneNumber(number);
     }
 

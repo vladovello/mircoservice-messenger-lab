@@ -2,7 +2,7 @@ package com.messenger.authandprofile.application.profile.query;
 
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.profile.dto.ProfileDto;
-import com.messenger.authandprofile.shared.model.Principal;
+import com.messenger.authandprofile.shared.model.PayloadPrincipal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,5 +15,5 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 public class GetSelfProfileInfoQuery implements Command<Optional<ProfileDto>> {
-    private Principal principal;
+    private PayloadPrincipal payloadPrincipal;
 }

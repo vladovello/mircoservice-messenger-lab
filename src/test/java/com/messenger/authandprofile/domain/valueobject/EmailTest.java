@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.valueobject;
 
-import com.messenger.authandprofile.domain.exception.email.InvalidEmailException;
+import com.messenger.authandprofile.domain.exception.email.InvalidEmailExceptionBusiness;
 import com.messenger.authandprofile.domain.model.valueobject.Email;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,12 @@ class EmailTest {
     @Test
     void when_EmailIsNotValid_Expect_ThrowException() {
         var invalidEmail = "_as@__as.c";
-        assertThrows(InvalidEmailException.class, () -> new Email(invalidEmail));
+        assertThrows(InvalidEmailExceptionBusiness.class, () -> new Email(invalidEmail));
     }
 
     @Test
     void when_EmailIsEmpty_Expect_ThrowException() {
         var empty = "";
-        assertThrows(InvalidEmailException.class, () -> new Email(empty));
+        assertThrows(InvalidEmailExceptionBusiness.class, () -> new Email(empty));
     }
 }

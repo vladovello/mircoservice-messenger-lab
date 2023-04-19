@@ -13,11 +13,14 @@ import com.messenger.authandprofile.application.auth.exception.RefreshTokenNotFo
 import com.messenger.authandprofile.application.auth.exception.RefreshTokenReuseException;
 import com.messenger.authandprofile.domain.exception.user.UserAlreadyExistsException;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
+import com.messenger.authandprofile.presentation.CQSLoggerProbe;
+import com.messenger.authandprofile.shared.model.PayloadPrincipal;
 import io.vavr.API;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +36,18 @@ import static io.vavr.API.Case;
 public class AuthController {
     private final Pipeline pipeline;
 
+    // TODO: 19.04.2023 add executing logging in PipelinR pipeline to get rid of repetitive code
     public AuthController(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
 
     @PostMapping("register")
     public ResponseEntity<UserWithTokenDto> registerUser(@NonNull @RequestBody RegisterUserCommand registerUserCommand) {
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
         var either = registerUserCommand.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(LogoutUserCommand.class);
 
         return either.fold(
                 e -> API.Match(e).of(
@@ -54,7 +62,11 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<UserWithTokenDto> login(@NonNull @RequestBody LoginUserCommand loginUserCommand) {
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
         var either = loginUserCommand.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(LogoutUserCommand.class);
 
         return either.fold(
                 e -> API.Match(e).of(
@@ -70,7 +82,11 @@ public class AuthController {
 
     @PostMapping("logout")
     public ResponseEntity<Voidy> logout(@NonNull @RequestBody LogoutUserCommand logoutUserCommand) {
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
         var either = logoutUserCommand.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(LogoutUserCommand.class);
 
         return either.fold(
                 e -> API.Match(e).of(
@@ -81,8 +97,14 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity<TokenPairDto> refresh(@NonNull @RequestBody RefreshCommand refreshCommand) {
-        var either = refreshCommand.execute(pipeline);
+    public ResponseEntity<TokenPairDto> refresh(@NonNull @RequestBody String refreshToken) {
+        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
+        var either = new RefreshCommand(payloadPrincipal, refreshToken).execute(pipeline);
+
+        CQSLoggerProbe.execFinished(LogoutUserCommand.class);
 
         return either.fold(
                 e -> API.Match(e).of(

@@ -1,7 +1,7 @@
 package com.messenger.authandprofile.infra.domain.persistence;
 
 import com.google.common.collect.Range;
-import com.messenger.authandprofile.application.profile.model.exception.EmptyIntervalException;
+import com.messenger.authandprofile.application.profile.exception.EmptyIntervalException;
 import com.messenger.authandprofile.application.profile.model.parameter.UserFilterParams;
 import com.messenger.authandprofile.domain.model.valueobject.BirthDate;
 import com.messenger.authandprofile.infra.domain.persistence.entity.UserEntity;

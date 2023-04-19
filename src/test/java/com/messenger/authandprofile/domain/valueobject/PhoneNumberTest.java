@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.valueobject;
 
-import com.messenger.authandprofile.domain.exception.phonenumber.InvalidPhoneNumberException;
+import com.messenger.authandprofile.domain.exception.phonenumber.InvalidPhoneNumberExceptionBusiness;
 import com.messenger.authandprofile.domain.model.valueobject.PhoneNumber;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,6 @@ class PhoneNumberTest {
     @Test
     void when_NumberIsInvalid_Expect_ThrowException() {
         var number = "+7(999)9";
-        assertThrows(InvalidPhoneNumberException.class, () -> new PhoneNumber(number));
+        assertThrows(InvalidPhoneNumberExceptionBusiness.class, () -> new PhoneNumber(number));
     }
 }

@@ -1,5 +1,6 @@
 package com.messenger.authandprofile.domain.model.valueobject;
 
+import com.messenger.authandprofile.shared.exception.BusinessRuleViolationException;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Value;
@@ -16,11 +17,9 @@ public class RegexPassword implements Password {
     @NonNull
     String value;
 
-    public RegexPassword(@NonNull String value) throws IllegalArgumentException {
+    public RegexPassword(@NonNull String value) throws BusinessRuleViolationException {
         final var isMatch = PATTERN.matcher(value).matches();
-
-        if (!isMatch) throw new IllegalArgumentException("Given password is invalid");
-
+        if (!isMatch) throw new BusinessRuleViolationException("Given password is invalid");
         this.value = value;
     }
 }

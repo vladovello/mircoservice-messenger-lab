@@ -1,13 +1,13 @@
 package com.messenger.authandprofile.shared.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.UUID;
 
-@Getter
+@Data
 @AllArgsConstructor
-public class Principal {
+public class PayloadPrincipal {
     private final UUID id;
     private final String login;
 }

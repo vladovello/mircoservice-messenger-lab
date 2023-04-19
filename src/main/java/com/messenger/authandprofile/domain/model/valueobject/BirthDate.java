@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.model.valueobject;
 
-import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateException;
+import com.messenger.authandprofile.domain.exception.birthdate.InvalidBirthDateExceptionBusiness;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -13,8 +13,8 @@ public class BirthDate {
 
     LocalDate date;
 
-    public BirthDate(@NonNull final LocalDate date) throws InvalidBirthDateException {
-        if (!isValidBirthDate(date)) throw new InvalidBirthDateException(date);
+    public BirthDate(@NonNull final LocalDate date) throws InvalidBirthDateExceptionBusiness {
+        if (!isValidBirthDate(date)) throw new InvalidBirthDateExceptionBusiness(date);
         this.date = date;
     }
 

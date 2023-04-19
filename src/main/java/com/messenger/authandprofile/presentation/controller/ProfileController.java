@@ -1,21 +1,27 @@
 package com.messenger.authandprofile.presentation.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.messenger.authandprofile.application.auth.command.LogoutUserCommand;
 import com.messenger.authandprofile.application.profile.command.EditUserProfileCommand;
 import com.messenger.authandprofile.application.profile.dto.ProfileDto;
 import com.messenger.authandprofile.application.profile.dto.UserDto;
+import com.messenger.authandprofile.application.profile.exception.ConstraintViolationException;
+import com.messenger.authandprofile.application.profile.exception.IntervalException;
 import com.messenger.authandprofile.application.profile.model.UserListDto;
 import com.messenger.authandprofile.application.profile.query.GetOtherProfileInfoQuery;
 import com.messenger.authandprofile.application.profile.query.GetSelfProfileInfoQuery;
 import com.messenger.authandprofile.application.profile.query.UserListQuery;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
-import com.messenger.authandprofile.shared.model.Principal;
+import com.messenger.authandprofile.presentation.CQSLoggerProbe;
+import com.messenger.authandprofile.shared.model.PayloadPrincipal;
 import io.vavr.API;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -33,35 +39,67 @@ public class ProfileController {
         this.pipeline = pipeline;
     }
 
-    // INFO: Maybe principal should be extracted from header with Spring Security filters
     @GetMapping("self")
-    public ResponseEntity<ProfileDto> getSelf(
-            @NonNull Principal principal
-    ) {
-        var query = new GetSelfProfileInfoQuery(principal);
+    public ResponseEntity<ProfileDto> getSelf() {
+        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+
+        var query = new GetSelfProfileInfoQuery(payloadPrincipal);
+
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
         var profileDto = query.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(GetSelfProfileInfoQuery.class);
+
         return profileDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("other")
-    public ResponseEntity<ProfileDto> getOther(
-            @RequestParam @NonNull UUID requestedId,
-            @NonNull Principal principal
-    ) {
-        var query = new GetOtherProfileInfoQuery(requestedId, principal);
+    public ResponseEntity<ProfileDto> getOther(@RequestParam @NonNull UUID requestedId) {
+        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
+        var query = new GetOtherProfileInfoQuery(requestedId, payloadPrincipal);
+
+        CQSLoggerProbe.execFinished(GetOtherProfileInfoQuery.class);
+
         var otherProfile = query.execute(pipeline);
         return otherProfile.map(ResponseEntity::ok).orElse(ResponseEntity.status(HttpStatus.FORBIDDEN).build());
     }
 
     @PostMapping("all")
     public ResponseEntity<UserListDto> getAllSorted(@NonNull @RequestBody UserListQuery userListQuery) {
-        var userListDto = userListQuery.execute(pipeline);
-        return ResponseEntity.ok(userListDto);
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
+        var either = userListQuery.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(UserListQuery.class);
+
+        return either.fold(e -> API.Match(e).of(
+                Case(
+                        $(instanceOf(ConstraintViolationException.class)),
+                        () -> {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+                        }
+                ),
+                Case(
+                        $(instanceOf(IntervalException.class)),
+                        () -> {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+                        }
+                )
+        ), ResponseEntity::ok);
     }
 
     @PutMapping("edit")
     public ResponseEntity<UserDto> editUser(@NonNull @RequestBody EditUserProfileCommand editUserProfileCommand) {
+        CQSLoggerProbe.execStarted(LogoutUserCommand.class);
+
         var either = editUserProfileCommand.execute(pipeline);
+
+        CQSLoggerProbe.execFinished(EditUserProfileCommand.class);
+
         return either.fold(e -> API.Match(e).of(
                 Case($(instanceOf(UserNotFoundException.class)), ResponseEntity.notFound().build())
         ), ResponseEntity::ok);

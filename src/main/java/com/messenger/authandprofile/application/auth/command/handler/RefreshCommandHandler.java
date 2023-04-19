@@ -37,13 +37,13 @@ public class RefreshCommandHandler implements Command.Handler<RefreshCommand, Ei
     @Override
     public Either<Exception, TokenPairDto> handle(@NonNull RefreshCommand command) {
         if (tokenService.isRefreshTokenInvalidated(command.getRefreshToken())) {
-            tokenService.invalidateRefreshTokenFamily(command.getUserId());
+            tokenService.invalidateRefreshTokenFamily(command.getPrincipal().getId());
             return Either.left(new RefreshTokenReuseException());
         }
 
-        var optionalUser = userRepository.findUserById(command.getUserId());
+        var optionalUser = userRepository.findUserById(command.getPrincipal().getId());
         if (optionalUser.isEmpty()) {
-            return Either.left(UserNotFoundException.byId(command.getUserId()));
+            return Either.left(UserNotFoundException.byId(command.getPrincipal().getId()));
         }
 
         tokenService.invalidateRefreshToken(command.getRefreshToken());

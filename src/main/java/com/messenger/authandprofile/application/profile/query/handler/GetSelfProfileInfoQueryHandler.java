@@ -23,7 +23,7 @@ public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfPr
 
     @Override
     public Optional<ProfileDto> handle(@NonNull GetSelfProfileInfoQuery query) {
-        var optionalUser = userRepository.findUserById(query.getPrincipal().getId());
+        var optionalUser = userRepository.findUserById(query.getPayloadPrincipal().getId());
         return optionalUser.map(userMapper::mapToProfileDto);
     }
 }

@@ -91,16 +91,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private @NonNull Sort getUserFilterParamsSorting(@NonNull UserFilterParams userFilterParams) {
-        return getSortParam("login", userFilterParams.getLogin().getSortingOrder()).and(getSortParam(
-                "fullName",
-                userFilterParams.getFullName().getSortingOrder()
-        )).and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder())).and(getSortParam(
-                "registrationDate",
-                userFilterParams.getRegistrationDate().getSortingOrder()
-        )).and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder())).and(getSortParam(
-                "city",
-                userFilterParams.getCity().getSortingOrder()
-        ));
+        return getSortParam("login", userFilterParams.getLogin().getSortingOrder())
+                .and(getSortParam("fullName", userFilterParams.getFullName().getSortingOrder()))
+                .and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder()))
+                .and(getSortParam("registrationDate", userFilterParams.getRegistrationDate().getSortingOrder()))
+                .and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder()))
+                .and(getSortParam("city", userFilterParams.getCity().getSortingOrder()));
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {

@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.domain.model.valueobject;
 
-import com.messenger.authandprofile.domain.exception.email.InvalidEmailException;
+import com.messenger.authandprofile.domain.exception.email.InvalidEmailExceptionBusiness;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Value;
@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 public class Email {
     @Getter String address;
 
-    public Email(@NonNull final String emailString) throws InvalidEmailException {
+    public Email(@NonNull final String emailString) {
         final var isMatch = EmailPattern.PATTERN.matcher(emailString).matches();
-        if (!isMatch) throw new InvalidEmailException(emailString);
+        if (!isMatch) throw new InvalidEmailExceptionBusiness(emailString);
         address = emailString;
     }
 
