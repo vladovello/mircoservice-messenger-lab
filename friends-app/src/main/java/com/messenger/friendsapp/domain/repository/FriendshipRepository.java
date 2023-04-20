@@ -1,8 +1,11 @@
 package com.messenger.friendsapp.domain.repository;
 
-import com.messenger.friendsapp.domain.aggregate.Friendship;
+import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
+import com.messenger.sharedlib.parameter.param.DiscreteParam;
+import com.messenger.sharedlib.parameter.param.IntervalParam;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,9 +17,27 @@ import java.util.UUID;
  */
 public interface FriendshipRepository {
     boolean isAddedToFriendList(UUID requesterId, UUID addresseeId);
+
+    List<Friendship> findAllByRequesterIdAndFriendshipStatus(UUID requesterId, FriendshipStatus friendshipStatus);
+
+    List<Friendship> findAllByRequesterId(UUID requesterId);
+
+    List<Friendship> findAllFriendsPaginatedByFullName(int pageNumber, int pageSize, UUID userId, String fullName);
+
+    List<Friendship> findAllFriendsPaginatedByParams(
+            int pageNumber,
+            int pageSize,
+            UUID userId,
+            DiscreteParam<String> fullName,
+            IntervalParam<LocalDate> additionDate,
+            DiscreteParam<UUID> friendId
+    );
+
     Optional<Friendship> findFriend(UUID requesterId, UUID addresseeId);
-    FriendshipStatus getFriendshipStatus(UUID requesterId, UUID addresseeId);
-    List<Friendship> getAllFriends(UUID userId, boolean withNotMutual);
+
+    // Renew additionDate and make deletionDate null
     void save(Friendship friendship);
-    void delete(UUID friendshipId);
+
+    // Renew deletionDate
+    void delete(Friendship friendship);
 }

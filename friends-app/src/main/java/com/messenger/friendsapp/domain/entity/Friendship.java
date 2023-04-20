@@ -1,21 +1,22 @@
-package com.messenger.friendsapp.domain.aggregate;
+package com.messenger.friendsapp.domain.entity;
 
-import com.messenger.friendsapp.domain.entity.Addressee;
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-@Setter(value = AccessLevel.PRIVATE)
+@Setter(value = AccessLevel.PROTECTED)
 public class Friendship {
     @NonNull private UUID id;
     @NonNull private UUID requesterId;
     @NonNull private Addressee addressee;
     @NonNull private FriendshipStatus friendshipStatus;
+    private LocalDate additionDate;
 
     private Friendship(
             @NonNull UUID requesterId,
@@ -27,12 +28,6 @@ public class Friendship {
         setFriendshipStatus(friendshipStatus);
     }
 
-    public static @NonNull Friendship createNewFriendship(UUID requesterId, Addressee addressee) {
-        var friendship = new Friendship(requesterId, addressee, FriendshipStatus.PENDING);
-        friendship.generateId();
-        return friendship;
-    }
-
     public static @NonNull Friendship createNewFriendship(
             UUID requesterId,
             Addressee addressee,
@@ -40,17 +35,24 @@ public class Friendship {
     ) {
         var friendship = new Friendship(requesterId, addressee, friendshipStatus);
         friendship.generateId();
+        friendship.setAdditionDate();
         return friendship;
+    }
+
+    public static @NonNull Friendship createNewFriendship(UUID requesterId, Addressee addressee) {
+        return createNewFriendship(requesterId, addressee, FriendshipStatus.PENDING);
     }
 
     public static @NonNull Friendship reconstructFriendship(
             UUID friendshipId,
             UUID requesterId,
             Addressee addressee,
-            FriendshipStatus friendshipStatus
+            FriendshipStatus friendshipStatus,
+            LocalDate additionDate
     ) {
         var friendship = new Friendship(requesterId, addressee, friendshipStatus);
         friendship.setId(friendshipId);
+        friendship.setAdditionDate(additionDate);
         return friendship;
     }
 
@@ -60,6 +62,10 @@ public class Friendship {
 
     public void setPendingStatus() {
         setFriendshipStatus(FriendshipStatus.PENDING);
+    }
+
+    public void setAdditionDate() {
+        this.additionDate = LocalDate.now();
     }
 
     private void generateId() {

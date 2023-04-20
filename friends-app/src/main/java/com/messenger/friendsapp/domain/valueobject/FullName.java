@@ -8,4 +8,8 @@ public class FullName {
     @NonNull String firstName;
     String middleName;
     @NonNull String lastName;
+
+    public String getName() {
+        return firstName + " " + middleName + " " + lastName;
+    }
 }

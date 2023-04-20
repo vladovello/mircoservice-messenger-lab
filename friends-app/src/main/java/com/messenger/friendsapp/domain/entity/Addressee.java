@@ -18,11 +18,7 @@ public class Addressee {
     }
 
     @Contract(value = "_, _ -> new", pure = true)
-    public static @NonNull Addressee createNewAddressee(@NonNull UUID id, @NonNull FullName fullName) {
-        return new Addressee(id, fullName);
-    }
-
-    public static @NonNull Addressee reconstructAddressee(@NonNull UUID id, @NonNull FullName fullName) {
+    public static @NonNull Addressee createAddressee(@NonNull UUID id, @NonNull FullName fullName) {
         return new Addressee(id, fullName);
     }
 }

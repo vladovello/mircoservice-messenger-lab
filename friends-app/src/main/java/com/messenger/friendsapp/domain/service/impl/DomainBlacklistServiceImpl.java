@@ -1,6 +1,6 @@
 package com.messenger.friendsapp.domain.service.impl;
 
-import com.messenger.friendsapp.domain.aggregate.Blacklist;
+import com.messenger.friendsapp.domain.entity.Blacklist;
 import com.messenger.friendsapp.domain.entity.Addressee;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.service.DomainBlacklistService;
@@ -19,19 +19,10 @@ public class DomainBlacklistServiceImpl implements DomainBlacklistService {
 
     @Override
     public void addToBlacklist(UUID requesterId, @NonNull Addressee addressee) {
-        if (blacklistRepository.isUserBlocked(requesterId, addressee.getId())) {
+        if (blacklistRepository.isRequesterBlocked(requesterId, addressee.getId())) {
             return;
         }
 
         blacklistRepository.save(Blacklist.createNewBlacklist(requesterId, addressee));
-    }
-
-    @Override
-    public void removeFromBlacklist(UUID requesterId, UUID addresseeId) {
-        if (!blacklistRepository.isUserBlocked(requesterId, addresseeId)) {
-            return;
-        }
-
-        blacklistRepository.delete(requesterId, addresseeId);
     }
 }

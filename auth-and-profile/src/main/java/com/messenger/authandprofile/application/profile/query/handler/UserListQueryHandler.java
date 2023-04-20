@@ -47,12 +47,12 @@ public class UserListQueryHandler implements Command.Handler<UserListQuery, Eith
                     filterParameters
             );
 
-            var userList = users.stream().map(userMapper::mapToProfileDto).collect(Collectors.toList());
+            var profileDtoList = users.stream().map(userMapper::mapToProfileDto).collect(Collectors.toList());
 
             return Either.right(new UserListDto(
-                    userList.size(),
+                    profileDtoList.size(),
                     query.getPageNumber(),
-                    userList
+                    profileDtoList
             ));
         } catch (IntervalException e) {
             return Either.left(e);

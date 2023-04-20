@@ -36,13 +36,26 @@
             <scope>runtime</scope>
             <version>${postgres.version}</version>
         </dependency>
+        <!-- PostgreSQL |END| -->
+
+        <dependency>
+            <groupId>com.messenger</groupId>
+            <artifactId>shared-lib</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.4</version>
             <scope>compile</scope>
         </dependency>
-        <!-- PostgreSQL |END| -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

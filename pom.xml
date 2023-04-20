@@ -14,6 +14,7 @@
 
     <modules>
         <module>auth-and-profile</module>
+        <module>shared-lib</module>
     </modules>
 
     <groupId>com.messenger</groupId>

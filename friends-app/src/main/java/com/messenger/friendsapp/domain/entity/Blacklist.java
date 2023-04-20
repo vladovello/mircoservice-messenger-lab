@@ -1,11 +1,11 @@
-package com.messenger.friendsapp.domain.aggregate;
+package com.messenger.friendsapp.domain.entity;
 
-import com.messenger.friendsapp.domain.entity.Addressee;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 /*
@@ -18,6 +18,7 @@ public class Blacklist {
     @NonNull private UUID id;
     @NonNull private UUID requesterId;
     @NonNull private Addressee addressee;
+    private LocalDate additionDate;
 
     private Blacklist(@NonNull UUID requesterId, @NonNull Addressee addressee) {
         this.requesterId = requesterId;
@@ -27,20 +28,27 @@ public class Blacklist {
     public static @NonNull Blacklist createNewBlacklist(@NonNull UUID requesterId, @NonNull Addressee addressee) {
         var blacklist = new Blacklist(requesterId, addressee);
         blacklist.generateId();
+        blacklist.setAdditionDate();
         return blacklist;
     }
 
     public static @NonNull Blacklist reconstructBlacklist(
             @NonNull UUID blacklistId,
             @NonNull UUID requesterId,
-            @NonNull Addressee addressee
+            @NonNull Addressee addressee,
+            LocalDate additionDate
     ) {
         var blacklist = new Blacklist(requesterId, addressee);
         blacklist.setId(blacklistId);
+        blacklist.setAdditionDate(additionDate);
         return blacklist;
     }
 
     private void generateId() {
         id = UUID.randomUUID();
+    }
+
+    public void setAdditionDate() {
+        this.additionDate = LocalDate.now();
     }
 }

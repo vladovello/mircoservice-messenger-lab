@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 @Data
 public class UserFilterParams {
-    // INFO: maybe using optional will be better
     private DiscreteParam<String> login;
     private DiscreteParam<String> fullName;
     private DiscreteParam<String> phoneNumber;
