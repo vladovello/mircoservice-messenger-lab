@@ -30,7 +30,7 @@ import static io.vavr.API.$;
 import static io.vavr.API.Case;
 
 @RestController
-@RequestMapping("api/profile")
+@RequestMapping("api/users/profile")
 @RouterOperation
 public class ProfileController {
     private final Pipeline pipeline;

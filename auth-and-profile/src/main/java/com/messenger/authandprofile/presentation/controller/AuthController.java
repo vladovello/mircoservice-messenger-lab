@@ -31,7 +31,7 @@ import static io.vavr.API.$;
 import static io.vavr.API.Case;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("api/users/auth")
 @RouterOperation
 public class AuthController {
     private final Pipeline pipeline;
