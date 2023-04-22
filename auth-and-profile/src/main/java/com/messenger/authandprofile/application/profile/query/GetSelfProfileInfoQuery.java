@@ -2,7 +2,7 @@ package com.messenger.authandprofile.application.profile.query;
 
 import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.profile.dto.ProfileDto;
-import com.messenger.authandprofile.shared.model.PayloadPrincipal;
+import com.messenger.security.jwt.PayloadPrincipal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

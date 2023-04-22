@@ -4,6 +4,7 @@ import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.repository.FriendshipRepository;
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
+import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.friendsapp.infra.persistence.entity.metadata.FriendshipEntityFields;
 import com.messenger.friendsapp.infra.persistence.mapper.FriendshipEntityMapper;
 import com.messenger.friendsapp.infra.persistence.spec.FriendshipEntitySpecs;
@@ -58,6 +59,16 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
         var friendships = FriendshipEntityMapper.mapToDomainModelList(friendEntityList);
         removeBlockedAndDeletedUsers(friendships);
         return friendships;
+    }
+
+    @Override
+    public void updateAllAddresseeIdFullName(UUID addresseeId, FullName fullName) {
+        var friendships = friendshipRepositoryJpa.findAllByAddresseeId(addresseeId);
+        friendships.forEach(friendshipEntity -> {
+            friendshipEntity.setAddresseeFirstName(fullName.getFirstName());
+            friendshipEntity.setAddresseeMiddleName(fullName.getMiddleName());
+            friendshipEntity.setAddresseeLastName(fullName.getLastName());
+        });
     }
 
     @Override

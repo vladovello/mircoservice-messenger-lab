@@ -13,13 +13,13 @@ import com.messenger.authandprofile.application.profile.query.GetSelfProfileInfo
 import com.messenger.authandprofile.application.profile.query.UserListQuery;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.presentation.CQSLoggerProbe;
-import com.messenger.authandprofile.shared.model.PayloadPrincipal;
+import com.messenger.security.jwt.PayloadPrincipal;
 import io.vavr.API;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,8 +40,8 @@ public class ProfileController {
     }
 
     @GetMapping("self")
-    public ResponseEntity<ProfileDto> getSelf() {
-        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<ProfileDto> getSelf(@NonNull Authentication authentication) {
+        var payloadPrincipal = (PayloadPrincipal) authentication.getPrincipal();
 
         var query = new GetSelfProfileInfoQuery(payloadPrincipal);
 
@@ -55,8 +55,11 @@ public class ProfileController {
     }
 
     @GetMapping("other")
-    public ResponseEntity<ProfileDto> getOther(@RequestParam @NonNull UUID requestedId) {
-        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<ProfileDto> getOther(
+            @RequestParam @NonNull UUID requestedId,
+            @NonNull Authentication authentication
+    ) {
+        var payloadPrincipal = (PayloadPrincipal) authentication.getPrincipal();
 
         CQSLoggerProbe.execStarted(LogoutUserCommand.class);
 

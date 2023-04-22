@@ -1,7 +1,7 @@
 package com.messenger.friendsapp.domain.service.impl;
 
-import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.entity.Addressee;
+import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.exception.UserIsBlockedException;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.repository.FriendshipRepository;
@@ -10,7 +10,6 @@ import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
 import lombok.NonNull;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.UUID;
 
 public class DomainFriendshipServiceImpl implements DomainFriendshipService {
@@ -23,46 +22,6 @@ public class DomainFriendshipServiceImpl implements DomainFriendshipService {
     ) {
         this.friendshipRepository = friendshipRepository;
         this.blacklistRepository = blacklistRepository;
-    }
-
-    @Override
-    public List<Friendship> getAllMutualFriends(UUID userId) {
-        var friendshipList = friendshipRepository.findAllByRequesterIdAndFriendshipStatus(
-                userId,
-                FriendshipStatus.MUTUAL
-        );
-
-        removeBlockedUsers(friendshipList);
-
-        return friendshipList;
-    }
-
-    @Override
-    public List<Friendship> getAllFriends(UUID userId) {
-        var friendshipList = friendshipRepository.findAllByRequesterId(userId);
-
-        removeBlockedUsers(friendshipList);
-
-        return friendshipList;
-    }
-
-    @Override
-    public List<Friendship> findAllFriendsPaginatedByFullName(
-            int pageNumber,
-            int pageSize,
-            UUID userId,
-            String fullName
-    ) {
-        var friendshipList = friendshipRepository.findAllFriendsPaginatedByFullName(
-                pageNumber,
-                pageSize,
-                userId,
-                fullName
-        );
-
-        removeBlockedUsers(friendshipList);
-
-        return friendshipList;
     }
 
     /*
@@ -125,21 +84,5 @@ public class DomainFriendshipServiceImpl implements DomainFriendshipService {
         }
 
         friendshipRepository.delete(friendship);
-    }
-
-    private void removeBlockedUsers(@NonNull List<Friendship> friendshipList) {
-        friendshipList.removeIf(friendship -> {
-            var isAddresseeBlocked = blacklistRepository.isRequesterBlocked(
-                    friendship.getRequesterId(),
-                    friendship.getAddressee().getId()
-            );
-
-            var isRequesterBlocked = blacklistRepository.isRequesterBlocked(
-                    friendship.getAddressee().getId(),
-                    friendship.getRequesterId()
-            );
-
-            return isRequesterBlocked || isAddresseeBlocked;
-        });
     }
 }

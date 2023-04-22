@@ -14,13 +14,14 @@ import com.messenger.authandprofile.application.auth.exception.RefreshTokenReuse
 import com.messenger.authandprofile.domain.exception.user.UserAlreadyExistsException;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.presentation.CQSLoggerProbe;
-import com.messenger.authandprofile.shared.model.PayloadPrincipal;
+import com.messenger.authandprofile.presentation.dto.RefreshTokenDto;
+import com.messenger.security.jwt.PayloadPrincipal;
 import io.vavr.API;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,12 +98,14 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity<TokenPairDto> refresh(@NonNull @RequestBody String refreshToken) {
-        var payloadPrincipal = (PayloadPrincipal) SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<TokenPairDto> refresh(@NonNull @RequestBody RefreshTokenDto refreshTokenDto, @NonNull
+            Authentication authentication
+            ) {
+        var payloadPrincipal = (PayloadPrincipal) authentication.getPrincipal();
 
         CQSLoggerProbe.execStarted(LogoutUserCommand.class);
 
-        var either = new RefreshCommand(payloadPrincipal, refreshToken).execute(pipeline);
+        var either = new RefreshCommand(payloadPrincipal, refreshTokenDto.getRefreshToken()).execute(pipeline);
 
         CQSLoggerProbe.execFinished(LogoutUserCommand.class);
 

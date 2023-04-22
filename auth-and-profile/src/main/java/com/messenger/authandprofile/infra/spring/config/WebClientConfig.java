@@ -1,7 +1,7 @@
 package com.messenger.authandprofile.infra.spring.config;
 
-import com.messenger.authandprofile.infra.domain.externalapi.props.ServiceIntegrationProps;
-import com.messenger.authandprofile.infra.spring.security.SecurityConst;
+import com.messenger.authandprofile.infra.spring.config.props.ServiceIntegrationProps;
+import com.messenger.security.SecurityConst;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class WebClientConfig {
     public WebClient createFriendsWebClient() {
         final var httpClient = HttpClient
                 .create()
-                .baseUrl(props.getBaseUrl())
+                .headers(entries -> entries.add(SecurityConst.HEADER_API_KEY, props.getApiKey()))
                 .responseTimeout(Duration.ofMillis(props.getTimeout()))
                 .doOnConnected(conn -> conn
                         .addHandlerLast(new ReadTimeoutHandler(props.getTimeout(), TimeUnit.MILLISECONDS))
@@ -39,11 +39,8 @@ public class WebClientConfig {
 
         return WebClient
                 .builder()
+                .baseUrl(props.getBaseUrl() + props.getRootPath())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .filter((request, next) -> {
-                    request.headers().add(SecurityConst.HEADER_API_KEY, props.getApiKey());
-                    return next.exchange(request);
-                })
                 .build();
     }
 }

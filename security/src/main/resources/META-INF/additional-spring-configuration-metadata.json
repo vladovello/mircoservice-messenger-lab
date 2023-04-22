@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "app.security.jwt-auth.validation-key",
+      "type": "java.lang.String",
+      "description": "Key for validating JWT signature."
+    },
+    {
+      "name": "app.security.jwt-auth.root-path",
+      "type": "java.lang.String",
+      "description": "Root path for requests with authorization."
+    },
+    {
+      "name": "app.security.jwt-auth.permit-all",
+      "type": "java.lang.String",
+      "description": "Permitted paths."
+    },
+    {
+      "name": "app.security.integrations.root-path",
+      "type": "java.lang.String",
+      "description": "Root path for integration requests."
+    },
+    {
+      "name": "app.security.integrations.api-key",
+      "type": "java.lang.String",
+      "description": "API key for authorizing on integration requests."
+    }
+  ] }

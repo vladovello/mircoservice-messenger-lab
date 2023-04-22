@@ -4,7 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.auth.dto.TokenPairDto;
 import com.messenger.authandprofile.application.auth.exception.RefreshTokenReuseException;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
-import com.messenger.authandprofile.shared.model.PayloadPrincipal;
+import com.messenger.security.jwt.PayloadPrincipal;
 import io.vavr.control.Either;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

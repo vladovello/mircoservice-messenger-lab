@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DomainConfig {
-    @Bean(name = "domainUserServiceImpl")
+    @Bean
     public DomainFriendshipService domainFriendshipService(@Autowired FriendshipRepository friendshipRepository,
             @Autowired BlacklistRepository blacklistRepository) {
         return new DomainFriendshipServiceImpl(friendshipRepository, blacklistRepository);
     }
 
-    @Bean(name = "domainUserServiceImpl")
+    @Bean
     public DomainBlacklistService domainBlacklistService(@Autowired BlacklistRepository blacklistRepository) {
         return new DomainBlacklistServiceImpl(blacklistRepository);
     }

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class FriendRepositoryImpl implements FriendRepository {
     @Qualifier("friendsClient")
     private final WebClient friendsService;
-    private static final int RETRY_TIMEOUT_DURATION_MILLIS = 2000;
+    private static final int RETRY_TIMEOUT_DURATION_MILLIS = 3000;
 
     public FriendRepositoryImpl(WebClient friendsService) {
         this.friendsService = friendsService;
@@ -24,8 +24,9 @@ public class FriendRepositoryImpl implements FriendRepository {
         var response = friendsService
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/blacklist/")
+                        .path("/friends/check")
                         .queryParam("userId", userId.toString())
+                        .queryParam("otherId", otherId.toString())
                         .build()
                 )
                 .retrieve()

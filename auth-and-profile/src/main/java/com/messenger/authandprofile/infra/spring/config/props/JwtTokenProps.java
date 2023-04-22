@@ -5,13 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("app.security.jwt")
+@ConfigurationProperties("app.security.jwt-config")
 @Getter
 @Setter
 @ToString
 public class JwtTokenProps {
     private AccessTokenProps accessToken;
     private RefreshTokenProps refreshToken;
-    private SymmetricKeyProps secretKey;
-    private AsymmetricKeyProps keyPair;
+    private String secretKey;
 }

@@ -2,6 +2,7 @@ package com.messenger.friendsapp.domain.repository;
 
 import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
+import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.sharedlib.parameter.param.DiscreteParam;
 import com.messenger.sharedlib.parameter.param.IntervalParam;
 
@@ -21,6 +22,7 @@ public interface FriendshipRepository {
     List<Friendship> findAllByRequesterIdAndFriendshipStatus(UUID requesterId, FriendshipStatus friendshipStatus);
 
     List<Friendship> findAllByRequesterId(UUID requesterId);
+    void updateAllAddresseeIdFullName(UUID addresseeId, FullName fullName);
 
     List<Friendship> findAllFriendsPaginatedByFullName(int pageNumber, int pageSize, UUID userId, String fullName);
 

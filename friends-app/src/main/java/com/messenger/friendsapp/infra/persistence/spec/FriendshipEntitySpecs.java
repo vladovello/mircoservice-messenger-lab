@@ -23,6 +23,7 @@ public final class FriendshipEntitySpecs {
     public static @NonNull Specification<FriendshipEntity> searchFullNameLike(String fullName) {
         logSpecCreation("fullName");
 
+        // TODO: 21.04.2023 case independent search
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
                 root.get(FriendshipEntityFields.FULL_NAME_NAME),
                 "%" + fullName + "%"

@@ -17,22 +17,12 @@ public class JwtTokenConfig {
 
     public JwtTokenConfig(JwtTokenProps jwtTokenProps) {
         accessTokenParams = new JwtBearerTokenParameters(parameters -> {
-            if (jwtTokenProps.getKeyPair() != null) {
-                parameters.setAsymmetricKey(Keys.keyPairFor(jwtTokenProps.getAccessToken().getSigningAlgorithm()));
-            } else {
-                parameters.setSymmetricKey(Keys.secretKeyFor(jwtTokenProps.getAccessToken().getSigningAlgorithm()));
-            }
-
+            parameters.setSymmetricKey(Keys.hmacShaKeyFor(jwtTokenProps.getSecretKey().getBytes()));
             parameters.setLifespan(jwtTokenProps.getAccessToken().getLifespan());
         });
 
         refreshTokenParams = new JwtBearerTokenParameters(parameters -> {
-            if (jwtTokenProps.getKeyPair() != null) {
-                parameters.setAsymmetricKey(Keys.keyPairFor(jwtTokenProps.getRefreshToken().getSigningAlgorithm()));
-            } else {
-                parameters.setSymmetricKey(Keys.secretKeyFor(jwtTokenProps.getRefreshToken().getSigningAlgorithm()));
-            }
-
+            parameters.setSymmetricKey(Keys.hmacShaKeyFor(jwtTokenProps.getSecretKey().getBytes()));
             parameters.setLifespan(jwtTokenProps.getRefreshToken().getLifespan());
         });
     }

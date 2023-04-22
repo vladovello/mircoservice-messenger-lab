@@ -31,39 +31,54 @@
       "description": "Root path for integration requests."
     },
     {
-      "name": "app.security.jwt.secret-key",
+      "name": "app.security.jwt-config.secret-key",
       "type": "java.lang.String",
       "description": "Symmetric secret key to for signing JWTs."
     },
     {
-      "name": "app.security.jwt.access-token.signing-algorithm",
+      "name": "app.security.jwt-config.access-token.signing-algorithm",
       "type": "java.lang.String",
       "description": "Signing algorithm for access token."
     },
     {
-      "name": "app.security.jwt.access-token.lifespan",
+      "name": "app.security.jwt-config.access-token.lifespan",
       "type": "java.time.LocalTime",
       "description": "Living time of access token."
     },
     {
-      "name": "app.security.jwt.refresh-token.signing-algorithm",
+      "name": "app.security.jwt-config.refresh-token.signing-algorithm",
       "type": "java.lang.String",
       "description": "Signing algorithm for refresh token."
     },
     {
-      "name": "app.security.jwt.refresh-token.lifespan",
+      "name": "app.security.jwt-config.refresh-token.lifespan",
       "type": "java.time.LocalTime",
       "description": "Living time of refresh token."
     },
     {
-      "name": "app.security.jwt.key-pair.secret-key",
-      "type": "java.lang.String",
-      "description": "Secret key of asymmetric pair for signing JWTs."
-    },
-    {
-      "name": "app.security.jwt.key-pair.public-key",
+      "name": "app.security.jwt-config.key-pair.public-key",
       "type": "java.lang.String",
       "description": "Public key of asymmetric pair for validating JWTs."
+    },
+    {
+      "name": "app.security.jwt-config.key-pair.private-key",
+      "type": "java.lang.String",
+      "description": "Description for app.security.jwt-config.key-pair.private-key."
+    },
+    {
+      "name": "app.security.jwt-auth.permit-all",
+      "type": "java.lang.String",
+      "description": "Permitted paths."
+    },
+    {
+      "name": "app.security.jwt-auth.validation-key",
+      "type": "java.lang.String",
+      "description": "Key for validating JWT."
+    },
+    {
+      "name": "app.security.jwt-auth.root-path",
+      "type": "java.lang.String",
+      "description": "Root path for JWT authorization."
     }
   ]
 }

@@ -5,11 +5,13 @@ import com.messenger.friendsapp.infra.persistence.entity.FriendshipEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public interface FriendshipRepositoryJpa extends JpaRepository<FriendshipEntity, UUID>,
         JpaSpecificationExecutor<FriendshipEntity>,
         PagingAndSortingRepository<FriendshipEntity, UUID> {
@@ -19,4 +21,5 @@ public interface FriendshipRepositoryJpa extends JpaRepository<FriendshipEntity,
 
     List<FriendshipEntity> findAllByRequesterId(UUID requesterId);
     Optional<FriendshipEntity> findByRequesterIdAndAddresseeId(UUID requesterId, UUID addresseeId);
+    List<FriendshipEntity> findAllByAddresseeId(UUID addresseeId);
 }
