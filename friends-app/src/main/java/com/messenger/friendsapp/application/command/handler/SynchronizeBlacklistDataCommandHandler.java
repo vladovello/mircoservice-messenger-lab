@@ -6,11 +6,11 @@ import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.friendsapp.shared.Unit;
 import lombok.NonNull;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Repository
+@Service
 public class SynchronizeBlacklistDataCommandHandler {
     private final BlacklistRepository blacklistRepository;
     private final ProfileRepository profileRepository;

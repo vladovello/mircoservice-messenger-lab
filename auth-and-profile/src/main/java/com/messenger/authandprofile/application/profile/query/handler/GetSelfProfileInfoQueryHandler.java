@@ -6,12 +6,12 @@ import com.messenger.authandprofile.application.profile.query.GetSelfProfileInfo
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import lombok.NonNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Component
+@Service
 public class GetSelfProfileInfoQueryHandler implements Command.Handler<GetSelfProfileInfoQuery, Optional<ProfileDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

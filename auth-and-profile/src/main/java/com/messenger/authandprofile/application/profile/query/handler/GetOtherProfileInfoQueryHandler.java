@@ -6,12 +6,12 @@ import com.messenger.authandprofile.application.profile.query.GetOtherProfileInf
 import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.service.DomainUserService;
 import lombok.NonNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Component
+@Service
 public class GetOtherProfileInfoQueryHandler implements Command.Handler<GetOtherProfileInfoQuery, Optional<ProfileDto>> {
     private final DomainUserService domainUserService;
     private final UserMapper userMapper;

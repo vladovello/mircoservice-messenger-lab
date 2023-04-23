@@ -32,6 +32,7 @@ app:
       permit-all:
         - /api/users/auth/register
         - /api/users/auth/login
+        - /api/users/profile/all
       validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
       root-path: /api
     integrations:

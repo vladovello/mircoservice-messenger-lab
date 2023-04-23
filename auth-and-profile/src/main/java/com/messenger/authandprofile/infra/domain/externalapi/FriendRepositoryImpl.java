@@ -24,7 +24,7 @@ public class FriendRepositoryImpl implements FriendRepository {
         var response = friendsService
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/friends/check")
+                        .path("/friends/blacklist/check")
                         .queryParam("userId", userId.toString())
                         .queryParam("otherId", otherId.toString())
                         .build()

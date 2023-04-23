@@ -10,12 +10,12 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.repository.UserRepository;
 import io.vavr.control.Either;
 import lombok.NonNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-@Component
+@Service
 public class UserListQueryHandler implements Command.Handler<UserListQuery, Either<Exception, UserListDto>> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

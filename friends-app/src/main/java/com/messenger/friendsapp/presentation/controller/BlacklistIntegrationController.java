@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("integration/friends")
+@RequestMapping("integration/friends/blacklist")
 @RouterOperation
 public class BlacklistIntegrationController {
     private final IsUserInBlacklistQueryHandler isUserInBlacklistQueryHandler;

@@ -4,6 +4,7 @@ import com.messenger.friendsapp.application.dto.FullNameDto;
 import com.messenger.friendsapp.application.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
@@ -25,16 +26,24 @@ public class ProfileRepositoryImpl implements ProfileRepository {
 
     @Override
     public Optional<FullNameDto> getUsernameById(UUID userId) {
-        return profileClient
+        var response = profileClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/profile/full_name")
+                        .path("/users/profile/full_name")
                         .queryParam("userId", userId.toString())
                         .build()
                 )
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Optional<FullNameDto>>() {})
+                .toEntity(new ParameterizedTypeReference<Optional<FullNameDto>>() {})
                 .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(RETRY_TIMEOUT_DURATION_MILLIS)))
                 .block();
+
+        if (response == null) return Optional.empty();
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            if (response.hasBody()) return Optional.of(response.getBody().get());
+            return Optional.empty();
+        }
+        return Optional.empty();
     }
 }

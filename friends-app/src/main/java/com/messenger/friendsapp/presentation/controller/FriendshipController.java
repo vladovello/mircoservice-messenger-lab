@@ -79,7 +79,7 @@ public class FriendshipController {
         return ResponseEntity.ok(friendsListDto);
     }
 
-    @GetMapping("{friendId:UUID}")
+    @GetMapping("{friendId}")
     public ResponseEntity<FriendDto> getFriend(
             @PathVariable UUID friendId,
             @NonNull Authentication authentication
@@ -124,7 +124,7 @@ public class FriendshipController {
         }
     }
 
-    @DeleteMapping("delete/{friendId:UUID}")
+    @DeleteMapping("delete/{friendId}")
     public ResponseEntity<Void> deleteFriend(
             @PathVariable @NonNull UUID friendId,
             @NonNull Authentication authentication
