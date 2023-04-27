@@ -34,6 +34,7 @@ app:
         - /api/users/auth/login
         - /api/users/profile/all
       validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
+      access-exp: 00:05:00
       root-path: /api
     integrations:
       # Maybe add life check as permitted endpoint
