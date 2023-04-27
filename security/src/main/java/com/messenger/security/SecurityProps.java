@@ -1,5 +1,7 @@
-package com.messenger.security.props;
+package com.messenger.security;
 
+import com.messenger.security.integration.SecurityIntegrationsProps;
+import com.messenger.security.jwt.SecurityJwtProps;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

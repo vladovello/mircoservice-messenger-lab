@@ -1,4 +1,4 @@
-package com.messenger.security.props;
+package com.messenger.security.integration;
 
 import lombok.Getter;
 import lombok.Setter;

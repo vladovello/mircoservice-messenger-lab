@@ -2,7 +2,6 @@ package com.messenger.security;
 
 import com.messenger.security.integration.IntegrationFilter;
 import com.messenger.security.jwt.JwtFilter;
-import com.messenger.security.props.SecurityProps;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -33,7 +32,7 @@ class AuthSecurityConfig {
     @Bean
     public SecurityFilterChain filterChainJwt(HttpSecurity http) {
         http = http.addFilterBefore(
-                        new JwtFilter(securityProps.getJwtAuth().getValidationKey()),
+                        new JwtFilter(securityProps.getJwtAuth().getValidationParams()),
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .requestMatcher(filterPredicate(

@@ -1,0 +1,17 @@
+security:
+  jwt-auth:
+    permit-all:
+      - /swagger-ui/index.html
+    validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
+    validation-params:
+      - token: some-token1
+        exp: 10000
+        alg: HS256
+      - token: some-token2
+        exp: 3600
+        alg: HS512
+    access-exp: 00:05:00
+    root-path: /api
+  integrations:
+    root-path: /integration
+    api-key: lozhka_s_degtem
