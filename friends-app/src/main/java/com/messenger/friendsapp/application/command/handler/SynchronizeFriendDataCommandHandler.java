@@ -4,7 +4,7 @@ import com.messenger.friendsapp.application.command.SynchronizeFriendDataCommand
 import com.messenger.friendsapp.application.repository.ProfileRepository;
 import com.messenger.friendsapp.domain.repository.FriendshipRepository;
 import com.messenger.friendsapp.domain.valueobject.FullName;
-import com.messenger.friendsapp.shared.Unit;
+import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 

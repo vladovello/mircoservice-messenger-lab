@@ -9,8 +9,8 @@ import java.util.UUID;
 
 @Getter
 public class Addressee {
-    @NonNull private UUID id;
-    @NonNull private FullName fullName;
+    @NonNull private final UUID id;
+    @NonNull private final FullName fullName;
 
     private Addressee(@NonNull UUID id, @NonNull FullName fullName) {
         this.id = id;

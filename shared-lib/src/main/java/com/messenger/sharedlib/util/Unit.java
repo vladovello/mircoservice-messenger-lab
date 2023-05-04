@@ -1,4 +1,4 @@
-package com.messenger.friendsapp.shared;
+package com.messenger.sharedlib.util;
 
 import lombok.NonNull;
 
