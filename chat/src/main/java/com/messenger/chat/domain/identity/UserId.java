@@ -1,4 +1,4 @@
-package com.messenger.chat.domain;
+package com.messenger.chat.domain.identity;
 
 import com.messenger.sharedlib.ddd.domain.AbstractId;
 import lombok.NonNull;
@@ -6,7 +6,7 @@ import lombok.NonNull;
 import java.util.UUID;
 
 public class UserId extends AbstractId {
-    protected UserId(@NonNull UUID id) {
+    public UserId(@NonNull UUID id) {
         super(id);
     }
 }

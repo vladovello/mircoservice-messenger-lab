@@ -1,4 +1,4 @@
-package com.messenger.chat.domain.valueobject;
+package com.messenger.chat.domain.user.valueobject;
 
 import lombok.Value;
 

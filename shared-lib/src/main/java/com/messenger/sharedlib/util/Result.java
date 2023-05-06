@@ -2,7 +2,6 @@ package com.messenger.sharedlib.util;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;

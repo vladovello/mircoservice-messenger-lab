@@ -9,6 +9,10 @@ public abstract class AbstractId implements Identity {
 
     private UUID id;
 
+    protected AbstractId() {
+        this.setId(UUID.randomUUID());
+    }
+
     protected AbstractId(@NonNull UUID id) {
         this.setId(id);
     }
