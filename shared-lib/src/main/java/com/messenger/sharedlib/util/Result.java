@@ -59,17 +59,17 @@ public class Result<T> {
         }
     }
 
+    public T getOrNull() {
+        return isSuccess() ? (T) value : null;
+    }
+
     public T getOrThrow() throws Throwable {
         throwOnFailure();
         return (T) value;
     }
 
     public Optional<T> get() {
-        if (isSuccess()) {
-            return Optional.of((T) value);
-        }
-
-        return Optional.empty();
+        return isSuccess() ? Optional.of((T) value) : Optional.empty();
     }
 
     public <R extends T> T getOrDefault(R defaultValue) {

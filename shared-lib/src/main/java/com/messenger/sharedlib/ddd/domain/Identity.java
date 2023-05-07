@@ -1,7 +1,7 @@
 package com.messenger.sharedlib.ddd.domain;
 
-import java.util.UUID;
+import java.io.Serializable;
 
-public interface Identity {
-    UUID getId();
+public interface Identity<T> extends Serializable {
+    T getId();
 }

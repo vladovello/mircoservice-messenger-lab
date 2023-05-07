@@ -1,11 +1,11 @@
 package com.messenger.chat.domain.identity;
 
-import com.messenger.sharedlib.ddd.domain.AbstractId;
+import com.messenger.sharedlib.ddd.domain.UuidIdentity;
 import lombok.NonNull;
 
 import java.util.UUID;
 
-public class MessageId extends AbstractId {
+public class MessageId extends UuidIdentity {
     public MessageId() {
         super();
     }

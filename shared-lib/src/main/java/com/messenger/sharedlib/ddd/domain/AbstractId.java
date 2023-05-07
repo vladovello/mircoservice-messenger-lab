@@ -1,37 +1,33 @@
 package com.messenger.sharedlib.ddd.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
-import java.util.UUID;
-
-public abstract class AbstractId implements Identity {
+public abstract class AbstractId<T> implements Identity<T> {
     private static final long serialVersionUID = 1L;
 
-    private UUID id;
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private T id;
 
     protected AbstractId() {
-        this.setId(UUID.randomUUID());
+        this.setId(generateId());
     }
 
-    protected AbstractId(@NonNull UUID id) {
+    protected AbstractId(@NonNull T id) {
         this.setId(id);
     }
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    protected void setId(@NonNull UUID id) {
-        this.id = id;
-    }
+    protected abstract T generateId();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AbstractId)) return false;
 
-        AbstractId that = (AbstractId) o;
+        var that = (AbstractId<?>) o;
 
         return getId().equals(that.getId());
     }

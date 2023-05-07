@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 public enum Permission {
     DELETE_OTHERS_MESSAGES(1),
@@ -16,13 +15,23 @@ public enum Permission {
     TAKE_AWAY_ROLE(1 << 5),
     CREATE_ROLE(1 << 6),
     CHANGE_ROLE(1 << 6),
-    DELETE_ROLE(1 << 6)
-    ;
+    DELETE_ROLE(1 << 6);
 
-    @Getter private final int number;
+    @Getter private final int code;
+    private static final Map<Integer, Permission> BY_CODE = new HashMap<>();
 
-    Permission(int number) {
-        this.number = number;
+    static {
+        for (Permission e : values()) {
+            BY_CODE.put(e.getCode(), e);
+        }
+    }
+
+    public static Permission valueOfLabel(Integer code) {
+        return BY_CODE.get(code);
+    }
+
+    Permission(int code) {
+        this.code = code;
     }
 
     @Contract(" -> new")
@@ -33,5 +42,21 @@ public enum Permission {
     @Contract(" -> new")
     public static @NonNull Set<Permission> getNothing() {
         return EnumSet.noneOf(Permission.class);
+    }
+
+    @Contract(pure = true)
+    public static @NonNull Set<Permission> of(@NonNull List<Integer> codes) throws IllegalArgumentException {
+        Set<Permission> permissions = new HashSet<>();
+
+        for (int code : codes) {
+            var value = valueOfLabel(code);
+            if (value == null) {
+                throw new IllegalArgumentException(String.format("Permission with code '%d' doesn't exists", code));
+            }
+
+            permissions.add(value);
+        }
+
+        return permissions;
     }
 }

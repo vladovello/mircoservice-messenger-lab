@@ -1,24 +1,42 @@
 package com.messenger.chat.domain.chat;
 
+import com.messenger.chat.domain.chat.converter.ChatNameConverter;
 import com.messenger.chat.domain.chat.valueobject.ChatName;
 import com.messenger.chat.domain.chat.valueobject.ChatType;
 import com.messenger.chat.domain.identity.AvatarId;
 import com.messenger.chat.domain.identity.ChatId;
+import com.messenger.chat.domain.identity.converter.UuidConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
+@Entity
 public class Chat {
-    @NonNull private ChatId id;
-    @NonNull private AvatarId avatarId;
-    @NonNull private ChatType chatType;
-    @NonNull private ChatName chatName;
+    @Id
+    @Column(nullable = false)
+    @Convert(converter = UuidConverter.class)
+    @NonNull
+    private ChatId id;
+    @Column(nullable = false)
+    @Convert(converter = UuidConverter.class)
+    @NonNull
+    private AvatarId avatarId;
+    @Column(nullable = false)
+    @NonNull
+    private ChatType chatType;
+    @Column(nullable = false)
+    @Convert(converter = ChatNameConverter.class)
+    @NonNull
+    private ChatName chatName;
 
     protected Chat(
             @NonNull ChatId id,
@@ -30,6 +48,10 @@ public class Chat {
         this.avatarId = avatarId;
         this.chatType = chatType;
         this.chatName = chatName;
+    }
+
+    protected Chat() {
+        // For JPA
     }
 
     @Contract(value = "_, _, _ -> new", pure = true)
