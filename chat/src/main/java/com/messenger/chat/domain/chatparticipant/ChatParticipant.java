@@ -1,8 +1,9 @@
 package com.messenger.chat.domain.chatparticipant;
 
-import com.messenger.chat.domain.identity.ChatId;
-import com.messenger.chat.domain.identity.ChatParticipantId;
+import com.messenger.chat.domain.chat.ChatRole;
+import com.messenger.chat.domain.chat.Permission;
 import com.messenger.chat.domain.user.User;
+import com.messenger.sharedlib.ddd.domain.DomainEntity;
 import com.messenger.sharedlib.ddd.domain.UuidIdentity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,16 +12,17 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
-public class ChatParticipant {
+public class ChatParticipant extends DomainEntity {
     @Id
     @Column(nullable = false)
     @Convert(converter = UuidIdentity.class)
     @NonNull
-    private ChatParticipantId chatParticipantId;
+    private UUID chatParticipantId;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @NonNull
@@ -28,16 +30,16 @@ public class ChatParticipant {
     @Column(nullable = false)
     @Convert(converter = UuidIdentity.class)
     @NonNull
-    private ChatId chatId;
+    private UUID chatId;
     @ManyToMany
     @JoinTable
     @NonNull
     private Set<ChatRole> chatRoles;
 
-    public ChatParticipant(
-            @NonNull ChatParticipantId chatParticipantId,
+    protected ChatParticipant(
+            @NonNull UUID chatParticipantId,
             @NonNull User user,
-            @NonNull ChatId chatId,
+            @NonNull UUID chatId,
             @NonNull Set<ChatRole> chatRoles
     ) {
         this.chatParticipantId = chatParticipantId;
@@ -50,11 +52,27 @@ public class ChatParticipant {
         // For JPA
     }
 
+    public static @NonNull ChatParticipant createNew(
+            @NonNull User user,
+            @NonNull UUID chatId,
+            @NonNull Set<ChatRole> chatRoles
+    ) {
+        return new ChatParticipant(generateId(), user, chatId, chatRoles);
+    }
+
     public void addRole(ChatRole chatRole) {
         chatRoles.add(chatRole);
     }
 
     public boolean hasPermission(Permission permission) {
         return chatRoles.stream().anyMatch(chatRole -> chatRole.hasPermission(permission));
+    }
+
+    public boolean isSameChat(@NonNull ChatParticipant otherChatParticipant) {
+        return this.getChatId() == otherChatParticipant.getChatId();
+    }
+
+    private static @NonNull UUID generateId() {
+        return UUID.randomUUID();
     }
 }

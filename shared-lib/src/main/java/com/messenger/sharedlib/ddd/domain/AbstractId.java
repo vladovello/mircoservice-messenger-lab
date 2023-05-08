@@ -10,7 +10,7 @@ public abstract class AbstractId<T> implements Identity<T> {
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private T id;
+    protected T id;
 
     protected AbstractId() {
         this.setId(generateId());
@@ -36,4 +36,6 @@ public abstract class AbstractId<T> implements Identity<T> {
     public int hashCode() {
         return getId().hashCode();
     }
+
+    public abstract String toString();
 }

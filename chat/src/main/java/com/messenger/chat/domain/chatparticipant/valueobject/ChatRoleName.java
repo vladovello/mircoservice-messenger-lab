@@ -25,4 +25,12 @@ public class ChatRoleName extends ValueObject {
 
         return Result.success(new ChatRoleName(name));
     }
+
+    public static @NonNull ChatRoleName createOwnerName() {
+        return new ChatRoleName("Owner");
+    }
+
+    public static @NonNull ChatRoleName createEveryoneName() {
+        return new ChatRoleName("Everyone");
+    }
 }

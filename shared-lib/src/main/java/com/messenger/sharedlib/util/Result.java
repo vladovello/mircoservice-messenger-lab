@@ -44,16 +44,16 @@ public class Result<T> {
     }
 
     @Contract(value = "_ -> new", pure = true)
-    public static <T> @NonNull Result<T> failure(Throwable error) {
+    public static <T> @NonNull Result<T> failure(Exception error) {
         return new Result<>(Failure.create(error));
     }
 
-    protected Throwable exceptionOrNull() {
+    public Exception exceptionOrNull() {
         if (isFailure()) return ((Failure) value).getException();
         return null;
     }
 
-    protected void throwOnFailure() throws Throwable {
+    protected void throwOnFailure() throws Exception {
         if (value instanceof Failure) {
             throw exceptionOrNull();
         }
@@ -63,7 +63,7 @@ public class Result<T> {
         return isSuccess() ? (T) value : null;
     }
 
-    public T getOrThrow() throws Throwable {
+    public T getOrThrow() throws Exception {
         throwOnFailure();
         return (T) value;
     }
@@ -77,7 +77,7 @@ public class Result<T> {
         return (T) value;
     }
 
-    public <R> R fold(Function<T, R> onSuccess, Function<Throwable, R> onFailure) {
+    public <R> R fold(Function<T, R> onSuccess, Function<Exception, R> onFailure) {
         if (isSuccess()) return onSuccess.apply((T) value);
         return onFailure.apply(((Failure) value).getException());
     }
@@ -92,20 +92,20 @@ public class Result<T> {
         return this;
     }
 
-    public Result<T> onFailure(Consumer<Throwable> failure) {
+    public Result<T> onFailure(Consumer<Exception> failure) {
         if (isFailure()) failure.accept(exceptionOrNull());
         return this;
     }
 
     protected static class Failure implements Serializable {
-        @Getter private final Throwable exception;
+        @Getter private final Exception exception;
 
-        protected Failure(Throwable exception) {
+        protected Failure(Exception exception) {
             this.exception = exception;
         }
 
         @Contract(value = "_ -> new", pure = true)
-        public static @NonNull Failure create(Throwable exception) {
+        public static @NonNull Failure create(Exception exception) {
             return new Failure(exception);
         }
 

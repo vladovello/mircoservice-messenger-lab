@@ -1,4 +1,4 @@
-package com.messenger.chat.domain.chatparticipant;
+package com.messenger.chat.domain.chat;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,8 +14,8 @@ public enum Permission {
     GRANT_ROLE(1 << 4),
     TAKE_AWAY_ROLE(1 << 5),
     CREATE_ROLE(1 << 6),
-    CHANGE_ROLE(1 << 6),
-    DELETE_ROLE(1 << 6);
+    CHANGE_ROLE(1 << 7),
+    DELETE_ROLE(1 << 8);
 
     @Getter private final int code;
     private static final Map<Integer, Permission> BY_CODE = new HashMap<>();

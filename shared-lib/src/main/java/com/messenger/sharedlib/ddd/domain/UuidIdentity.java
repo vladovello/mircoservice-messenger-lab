@@ -15,4 +15,9 @@ public class UuidIdentity extends AbstractId<UUID> {
     protected UUID generateId() {
         return UUID.randomUUID();
     }
+
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }

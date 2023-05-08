@@ -1,6 +1,6 @@
 package com.messenger.chat.domain.chatparticipant.converter;
 
-import com.messenger.chat.domain.chatparticipant.Permission;
+import com.messenger.chat.domain.chat.Permission;
 import lombok.NonNull;
 
 import javax.persistence.AttributeConverter;
