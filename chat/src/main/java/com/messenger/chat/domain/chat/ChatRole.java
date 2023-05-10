@@ -1,7 +1,6 @@
 package com.messenger.chat.domain.chat;
 
 import com.messenger.chat.domain.chatparticipant.converter.ChatRoleNameConverter;
-import com.messenger.chat.domain.chatparticipant.converter.PermissionConverter;
 import com.messenger.chat.domain.chatparticipant.valueobject.ChatRoleName;
 import com.messenger.sharedlib.ddd.domain.UuidIdentity;
 import lombok.AccessLevel;
@@ -14,7 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
-public class ChatRole {
+public class ChatRole implements Comparator<ChatRole> {
     public static final short HIGHEST_PRIORITY = Short.MAX_VALUE;
     public static final short LOWEST_PRIORITY = 0;
 
@@ -42,9 +41,7 @@ public class ChatRole {
     @NonNull
     private ChatRoleName chatRoleName;
     @Column(nullable = false)
-    @Convert(converter = PermissionConverter.class)
-    @NonNull
-    private Set<Permission> permissions;
+    private int permissions;
     @Column(nullable = false) private int priority;
 
     protected ChatRole(
@@ -57,7 +54,7 @@ public class ChatRole {
         this.roleId = roleId;
         this.chatId = chatId;
         this.chatRoleName = chatRoleName;
-        this.permissions = permissions;
+        this.permissions = permissions.stream().map(Permission::getCode).reduce(0, Integer::sum);
         this.priority = priority;
     }
 
@@ -86,16 +83,16 @@ public class ChatRole {
         return new ChatRole(roleId, chatId, chatRoleName, permissions, priority);
     }
 
-    public boolean hasPermission(Permission permission) {
-        return permissions.contains(permission);
+    public boolean hasPermission(@NonNull Permission permission) {
+        return (permissions & permission.getCode()) == permission.getCode();
     }
 
-    public boolean hasPermissions(List<Permission> permissions) {
-        return this.permissions.containsAll(permissions);
+    public boolean hasPermissions(@NonNull Set<Permission> permissions) {
+        return permissions.stream().map(Permission::getCode).reduce(0, Integer::sum).equals(this.permissions);
     }
 
-    void addPermission(Permission permission) {
-        permissions.add(permission);
+    void addPermission(@NonNull Permission permission) {
+        permissions |= permission.getCode();
     }
 
     boolean isEveryone() {
@@ -108,5 +105,11 @@ public class ChatRole {
 
     private static @NonNull UUID generateId() {
         return UUID.randomUUID();
+    }
+
+    @Override
+    public int compare(@NonNull ChatRole o1, @NonNull ChatRole o2) {
+        if (o1.getPriority() == o2.getPriority()) return 0;
+        return o1.getPriority() > o2.getPriority() ? 1 : -1;
     }
 }

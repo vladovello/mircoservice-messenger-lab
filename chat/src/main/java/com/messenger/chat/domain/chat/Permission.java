@@ -7,15 +7,10 @@ import org.jetbrains.annotations.Contract;
 import java.util.*;
 
 public enum Permission {
-    DELETE_OTHERS_MESSAGES(1),
-    DELETE_CHAT(1 << 1),
-    INVITE_TO_CHAT(1 << 2),
-    KICK_FROM_CHAT(1 << 3),
-    GRANT_ROLE(1 << 4),
-    TAKE_AWAY_ROLE(1 << 5),
-    CREATE_ROLE(1 << 6),
-    CHANGE_ROLE(1 << 7),
-    DELETE_ROLE(1 << 8);
+    KICK_MEMBERS(1),
+    MANAGE_MESSAGES(1 << 1),
+    MANAGE_ROLES(1 << 2),
+    MANAGE_CHAT(1 << 3);
 
     @Getter private final int code;
     private static final Map<Integer, Permission> BY_CODE = new HashMap<>();

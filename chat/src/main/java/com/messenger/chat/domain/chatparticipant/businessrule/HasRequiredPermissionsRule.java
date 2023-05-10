@@ -4,13 +4,13 @@ import com.messenger.chat.domain.chat.Permission;
 import com.messenger.chat.domain.chatparticipant.ChatParticipant;
 import com.messenger.sharedlib.ddd.domain.BusinessRule;
 
-import java.util.List;
+import java.util.Set;
 
 public class HasRequiredPermissionsRule implements BusinessRule {
     private final ChatParticipant chatParticipant;
-    private final List<Permission> permissions;
+    private final Set<Permission> permissions;
 
-    public HasRequiredPermissionsRule(ChatParticipant chatParticipant, List<Permission> permissions) {
+    public HasRequiredPermissionsRule(ChatParticipant chatParticipant, Set<Permission> permissions) {
         this.chatParticipant = chatParticipant;
         this.permissions = permissions;
     }

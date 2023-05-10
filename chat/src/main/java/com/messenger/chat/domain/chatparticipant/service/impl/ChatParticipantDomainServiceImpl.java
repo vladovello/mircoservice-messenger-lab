@@ -1,14 +1,15 @@
 package com.messenger.chat.domain.chatparticipant.service.impl;
 
 import com.messenger.chat.domain.chat.Chat;
-import com.messenger.chat.domain.chat.ChatRole;
 import com.messenger.chat.domain.chat.Permission;
+import com.messenger.chat.domain.chat.PermissionManager;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.chat.valueobject.ChatType;
 import com.messenger.chat.domain.chatparticipant.ChatParticipant;
 import com.messenger.chat.domain.chatparticipant.businessrule.ChatIsNotFullRule;
 import com.messenger.chat.domain.chatparticipant.businessrule.HasRequiredPermissionsRule;
 import com.messenger.chat.domain.chatparticipant.exception.IllegalChatTypeException;
+import com.messenger.chat.domain.chatparticipant.exception.NotEnoughPermissionsException;
 import com.messenger.chat.domain.chatparticipant.exception.UserAlreadyInChatException;
 import com.messenger.chat.domain.chatparticipant.exception.UserDoesNotExistsInChatException;
 import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepository;
@@ -20,8 +21,7 @@ import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class ChatParticipantDomainServiceImpl extends DomainService implements ChatParticipantDomainService {
@@ -52,29 +52,16 @@ public class ChatParticipantDomainServiceImpl extends DomainService implements C
             return Result.failure(IllegalChatTypeException.ofDialogue());
         }
 
-        // TODO: 09.05.2023 think about creating PermissionManager class
-        // 2. Check permissions
-        try {
-            checkRule(new HasRequiredPermissionsRule(invitingChatParticipant, List.of(Permission.INVITE_TO_CHAT)));
-        } catch (BusinessRuleViolationException e) {
-            return Result.failure(e);
-        }
-
+        // 2. Common checks for all chats
         var result = performCommonChatInvitingChecks(chat, inviteeUserId);
         if (result.isFailure()) {
             return Result.failure(result.exceptionOrNull());
         }
 
-        // TODO: 09.05.2023 think about moving creation of ChatParticipant to Chat
-        // 3. Get 'everyone' role
-        var everyoneRole = chat.getEveryoneRole();
-        var roles = new HashSet<ChatRole>();
-        roles.add(everyoneRole);
-
         return Result.success(ChatParticipant.createNew(
                 userRepository.getUser(inviteeUserId),
                 chatId,
-                roles
+                chat.getEveryoneRole()
         ));
     }
 
@@ -92,15 +79,10 @@ public class ChatParticipantDomainServiceImpl extends DomainService implements C
             return Result.failure(result.exceptionOrNull());
         }
 
-        // 2. Get 'everyone' role
-        var everyoneRole = chat.getEveryoneRole();
-        var roles = new HashSet<ChatRole>();
-        roles.add(everyoneRole);
-
         return Result.success(ChatParticipant.createNew(
                 userRepository.getUser(userId),
                 chatId,
-                roles
+                chat.getEveryoneRole()
         ));
     }
 
@@ -110,7 +92,7 @@ public class ChatParticipantDomainServiceImpl extends DomainService implements C
             ChatParticipant beingDeletedChatParticipant
     ) {
         // 1. Check if participants is in the same chat
-        if (!deletingChatParticipant.isSameChat(beingDeletedChatParticipant)) {
+        if (deletingChatParticipant.isNotInSameChat(beingDeletedChatParticipant)) {
             return Result.failure(new UserDoesNotExistsInChatException(
                     beingDeletedChatParticipant.getChatParticipantId(),
                     deletingChatParticipant.getChatId()
@@ -123,10 +105,8 @@ public class ChatParticipantDomainServiceImpl extends DomainService implements C
         }
 
         // 3. Check if deleting user has enough permissions
-        try {
-            checkRule(new HasRequiredPermissionsRule(deletingChatParticipant, List.of(Permission.INVITE_TO_CHAT)));
-        } catch (BusinessRuleViolationException e) {
-            return Result.failure(e);
+        if (!PermissionManager.canKickMember(deletingChatParticipant, beingDeletedChatParticipant)) {
+            return Result.failure(new NotEnoughPermissionsException(deletingChatParticipant.getUser().getUserId()));
         }
 
         chatParticipantRepository.delete(beingDeletedChatParticipant);
@@ -142,6 +122,7 @@ public class ChatParticipantDomainServiceImpl extends DomainService implements C
         }
 
         chatParticipantRepository.delete(chatParticipant);
+
         return Result.success();
     }
 
