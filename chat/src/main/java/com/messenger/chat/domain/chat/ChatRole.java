@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,7 +22,7 @@ import java.util.UUID;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
-public class ChatRole implements Comparator<ChatRole> {
+public class ChatRole implements Comparable<ChatRole> {
     public static final short HIGHEST_PRIORITY = Short.MAX_VALUE;
     public static final short LOWEST_PRIORITY = 0;
 
@@ -108,8 +107,23 @@ public class ChatRole implements Comparator<ChatRole> {
     }
 
     @Override
-    public int compare(@NonNull ChatRole o1, @NonNull ChatRole o2) {
-        if (o1.getPriority() == o2.getPriority()) return 0;
-        return o1.getPriority() > o2.getPriority() ? 1 : -1;
+    public int compareTo(@NonNull ChatRole o) {
+        if (this.getPriority() == o.getPriority()) return 0;
+        return this.getPriority() > o.getPriority() ? 1 : -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChatRole)) return false;
+
+        ChatRole chatRole = (ChatRole) o;
+
+        return getRoleId().equals(chatRole.getRoleId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getRoleId().hashCode();
     }
 }

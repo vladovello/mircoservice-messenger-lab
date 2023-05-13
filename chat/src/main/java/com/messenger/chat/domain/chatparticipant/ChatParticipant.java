@@ -26,9 +26,9 @@ public class ChatParticipant extends DomainEntity {
     @Convert(converter = UuidIdentity.class)
     @NonNull
     private UUID chatParticipantId;
+    @Column(nullable = false) private UUID userId;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @NonNull
     private User user;
     @Column(nullable = false)
     @Convert(converter = UuidIdentity.class)
@@ -41,12 +41,12 @@ public class ChatParticipant extends DomainEntity {
 
     protected ChatParticipant(
             @NonNull UUID chatParticipantId,
-            @NonNull User user,
+            @NonNull UUID userId,
             @NonNull UUID chatId,
             @NonNull Set<ChatRole> chatRoles
     ) {
         this.chatParticipantId = chatParticipantId;
-        this.user = user;
+        this.userId = userId;
         this.chatId = chatId;
         this.chatRoles = chatRoles;
     }
@@ -56,19 +56,19 @@ public class ChatParticipant extends DomainEntity {
     }
 
     public static @NonNull ChatParticipant createNew(
-            @NonNull User user,
+            @NonNull UUID userId,
             @NonNull UUID chatId,
             @NonNull Set<ChatRole> chatRoles
     ) {
-        return new ChatParticipant(generateId(), user, chatId, chatRoles);
+        return new ChatParticipant(generateId(), userId, chatId, chatRoles);
     }
 
     public static @NonNull ChatParticipant createNew(
-            @NonNull User user,
+            @NonNull UUID userId,
             @NonNull UUID chatId,
             @NonNull ChatRole... chatRoles
     ) {
-        return new ChatParticipant(generateId(), user, chatId, Arrays.stream(chatRoles).collect(Collectors.toSet()));
+        return new ChatParticipant(generateId(), userId, chatId, Arrays.stream(chatRoles).collect(Collectors.toSet()));
     }
 
     public void addRole(ChatRole chatRole) {
@@ -80,12 +80,12 @@ public class ChatParticipant extends DomainEntity {
     }
 
     public Optional<ChatRole> getHighestPriorityRole() {
-        return chatRoles.stream().max(((o1, o2) -> o1.compare(o1, o2)));
+        return chatRoles.stream().max((ChatRole::compareTo));
     }
 
     public Optional<ChatRole> getHighestPriorityRoleWithPermission(Permission permission) {
         return chatRoles.stream()
-                .filter(chatRole -> chatRole.hasPermission(permission)).max(((o1, o2) -> o1.compare(o1, o2)));
+                .filter(chatRole -> chatRole.hasPermission(permission)).max((ChatRole::compareTo));
     }
 
     public boolean isOwner() {

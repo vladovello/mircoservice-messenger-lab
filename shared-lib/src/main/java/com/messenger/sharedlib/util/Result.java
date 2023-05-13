@@ -97,6 +97,14 @@ public class Result<T> {
         return this;
     }
 
+    public static <T1, T2> Result<T1> rethrow(@NonNull Result<T2> result) {
+        if (result.isSuccess()) {
+            return Result.success();
+        }
+
+        return Result.failure(result.exceptionOrNull());
+    }
+
     protected static class Failure implements Serializable {
         @Getter private final Exception exception;
 

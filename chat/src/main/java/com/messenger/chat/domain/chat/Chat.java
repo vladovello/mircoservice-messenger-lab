@@ -30,9 +30,8 @@ public class Chat extends DomainEntity {
     @Column(nullable = false)
     @NonNull
     private ChatType chatType;
-    @Column(nullable = false)
+    @Column
     @Convert(converter = ChatNameConverter.class)
-    @NonNull
     private ChatName chatName;
     @OneToMany
     @JoinColumn(name = "chat_role_id")
@@ -43,7 +42,7 @@ public class Chat extends DomainEntity {
             @NonNull UUID id,
             @NonNull UUID avatarId,
             @NonNull ChatType chatType,
-            @NonNull ChatName chatName,
+            ChatName chatName,
             @NonNull Set<ChatRole> roles
     ) {
         this.id = id;
@@ -57,32 +56,31 @@ public class Chat extends DomainEntity {
         // For JPA
     }
 
-    @Contract(value = "_, _, _ -> new", pure = true)
+    @Contract(value = "_ -> new", pure = true)
     public static @NonNull Chat createDialogue(
-            @NonNull UUID avatarId,
-            @NonNull ChatType chatType,
-            @NonNull ChatName chatName
+            @NonNull UUID avatarId
     ) {
         var chatId = generateId();
+
         var roles = new HashSet<ChatRole>();
         roles.add(RoleFactory.createEveryone(chatId));
 
         return new Chat(
                 chatId,
                 avatarId,
-                chatType,
-                chatName,
+                ChatType.DIALOGUE,
+                null,
                 roles
         );
     }
 
-    @Contract(value = "_, _, _ -> new", pure = true)
+    @Contract(value = "_, _ -> new", pure = true)
     public static @NonNull Chat createMulti(
             @NonNull UUID avatarId,
-            @NonNull ChatType chatType,
             @NonNull ChatName chatName
     ) {
         var chatId = generateId();
+
         var roles = new HashSet<ChatRole>();
         roles.add(RoleFactory.createOwner(chatId));
         roles.add(RoleFactory.createEveryone(chatId));
@@ -90,7 +88,7 @@ public class Chat extends DomainEntity {
         return new Chat(
                 chatId,
                 avatarId,
-                chatType,
+                ChatType.MULTI,
                 chatName,
                 roles
         );
@@ -107,12 +105,9 @@ public class Chat extends DomainEntity {
         return new Chat(chatId, avatarId, chatType, chatName, roles);
     }
 
-    public void changeChatName(ChatName chatName) {
-        this.chatName = chatName;
-    }
-
-    public void changeChatAvatar(UUID avatarId) {
-        this.avatarId = avatarId;
+    public void changeChat(ChatName chatName, UUID avatarId) {
+        if (chatName != null) this.chatName = chatName;
+        if (avatarId != null) this.avatarId = avatarId;
     }
 
     public ChatRole getEveryoneRole() {

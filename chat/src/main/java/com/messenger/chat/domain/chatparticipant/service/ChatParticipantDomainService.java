@@ -7,7 +7,7 @@ import com.messenger.sharedlib.util.Unit;
 import java.util.UUID;
 
 public interface ChatParticipantDomainService {
-    Result<ChatParticipant> inviteUserToMultiChat(ChatParticipant invitingChatParticipant, UUID inviteeUUID);
+    Result<ChatParticipant> addUserToMultiChat(ChatParticipant invitingChatParticipant, UUID inviteeUUID);
 
     Result<ChatParticipant> addUserToDialogue(UUID chatId, UUID userId);
 
