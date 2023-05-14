@@ -17,12 +17,15 @@ public class MessageText extends ValueObject {
 
     public static @NonNull Result<MessageText> create(@NonNull String text) {
         try {
-            checkRule(new StringIsNotBlankRule(text, "message text"));
             checkRule(new StringIsNotTooLongRule(text, MAX_LENGTH, "message text"));
         } catch (BusinessRuleViolationException e) {
             return Result.failure(e);
         }
 
         return Result.success(new MessageText(text));
+    }
+
+    public boolean isBlank() {
+        return text.isBlank();
     }
 }

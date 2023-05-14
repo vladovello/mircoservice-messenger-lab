@@ -2,9 +2,12 @@ package com.messenger.chat.domain.message;
 
 import com.messenger.chat.domain.message.converter.MessageTextConverter;
 import com.messenger.chat.domain.message.event.MessageCreatedDomainEvent;
+import com.messenger.chat.domain.message.valueobject.EventMessageText;
 import com.messenger.chat.domain.message.valueobject.MessageText;
+import com.messenger.chat.domain.user.User;
 import com.messenger.sharedlib.ddd.domain.DomainEntity;
 import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.util.Result;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,6 +18,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 // INFO: Чтобы убедиться, что событие будет доставлен только один раз (за исключением ситуаций, когда сервер упал) можно добавить
@@ -34,7 +38,10 @@ public class Message extends DomainEntity {
     private UUID chatId;
     @Column(nullable = false)
     @NonNull
-    private UUID userId;
+    private UUID senderUserId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @Column(nullable = false)
     @NonNull
     private LocalDateTime creationDate;
@@ -42,6 +49,9 @@ public class Message extends DomainEntity {
     @Convert(converter = MessageTextConverter.class)
     @NonNull
     private MessageText messageText;
+    @Column
+    @OneToMany
+    private Set<Attachment> attachments;
 
     @Transient
     private final Collection<DomainEvent> domainEvents;
@@ -51,13 +61,16 @@ public class Message extends DomainEntity {
             @NonNull UUID chatId,
             @NonNull UUID senderUserId,
             @NonNull MessageText messageText,
-            @NonNull LocalDateTime creationDate
+            @NonNull LocalDateTime creationDate,
+            Set<Attachment> attachments
     ) {
         this.id = id;
         this.chatId = chatId;
-        this.userId = senderUserId;
+        this.senderUserId = senderUserId;
         this.creationDate = creationDate;
         this.messageText = messageText;
+        this.attachments = attachments;
+
         domainEvents = new ArrayList<>();
     }
 
@@ -67,26 +80,60 @@ public class Message extends DomainEntity {
     }
 
     @Contract("_, _, _ -> new")
-    public static @NonNull Message createNew(
+    public static @NonNull Result<Message> createNew(
             @NonNull UUID chatId,
             @NonNull UUID senderUserId,
             @NonNull MessageText messageText
     ) {
         var messageId = generateId();
-        var message = new Message(messageId, chatId, senderUserId, messageText, LocalDateTime.now());
-        message.domainEvents.add(new MessageCreatedDomainEvent(messageId, chatId, senderUserId));
-        return message;
+
+        if (messageText.isBlank()) {
+            return Result.failure(new Exception());
+        }
+
+        var message = new Message(messageId, chatId, senderUserId, messageText, LocalDateTime.now(), null);
+
+        message.domainEvents.add(new MessageCreatedDomainEvent(
+                messageId,
+                chatId,
+                senderUserId,
+                EventMessageText.create(messageText)
+        ));
+
+        return Result.success(message);
     }
 
-    @Contract(value = "_, _, _, _, _ -> new", pure = true)
+    @Contract("_, _, _, _ -> new")
+    public static @NonNull Result<Message> createNew(
+            @NonNull UUID chatId,
+            @NonNull UUID senderUserId,
+            @NonNull MessageText messageText,
+            @NonNull Set<Attachment> attachments
+    ) {
+        var messageId = generateId();
+
+        var message = new Message(messageId, chatId, senderUserId, messageText, LocalDateTime.now(), attachments);
+
+        message.domainEvents.add(new MessageCreatedDomainEvent(
+                messageId,
+                chatId,
+                senderUserId,
+                EventMessageText.create(messageText)
+        ));
+
+        return Result.success(message);
+    }
+
+    @Contract(value = "_, _, _, _, _, _ -> new", pure = true)
     public static @NonNull Message reconstruct(
             @NonNull UUID id,
             @NonNull UUID chatId,
             @NonNull UUID senderUserId,
             @NonNull MessageText messageText,
-            @NonNull LocalDateTime creationDate
+            @NonNull LocalDateTime creationDate,
+            Set<Attachment> attachments
     ) {
-        return new Message(id, chatId, senderUserId, messageText, creationDate);
+        return new Message(id, chatId, senderUserId, messageText, creationDate, attachments);
     }
 
     private static @NonNull UUID generateId() {

@@ -23,7 +23,7 @@ public class FullName extends ValueObject {
             String middleName,
             @NonNull String lastName
     ) {
-        var fullName = getFullName(firstName, middleName, lastName);
+        var fullName = concatFullName(firstName, middleName, lastName);
 
         try {
             checkRule(new StringIsNotBlankRule(fullName, "full name"));
@@ -36,7 +36,11 @@ public class FullName extends ValueObject {
     }
 
     @Contract(pure = true)
-    public static @NonNull String getFullName(@NonNull String firstName, String middleName, @NonNull String lastName) {
+    public static @NonNull String concatFullName(@NonNull String firstName, String middleName, @NonNull String lastName) {
+        return middleName == null ? firstName + " " + lastName : firstName + " " + middleName + " " + lastName;
+    }
+
+    public @NonNull String getValue() {
         return middleName == null ? firstName + " " + lastName : firstName + " " + middleName + " " + lastName;
     }
 }

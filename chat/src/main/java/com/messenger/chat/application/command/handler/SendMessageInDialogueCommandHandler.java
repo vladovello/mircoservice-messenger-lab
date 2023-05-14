@@ -2,6 +2,7 @@ package com.messenger.chat.application.command.handler;
 
 import com.messenger.chat.application.command.CommandHandler;
 import com.messenger.chat.application.command.SendMessageInDialogueCommand;
+import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.chat.service.ChatDomainService;
 import com.messenger.chat.domain.message.Message;
@@ -32,13 +33,24 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
 
     // 1. Проверить, что чат существует м/у пользователями. Если нет, то создать чат
     // 2. Проверить, может ли пользователь отправлять другому сообщения. Если нет, то выйти из функции
-    // 3. Отправить сообщение и выйти из функции
+    // 3. Сохранить сообщение и выйти из функции
     @Override
     public Result<Unit> handle(@NonNull SendMessageInDialogueCommand command) {
         var optionalChat = chatRepository.getDialogue(command.getSenderId(), command.getRecipientId());
-        var chat = optionalChat.orElseGet(chatDomainService::createDialogueChat);
+        Chat chat;
 
-        // TODO: 13.05.2023 вынести проверку в домен
+        if (optionalChat.isPresent()) {
+            chat = optionalChat.get();
+        } else {
+            var result = chatDomainService.createDialogueChat(command.getSenderId(), command.getRecipientId());
+
+            if (result.isFailure()) {
+                return Result.failure(result.exceptionOrNull());
+            }
+
+            chat = result.getOrNull();
+        }
+
         if (blacklistRepository.isUserIsBlacklistedByOther(command.getSenderId(), command.getRecipientId())) {
             return Result.failure(new Exception());
         }
@@ -50,7 +62,12 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
         }
 
         var message = Message.createNew(chat.getId(), command.getSenderId(), messageText.getOrNull());
-        var result = messageDomainService.sendMessage(message);
+
+        if (message.isFailure()) {
+            return Result.failure(new Exception());
+        }
+
+        var result = messageDomainService.sendMessage(message.getOrNull());
 
         if (result.isFailure()) {
             return Result.failure(new Exception());

@@ -13,21 +13,21 @@ import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
 
 public class MessageDomainServiceImpl implements MessageDomainService {
-    private final ChatParticipantRepository chatParticipantRepository;
     private final MessageRepository messageRepository;
+    private final ChatParticipantRepository chatParticipantRepository;
 
     public MessageDomainServiceImpl(
-            ChatParticipantRepository chatParticipantRepository,
-            MessageRepository messageRepository
+            MessageRepository messageRepository,
+            ChatParticipantRepository chatParticipantRepository
     ) {
-        this.chatParticipantRepository = chatParticipantRepository;
         this.messageRepository = messageRepository;
+        this.chatParticipantRepository = chatParticipantRepository;
     }
 
     @Override
     public Result<Unit> sendMessage(@NonNull Message message) {
-        if (!chatParticipantRepository.isChatParticipantExists(message.getChatId(), message.getUserId())) {
-            return Result.failure(new UserDoesNotExistsInChatException(message.getUserId(), message.getChatId()));
+        if (!chatParticipantRepository.isUserBelongsToChat(message.getChatId(), message.getSenderUserId())) {
+            return Result.failure(new UserDoesNotExistsInChatException(message.getSenderUserId(), message.getChatId()));
         }
 
         messageRepository.save(message);

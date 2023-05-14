@@ -13,5 +13,5 @@ public interface ChatRepository {
     ChatType getChatType(UUID chatId);
     boolean isChatExists(UUID chatId);
     boolean isDialogueExists(UUID userId1, UUID userId2);
-    @NonNull Chat save(@NonNull Chat chat);
+    void save(@NonNull Chat chat);
 }

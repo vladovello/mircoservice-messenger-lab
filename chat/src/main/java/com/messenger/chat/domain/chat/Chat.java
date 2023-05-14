@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -24,9 +25,7 @@ public class Chat extends DomainEntity {
     @Column(nullable = false)
     @NonNull
     private UUID id;
-    @Column(nullable = false)
-    @NonNull
-    private UUID avatarId;
+    @Column(nullable = false) private UUID avatarId;
     @Column(nullable = false)
     @NonNull
     private ChatType chatType;
@@ -37,29 +36,32 @@ public class Chat extends DomainEntity {
     @JoinColumn(name = "chat_role_id")
     @NonNull
     private Set<ChatRole> roles;
+    @Column(nullable = false)
+    @NonNull
+    private LocalDateTime creationDate;
 
     public Chat(
             @NonNull UUID id,
-            @NonNull UUID avatarId,
+            UUID avatarId,
             @NonNull ChatType chatType,
             ChatName chatName,
-            @NonNull Set<ChatRole> roles
+            @NonNull Set<ChatRole> roles,
+            @NonNull LocalDateTime creationDate
     ) {
         this.id = id;
         this.avatarId = avatarId;
         this.chatType = chatType;
         this.chatName = chatName;
         this.roles = roles;
+        this.creationDate = creationDate;
     }
 
     protected Chat() {
         // For JPA
     }
 
-    @Contract(value = "_ -> new", pure = true)
-    public static @NonNull Chat createDialogue(
-            @NonNull UUID avatarId
-    ) {
+    @Contract(value = " -> new", pure = true)
+    public static @NonNull Chat createDialogue() {
         var chatId = generateId();
 
         var roles = new HashSet<ChatRole>();
@@ -67,10 +69,11 @@ public class Chat extends DomainEntity {
 
         return new Chat(
                 chatId,
-                avatarId,
+                null,
                 ChatType.DIALOGUE,
                 null,
-                roles
+                roles,
+                LocalDateTime.now()
         );
     }
 
@@ -90,19 +93,21 @@ public class Chat extends DomainEntity {
                 avatarId,
                 ChatType.MULTI,
                 chatName,
-                roles
+                roles,
+                LocalDateTime.now()
         );
     }
 
-    @Contract(value = "_, _, _, _, _ -> new", pure = true)
+    @Contract(value = "_, _, _, _, _, _ -> new", pure = true)
     public static @NonNull Chat reconstruct(
             @NonNull UUID chatId,
             @NonNull UUID avatarId,
             @NonNull ChatType chatType,
             @NonNull ChatName chatName,
-            @NonNull Set<ChatRole> roles
+            @NonNull Set<ChatRole> roles,
+            @NonNull LocalDateTime creationDate
     ) {
-        return new Chat(chatId, avatarId, chatType, chatName, roles);
+        return new Chat(chatId, avatarId, chatType, chatName, roles, creationDate);
     }
 
     public void changeChat(ChatName chatName, UUID avatarId) {
