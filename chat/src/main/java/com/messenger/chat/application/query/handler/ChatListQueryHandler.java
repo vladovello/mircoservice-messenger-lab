@@ -19,6 +19,7 @@ public class ChatListQueryHandler implements QueryHandler<ChatListQuery, Preview
                 query.getPageNumber(),
                 query.getPageSize(),
                 chatQueryRepository.getChatsPaginated(
+                        query.getRequesterId(),
                         query.getPageNumber(),
                         query.getPageSize(),
                         query.getChatName()

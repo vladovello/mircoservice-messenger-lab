@@ -18,6 +18,7 @@ public class MessageListQueryHandler implements QueryHandler<MessageListQuery, P
                 query.getPageNumber(),
                 query.getPageSize(),
                 messageQueryRepository.getMessagesPaginated(
+                        query.getRequesterId(),
                         query.getPageNumber(),
                         query.getPageSize(),
                         query.getMessageText()

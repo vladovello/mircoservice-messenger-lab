@@ -3,7 +3,8 @@ package com.messenger.chat.application.query.repository;
 import com.messenger.chat.application.query.dto.PreviewChatInfo;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MessageQueryRepository {
-    List<PreviewChatInfo> getMessagesPaginated(int pageNumber, int pageSize, String messageText);
+    List<PreviewChatInfo> getMessagesPaginated(UUID requesterId, int pageNumber, int pageSize, String messageText);
 }
