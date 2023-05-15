@@ -29,7 +29,6 @@ public class ChatMessagesPaginationQueryHandler implements
         this.chatParticipantRepository = chatParticipantRepository;
     }
 
-    // TODO: 15.05.2023 create pipeline and move user belongs to chat and chat exists checks to one of pipes
     @Override
     public Result<List<MessageDto>> handle(@NonNull ChatMessagesPaginationQuery query) {
         if (!chatRepository.isChatExists(query.getChatId())) {

@@ -1,5 +1,6 @@
 package com.messenger.chat.application.query;
 
-public interface QueryHandler<Q, R> {
-    R handle(Q query);
+import com.messenger.chat.application.Handler;
+
+public interface QueryHandler<Q, R> extends Handler<Q, R> {
 }
