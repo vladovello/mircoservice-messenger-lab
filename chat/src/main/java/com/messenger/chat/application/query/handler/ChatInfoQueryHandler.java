@@ -1,5 +1,6 @@
 package com.messenger.chat.application.query.handler;
 
+import com.messenger.chat.application.command.exception.UnexpectedException;
 import com.messenger.chat.application.query.ChatInfoQuery;
 import com.messenger.chat.application.query.QueryHandler;
 import com.messenger.chat.application.query.dto.ChatInfoDto;
@@ -50,9 +51,8 @@ public class ChatInfoQueryHandler implements QueryHandler<ChatInfoQuery, Result<
         } else {
             var optionalChatOwner = chatParticipantRepository.getChatOwner(chat.getId());
 
-            // TODO: 15.05.2023 add proper exception 
             if (optionalChatOwner.isEmpty()) {
-                throw new RuntimeException();
+                throw new UnexpectedException(String.format("Multi chat with id '%s' has no chat owner", chat.getId()));
             }
 
             var chatOwner = optionalChatOwner.get();
