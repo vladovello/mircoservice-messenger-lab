@@ -1,4 +1,6 @@
-package com.messenger.chat.domain.user;
+package com.messenger.chat.domain.user.repository;
+
+import com.messenger.chat.domain.user.User;
 
 import java.util.UUID;
 

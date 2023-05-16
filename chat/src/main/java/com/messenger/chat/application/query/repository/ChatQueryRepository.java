@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface ChatQueryRepository {
     List<PreviewChatInfo> getChatsPaginated(UUID requesterId, int pageNumber, int pageSize, String chatName);
+    List<PreviewChatInfo> getMessagesPaginated(UUID requesterId, int pageNumber, int pageSize, String messageText);
 }

@@ -3,21 +3,22 @@ package com.messenger.chat.application.query.handler;
 import com.messenger.chat.application.query.MessageListQuery;
 import com.messenger.chat.application.query.QueryHandler;
 import com.messenger.chat.application.query.dto.PreviewChatInfoListDto;
-import com.messenger.chat.application.query.repository.MessageQueryRepository;
+import com.messenger.chat.application.query.repository.ChatQueryRepository;
+import lombok.NonNull;
 
 public class MessageListQueryHandler implements QueryHandler<MessageListQuery, PreviewChatInfoListDto> {
-    private final MessageQueryRepository messageQueryRepository;
+    private final ChatQueryRepository chatQueryRepository;
 
-    public MessageListQueryHandler(MessageQueryRepository messageQueryRepository) {
-        this.messageQueryRepository = messageQueryRepository;
+    public MessageListQueryHandler(ChatQueryRepository chatQueryRepository) {
+        this.chatQueryRepository = chatQueryRepository;
     }
 
     @Override
-    public PreviewChatInfoListDto handle(MessageListQuery query) {
+    public PreviewChatInfoListDto handle(@NonNull MessageListQuery query) {
         return new PreviewChatInfoListDto(
                 query.getPageNumber(),
                 query.getPageSize(),
-                messageQueryRepository.getMessagesPaginated(
+                chatQueryRepository.getMessagesPaginated(
                         query.getRequesterId(),
                         query.getPageNumber(),
                         query.getPageSize(),

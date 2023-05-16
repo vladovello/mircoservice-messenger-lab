@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 public class ChatMessagePreview {
     @NonNull private String messageText;
-    @NonNull private LocalDateTime sendingDate;
+    @NonNull private LocalDateTime creationDate;
     @NonNull private UUID senderId;
     private boolean hasAttachment;
     private String attachmentName;
