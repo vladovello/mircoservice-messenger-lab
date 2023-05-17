@@ -11,7 +11,6 @@ import lombok.NonNull;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: 13.05.2023 вынести методы, тесно связанные с чатом из других сервисов в этот
 public interface ChatDomainService {
     Chat createMultiChat(ChatName chatName, UUID avatarId, UUID ownerId, List<UUID> participantIds);
 

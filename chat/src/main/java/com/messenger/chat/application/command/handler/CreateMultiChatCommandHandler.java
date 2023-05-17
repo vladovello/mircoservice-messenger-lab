@@ -7,7 +7,9 @@ import com.messenger.chat.domain.chat.service.ChatDomainService;
 import com.messenger.chat.domain.chat.valueobject.ChatName;
 import com.messenger.sharedlib.util.Result;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CreateMultiChatCommandHandler implements CommandHandler<CreateMultiChatCommand, Result<ChatCommandDto>> {
     private final ChatDomainService chatDomainService;
 

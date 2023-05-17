@@ -6,6 +6,7 @@ import com.messenger.chat.infra.persistence.repository.OffsetPageRequest;
 import com.messenger.chat.infra.persistence.repository.jpa.MessageRepositoryJpa;
 import lombok.NonNull;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Repository
 public class MessageRepositoryImpl implements MessageRepository {
     private final MessageRepositoryJpa messageRepositoryJpa;
 

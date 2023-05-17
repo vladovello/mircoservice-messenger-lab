@@ -13,7 +13,9 @@ import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepos
 import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChangeMultiChatCommandHandler implements CommandHandler<ChangeMultiChatCommand, Result<Unit>> {
     private final ChatParticipantRepository chatParticipantRepository;
     private final ChatDomainService chatDomainService;
@@ -31,10 +33,10 @@ public class ChangeMultiChatCommandHandler implements CommandHandler<ChangeMulti
 
     @Override
     public Result<Unit> handle(@NonNull ChangeMultiChatCommand command) {
-        var optionalChat = chatRepository.getChat(command.getId());
+        var optionalChat = chatRepository.getChat(command.getChatId());
 
         if (optionalChat.isEmpty()) {
-            return Result.failure(new ChatNotFoundException(command.getId()));
+            return Result.failure(new ChatNotFoundException(command.getChatId()));
         }
 
         var chat = optionalChat.get();
@@ -44,12 +46,12 @@ public class ChangeMultiChatCommandHandler implements CommandHandler<ChangeMulti
         }
 
         var optionalActorChatParticipant = chatParticipantRepository.getChatParticipant(
-                command.getId(),
+                command.getChatId(),
                 command.getActorId()
         );
 
         if (optionalActorChatParticipant.isEmpty()) {
-            return Result.failure(new ChatParticipantNotFoundException(command.getId(), command.getActorId()));
+            return Result.failure(new ChatParticipantNotFoundException(command.getChatId(), command.getActorId()));
         }
 
         var actorChatParticipant = optionalActorChatParticipant.get();

@@ -18,7 +18,7 @@ public class MessageListQueryHandler implements QueryHandler<MessageListQuery, P
         return new PreviewChatInfoListDto(
                 query.getPageNumber(),
                 query.getPageSize(),
-                chatQueryRepository.getMessagesPaginated(
+                chatQueryRepository.getUserMessagesPaginated(
                         query.getRequesterId(),
                         query.getPageNumber(),
                         query.getPageSize(),

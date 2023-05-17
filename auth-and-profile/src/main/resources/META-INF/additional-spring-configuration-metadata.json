@@ -79,6 +79,11 @@
       "name": "app.security.jwt-auth.root-path",
       "type": "java.lang.String",
       "description": "Root path for JWT authorization."
+    },
+    {
+      "name": "app.security.jwt-auth.access-exp",
+      "type": "java.lang.String",
+      "description": "Access token expiration time."
     }
   ]
 }

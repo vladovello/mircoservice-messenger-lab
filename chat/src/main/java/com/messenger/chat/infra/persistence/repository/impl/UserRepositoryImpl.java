@@ -2,13 +2,22 @@ package com.messenger.chat.infra.persistence.repository.impl;
 
 import com.messenger.chat.domain.user.User;
 import com.messenger.chat.domain.user.repository.UserRepository;
+import com.messenger.chat.infra.persistence.repository.jpa.UserRepositoryJpa;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class UserRepositoryImpl implements UserRepository {
-    // TODO: 16.05.2023 implement
+    private final UserRepositoryJpa userRepositoryJpa;
+
+    public UserRepositoryImpl(UserRepositoryJpa userRepositoryJpa) {
+        this.userRepositoryJpa = userRepositoryJpa;
+    }
+
     @Override
-    public User getUser(UUID userId) {
-        return null;
+    public Optional<User> getUser(UUID userId) {
+        return userRepositoryJpa.findById(userId);
     }
 }

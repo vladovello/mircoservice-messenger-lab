@@ -11,7 +11,9 @@ import com.messenger.chat.domain.chatparticipant.exception.ChatParticipantNotFou
 import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepository;
 import com.messenger.sharedlib.util.Result;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChatInfoQueryHandler implements QueryHandler<ChatInfoQuery, Result<ChatInfoDto>> {
     private final ChatParticipantRepository chatParticipantRepository;
     private final ChatRepository chatRepository;

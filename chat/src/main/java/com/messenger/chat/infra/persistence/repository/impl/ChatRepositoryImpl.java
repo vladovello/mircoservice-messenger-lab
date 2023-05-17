@@ -8,12 +8,14 @@ import com.messenger.chat.infra.persistence.repository.jpa.ChatParticipantReposi
 import com.messenger.chat.infra.persistence.repository.jpa.ChatRepositoryJpa;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Join;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class ChatRepositoryImpl implements ChatRepository {
     private final ChatRepositoryJpa chatRepositoryJpa;
     private final ChatParticipantRepositoryJpa chatParticipantRepositoryJpa;
@@ -62,7 +64,7 @@ public class ChatRepositoryImpl implements ChatRepository {
         var chats1 = chatParticipantRepositoryJpa.findAllByUserId(userId1);
         var chats2 = chatParticipantRepositoryJpa.findAllByUserId(userId2);
 
-        // TODO: 16.05.2023 maybe rewrite to query
+        // TODO: 16.05.2023 maybe rewrite to JPQL
         var optionalDialogueChat = chats1.stream()
                 .filter(chats2::contains)
                 .filter(chatIdProjection -> getChatType(chatIdProjection.getChatId()) == ChatType.DIALOGUE)

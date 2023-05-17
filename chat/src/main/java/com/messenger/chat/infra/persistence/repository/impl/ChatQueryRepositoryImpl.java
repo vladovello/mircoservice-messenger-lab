@@ -14,11 +14,13 @@ import lombok.NonNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public class ChatQueryRepositoryImpl implements ChatQueryRepository {
     private final ChatRepositoryJpa chatRepositoryJpa;
     private final ChatParticipantRepositoryJpa chatParticipantRepositoryJpa;
@@ -34,11 +36,16 @@ public class ChatQueryRepositoryImpl implements ChatQueryRepository {
         this.messageRepositoryJpa = messageRepositoryJpa;
     }
 
-    // TODO: 16.05.2023 возможно можно сделать через JOIN и спецификации
     @Override
-    public List<PreviewChatInfo> getChatsPaginated(UUID requesterId, int pageNumber, int pageSize, String chatName) {
+    public List<PreviewChatInfo> getUserChatsPaginated(
+            UUID requesterId,
+            int pageNumber,
+            int pageSize,
+            String chatName
+    ) {
         var pageRequest = PageRequest.of(pageNumber, pageSize);
 
+        // TODO: 17.05.2023 сейчас возвращаются все чаты. Возможно стоит поменять, чтобы возвращались только чаты, в которых состоит пользователь
         var chatPage = chatRepositoryJpa.findAll(hasChatNameLike(chatName), pageRequest);
         var previewChatInfoList = new ArrayList<PreviewChatInfo>();
 
@@ -72,7 +79,7 @@ public class ChatQueryRepositoryImpl implements ChatQueryRepository {
     }
 
     @Override
-    public List<PreviewChatInfo> getMessagesPaginated(
+    public List<PreviewChatInfo> getUserMessagesPaginated(
             UUID requesterId,
             int pageNumber,
             int pageSize,

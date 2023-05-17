@@ -5,12 +5,14 @@ import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepos
 import com.messenger.chat.infra.persistence.repository.jpa.ChatParticipantRepositoryJpa;
 import com.messenger.chat.infra.persistence.repository.jpa.ChatRepositoryJpa;
 import lombok.NonNull;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+@Repository
 public class ChatParticipantRepositoryImpl implements ChatParticipantRepository {
     private final ChatParticipantRepositoryJpa chatParticipantRepositoryJpa;
     private final ChatRepositoryJpa chatRepositoryJpa;
