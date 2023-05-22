@@ -1,1 +1,63 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 1112
 
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/friends
+    username: friends_user
+    password: odinochestvo
+    driverClassName: org.postgresql.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+app:
+  security:
+    jwt-auth:
+      permit-all:
+        - /swagger-ui/index.html
+      validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
+      root-path: /api
+    integrations:
+      root-path: /integration
+      api-key: lozhka_s_degtem
+  services:
+    profile:
+      base-url: http://localhost:1111
+      root-path: /integration
+      timeout: 3000
+      api-key: lozhka_s_degtem
+  rabbitmq:
+    queues:
+      - name: notificationQ
+        durable: true
+    bindings:
+      - destination: notificationQ
+        destination-type: queue
+        exchange: blacklistModifiedExchange
+        routing-key: ""
+      - destination: notificationQ
+        destination-type: queue
+        exchange: friendshipModifiedExchange
+        routing-key: ""
+      - destination: notificationQ
+        destination-type: queue
+        exchange: messageCreatedExchange
+        routing-key: ""
+      - destination: notificationQ
+        destination-type: queue
+        exchange: userLoggedExchange
+        routing-key: ""

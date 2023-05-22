@@ -10,10 +10,11 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.valueobject.RegexPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
-import com.messenger.sharedlib.rabbitmq.message.profile.UserLoggedMessage;
+import com.messenger.sharedlib.rabbitmq.message.auth.UserLoggedMessage;
 import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unused")
@@ -30,7 +31,7 @@ public class LoginUserCommandHandler implements Command.Handler<LoginUserCommand
             UserMapper userMapper,
             TokenService tokenService,
             PasswordHelper passwordHelper,
-            AmqpTemplate rabbitTemplate
+            @Qualifier("userLoggedTemplate") AmqpTemplate rabbitTemplate
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;

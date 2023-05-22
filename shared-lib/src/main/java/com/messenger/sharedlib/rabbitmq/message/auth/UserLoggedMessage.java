@@ -1,4 +1,4 @@
-package com.messenger.sharedlib.rabbitmq.message.profile;
+package com.messenger.sharedlib.rabbitmq.message.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

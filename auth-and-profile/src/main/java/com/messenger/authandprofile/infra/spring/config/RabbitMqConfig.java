@@ -16,10 +16,16 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class RabbitMqConfig {
     private static final String USER_MODIFIED_EXCHANGE = "userModifiedExchange";
+    private static final String USER_LOGGED_EXCHANGE = "userLoggedExchange";
 
     @Bean
     FanoutExchange userModifiedExchange() {
-        return new FanoutExchange(USER_MODIFIED_EXCHANGE, true, false);
+        return new FanoutExchange(USER_LOGGED_EXCHANGE, true, false);
+    }
+
+    @Bean
+    FanoutExchange userLoggedExchange() {
+        return new FanoutExchange(USER_LOGGED_EXCHANGE, true, false);
     }
 
     @Bean
@@ -35,6 +41,14 @@ public class RabbitMqConfig {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(jsonMessageConverter());
         template.setExchange(USER_MODIFIED_EXCHANGE);
+        return template;
+    }
+
+    @Bean
+    public RabbitTemplate userLoggedTemplate(@NonNull ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(jsonMessageConverter());
+        template.setExchange(USER_LOGGED_EXCHANGE);
         return template;
     }
 }
