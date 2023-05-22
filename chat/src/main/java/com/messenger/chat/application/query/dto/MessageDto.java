@@ -25,8 +25,8 @@ public class MessageDto {
                 message.getId(),
                 message.getCreationDate(),
                 message.getMessageText().getText(),
-                message.getUser().getFullName().getValue(),
-                message.getUser().getAvatarId(),
+                message.getChatUser().getFullName().getValue(),
+                message.getChatUser().getAvatarId(),
                 message.getAttachments().stream().map(attachment -> new AttachmentDto(
                         attachment.getId(),
                         attachment.getFileName(),

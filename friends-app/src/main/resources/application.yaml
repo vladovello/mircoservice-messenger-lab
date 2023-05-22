@@ -18,6 +18,11 @@ spring:
     username: friends_user
     password: odinochestvo
     driverClassName: org.postgresql.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 app:
   security:
@@ -35,3 +40,5 @@ app:
       root-path: /integration
       timeout: 3000
       api-key: lozhka_s_degtem
+  rabbitmq:
+    queueName: friendsQ

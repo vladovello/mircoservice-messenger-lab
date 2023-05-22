@@ -1,12 +1,17 @@
 package com.messenger.authandprofile.domain.model.entity;
 
+import com.messenger.authandprofile.domain.event.ProfileChangedEvent;
+import com.messenger.authandprofile.domain.event.UserCreatedEvent;
 import com.messenger.authandprofile.domain.model.valueobject.*;
+import com.messenger.sharedlib.ddd.domain.DomainEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 // TODO: 10.04.2023 separate user into Account and Profile. Think of how to deal with common and not related data
@@ -25,6 +30,8 @@ public class User {
     @NonNull private FullName fullName;
     @NonNull private Password password;
     @NonNull private LocalDate registrationDate;
+
+    @NonNull private List<DomainEvent> domainEvents = new ArrayList<>();
 
     // Optional fields
     private PhoneNumber phoneNumber;
@@ -60,11 +67,18 @@ public class User {
         setPhoneNumber(phoneNumber);
         setCity(city);
         setAvatar(avatar);
+
+        domainEvents.add(new ProfileChangedEvent(id, fullName, birthDate, avatar));
+    }
+
+    public void clearEvents() {
+        this.domainEvents.clear();
     }
 
     protected void generateId() {
         this.id = UUID.randomUUID();
     }
+
     protected void setRegistrationDate() {
         this.registrationDate = LocalDate.now();
     }
@@ -117,9 +131,19 @@ public class User {
         }
 
         // TODO: 20.04.2023 move registration date out of domain model. Work with it using events
+        // TODO: 22.05.2023 think about moving User creation into domain service since User needs default avatar
         public User registerUser() {
             this.user.generateId();
             this.user.setRegistrationDate();
+            this.user.setAvatar(UUID.nameUUIDFromBytes(new byte[0]));
+
+            this.user.domainEvents.add(new UserCreatedEvent(
+                    this.user.getId(),
+                    this.user.getFullName(),
+                    this.user.getBirthDate(),
+                    this.user.getAvatar()
+            ));
+
             return this.user;
         }
 

@@ -33,7 +33,7 @@ public class Chat extends DomainEntity {
     @Convert(converter = ChatNameConverter.class)
     private ChatName chatName;
     @OneToMany
-    @JoinColumn(name = "chat_role_id")
+    @JoinColumn(name = "roleId")
     @NonNull
     private Set<ChatRole> roles;
     @Column(nullable = false)

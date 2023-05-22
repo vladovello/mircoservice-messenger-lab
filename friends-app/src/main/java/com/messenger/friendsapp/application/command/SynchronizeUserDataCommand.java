@@ -7,6 +7,9 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class SynchronizeBlacklistDataCommand {
-    UUID friendId;
+public class SynchronizeUserDataCommand {
+    private UUID userId;
+    private String firstName;
+    private String lastName;
+    private String middleName;
 }

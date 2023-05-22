@@ -2,6 +2,7 @@ package com.messenger.friendsapp.domain.service.impl;
 
 import com.messenger.friendsapp.domain.entity.Addressee;
 import com.messenger.friendsapp.domain.entity.Friendship;
+import com.messenger.friendsapp.domain.event.FriendshipDeletedEvent;
 import com.messenger.friendsapp.domain.exception.UserIsBlockedException;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.repository.FriendshipRepository;
@@ -82,6 +83,12 @@ public class DomainFriendshipServiceImpl implements DomainFriendshipService {
 
             friendshipRepository.save(addresseeFriendship);
         }
+
+        friendship.getDomainEvents().add(new FriendshipDeletedEvent(
+                friendship.getId(),
+                friendship.getRequesterId(),
+                friendship.getAddressee()
+        ));
 
         friendshipRepository.delete(friendship);
     }

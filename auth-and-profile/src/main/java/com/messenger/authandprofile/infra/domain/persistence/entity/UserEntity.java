@@ -1,12 +1,17 @@
 package com.messenger.authandprofile.infra.domain.persistence.entity;
 
+import com.messenger.sharedlib.ddd.domain.DomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -60,8 +65,26 @@ public class UserEntity {
     @Setter
     private UUID avatar;
 
+    @Transient
+    @Setter
+    private List<DomainEvent> domainEvents;
+
     public UserEntity() {
         // For JPA
+    }
+
+    @DomainEvents
+    public List<DomainEvent> domainEvents() {
+        return Collections.unmodifiableList(domainEvents);
+    }
+
+    @AfterDomainEventPublication
+    public void clearDomainEvents() {
+        domainEvents.clear();
+    }
+
+    public void addEvent(DomainEvent domainEvent) {
+        domainEvents.add(domainEvent);
     }
 
     public void setFirstName(String firstName) {

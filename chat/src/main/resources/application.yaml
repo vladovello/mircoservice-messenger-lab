@@ -1,1 +1,44 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 1113
 
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chats
+    username: chat_user
+    password: iamchatuser
+    driverClassName: org.postgresql.Driver
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
+
+app:
+  security:
+    jwt-auth:
+      permit-all:
+        - /swagger-ui/index.html
+      validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
+      root-path: /api
+    integrations:
+      root-path: /integration
+      api-key: lozhka_s_degtem
+  services:
+    friends:
+      base-url: http://localhost:1112
+      root-path: /integration
+      timeout: 3000
+      api-key: lozhka_s_degtem
+  rabbitmq:
+    queueName: chatQ

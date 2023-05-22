@@ -1,0 +1,30 @@
+package com.messenger.authandprofile.domain.event;
+
+import com.messenger.authandprofile.domain.model.valueobject.BirthDate;
+import com.messenger.authandprofile.domain.model.valueobject.FullName;
+import com.messenger.sharedlib.ddd.domain.BaseDomainEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProfileChangedEvent extends BaseDomainEvent {
+    private UUID userId;
+    private FullName fullName;
+    private BirthDate birthDate;
+    private UUID avatarId;
+
+    @Override
+    public String toString() {
+        return "ProfileChangedEvent{" +
+                "userId=" + userId +
+                ", fullName=" + fullName +
+                ", birthDate=" + birthDate +
+                ", avatarId=" + avatarId +
+                '}';
+    }
+}

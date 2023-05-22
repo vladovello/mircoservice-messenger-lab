@@ -4,9 +4,9 @@ import com.messenger.friendsapp.domain.entity.Blacklist;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.friendsapp.infra.persistence.mapper.BlacklistEntityMapper;
-import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +15,13 @@ public class BlacklistRepositoryImpl implements BlacklistRepository {
 
     public BlacklistRepositoryImpl(BlacklistRepositoryJpa blacklistRepositoryJpa) {
         this.blacklistRepositoryJpa = blacklistRepositoryJpa;
+    }
+
+    @Override
+    public Optional<Blacklist> getByRequesterIdAndAddresseeId(UUID requesterId, UUID addresseeId) {
+        return blacklistRepositoryJpa
+                .findByRequesterIdAndAddresseeId(requesterId, addresseeId)
+                .map(BlacklistEntityMapper::mapToDomainModel);
     }
 
     @Override
@@ -29,17 +36,25 @@ public class BlacklistRepositoryImpl implements BlacklistRepository {
     }
 
     @Override
-    public void delete(UUID requesterId, UUID addresseeId) {
-        blacklistRepositoryJpa.deleteByRequesterIdAndAddresseeId(requesterId, addresseeId);
+    public void delete(Blacklist blacklist) {
+        var bl = BlacklistEntityMapper.mapToEntity(blacklist);
+        blacklistRepositoryJpa.delete(bl);
     }
 
     @Override
-    public void updateAllAddresseeIdFullName(UUID addresseeId, @NonNull FullName fullName) {
-        var friendships = blacklistRepositoryJpa.findAllByAddresseeId(addresseeId);
-        friendships.forEach(blacklistEntity -> {
-            blacklistEntity.setAddresseeFirstName(fullName.getFirstName());
-            blacklistEntity.setAddresseeMiddleName(fullName.getMiddleName());
-            blacklistEntity.setAddresseeLastName(fullName.getLastName());
-        });
+    public void updateFullNameById(UUID userId, FullName fullName) {
+        var optionalFriendship = blacklistRepositoryJpa.findById(userId);
+
+        if (optionalFriendship.isEmpty()) {
+            return;
+        }
+
+        var friendship = optionalFriendship.get();
+
+        friendship.setAddresseeFirstName(fullName.getFirstName());
+        friendship.setAddresseeMiddleName(fullName.getMiddleName());
+        friendship.setAddresseeLastName(fullName.getLastName());
+
+        blacklistRepositoryJpa.save(friendship);
     }
 }

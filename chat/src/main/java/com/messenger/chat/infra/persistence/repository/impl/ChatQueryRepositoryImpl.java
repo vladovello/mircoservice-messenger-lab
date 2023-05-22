@@ -129,7 +129,7 @@ public class ChatQueryRepositoryImpl implements ChatQueryRepository {
 
         var secondDialogueUser = optionalSecondDialogueUser.get();
 
-        return secondDialogueUser.getUser().getFullName().getValue();
+        return secondDialogueUser.getChatUser().getFullName().getValue();
     }
 
     private static @NonNull Specification<Chat> hasChatNameLike(String chatName) {

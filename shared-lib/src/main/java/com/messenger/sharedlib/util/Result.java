@@ -82,6 +82,15 @@ public class Result<T> {
         return onFailure.apply(((Failure) value).getException());
     }
 
+    public void foldConsume(Consumer<T> onSuccess, Consumer<Exception> onFailure) {
+        if (isSuccess()) {
+            onSuccess.accept((T) value);
+            return;
+        }
+
+        onFailure.accept(((Failure) value).getException());
+    }
+
     public <R> Result<R> map(Function<T, R> transform) {
         if (isSuccess()) return Result.success(transform.apply((T) value));
         return new Result<>((R) value);

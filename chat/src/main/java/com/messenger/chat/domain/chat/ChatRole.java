@@ -2,7 +2,6 @@ package com.messenger.chat.domain.chat;
 
 import com.messenger.chat.domain.chatparticipant.converter.ChatRoleNameConverter;
 import com.messenger.chat.domain.chatparticipant.valueobject.ChatRoleName;
-import com.messenger.sharedlib.ddd.domain.UuidIdentity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -28,11 +27,9 @@ public class ChatRole implements Comparable<ChatRole> {
 
     @Id
     @Column(nullable = false)
-    @Convert(converter = UuidIdentity.class)
     @NonNull
     private UUID roleId;
     @Column(nullable = false)
-    @Convert(converter = UuidIdentity.class)
     @NonNull
     private UUID chatId;
     @Column(nullable = false)

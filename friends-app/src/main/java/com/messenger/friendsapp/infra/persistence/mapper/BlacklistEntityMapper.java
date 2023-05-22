@@ -29,7 +29,7 @@ public final class BlacklistEntityMapper {
 
     @Contract("_ -> new")
     public static @NonNull BlacklistEntity mapToEntity(@NonNull Blacklist blacklist) {
-        return new BlacklistEntity(
+        var be = new BlacklistEntity(
                 blacklist.getId(),
                 blacklist.getRequesterId(),
                 blacklist.getAddressee().getId(),
@@ -39,5 +39,8 @@ public final class BlacklistEntityMapper {
                 blacklist.getAddressee().getFullName().getName(),
                 blacklist.getAdditionDate()
         );
+        be.setDomainEvents(blacklist.getDomainEvents());
+
+        return be;
     }
 }

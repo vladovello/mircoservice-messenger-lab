@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -54,15 +52,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         PayloadPrincipal userData;
         try {
+            log.info("Access token expiration ");
+
             var key = Keys.hmacShaKeyFor(validationParams.getValidationKey().getBytes(StandardCharsets.UTF_8));
             var data = Jwts.parserBuilder()
                     .setSigningKey(key)
-                    .requireExpiration(Date.from(validationParams.getExpirationDate()
-                            .atStartOfDay()
-                            .atZone(ZoneId.systemDefault())
-                            .toInstant()))
                     .build()
                     .parseClaimsJws(jwt);
+
             var idStr = String.valueOf(data.getBody().getSubject());
 
             userData = new PayloadPrincipal(

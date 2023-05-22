@@ -1,6 +1,6 @@
 package com.messenger.chat.domain.user.repository;
 
-import com.messenger.chat.domain.user.User;
+import com.messenger.chat.domain.user.ChatUser;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -9,5 +9,6 @@ import java.util.UUID;
 //  пользователей, что неверно. Поэтому, для синхронизации данных с сервисом профилей можно использовать инфраструктурный
 //  сервис, о котором ни в домене, ни в слое приложения знать не будут.
 public interface UserRepository {
-    Optional<User> getUser(UUID userId);
+    Optional<ChatUser> getUser(UUID userId);
+    void save(ChatUser user);
 }

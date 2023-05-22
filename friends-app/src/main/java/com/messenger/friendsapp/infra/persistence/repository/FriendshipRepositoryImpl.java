@@ -3,7 +3,6 @@ package com.messenger.friendsapp.infra.persistence.repository;
 import com.messenger.friendsapp.domain.entity.Friendship;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.repository.FriendshipRepository;
-import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
 import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.friendsapp.infra.persistence.entity.metadata.FriendshipEntityFields;
 import com.messenger.friendsapp.infra.persistence.mapper.FriendshipEntityMapper;
@@ -40,35 +39,20 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     }
 
     @Override
-    public List<Friendship> findAllByRequesterIdAndFriendshipStatus(
-            UUID requesterId,
-            FriendshipStatus friendshipStatus
-    ) {
-        var friendEntityList = friendshipRepositoryJpa.findAllByRequesterIdAndFriendshipStatus(
-                requesterId,
-                friendshipStatus
-        );
-        var friendships = FriendshipEntityMapper.mapToDomainModelList(friendEntityList);
-        removeBlockedAndDeletedUsers(friendships);
-        return friendships;
-    }
+    public void updateFullNameById(UUID userId, FullName fullName) {
+        var optionalFriendship = friendshipRepositoryJpa.findById(userId);
 
-    @Override
-    public List<Friendship> findAllByRequesterId(UUID requesterId) {
-        var friendEntityList = friendshipRepositoryJpa.findAllByRequesterId(requesterId);
-        var friendships = FriendshipEntityMapper.mapToDomainModelList(friendEntityList);
-        removeBlockedAndDeletedUsers(friendships);
-        return friendships;
-    }
+        if (optionalFriendship.isEmpty()) {
+            return;
+        }
 
-    @Override
-    public void updateAllAddresseeIdFullName(UUID addresseeId, FullName fullName) {
-        var friendships = friendshipRepositoryJpa.findAllByAddresseeId(addresseeId);
-        friendships.forEach(friendshipEntity -> {
-            friendshipEntity.setAddresseeFirstName(fullName.getFirstName());
-            friendshipEntity.setAddresseeMiddleName(fullName.getMiddleName());
-            friendshipEntity.setAddresseeLastName(fullName.getLastName());
-        });
+        var friendship = optionalFriendship.get();
+
+        friendship.setAddresseeFirstName(fullName.getFirstName());
+        friendship.setAddresseeMiddleName(fullName.getMiddleName());
+        friendship.setAddresseeLastName(fullName.getLastName());
+
+        friendshipRepositoryJpa.save(friendship);
     }
 
     @Override

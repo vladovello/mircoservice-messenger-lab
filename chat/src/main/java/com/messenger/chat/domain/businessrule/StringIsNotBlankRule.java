@@ -13,7 +13,7 @@ public class StringIsNotBlankRule implements BusinessRule {
 
     @Override
     public boolean isComplies() {
-        return str.isBlank();
+        return !str.isBlank();
     }
 
     @Override

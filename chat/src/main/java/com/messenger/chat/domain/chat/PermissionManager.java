@@ -21,7 +21,7 @@ public class PermissionManager {
             return false;
         }
 
-        if (!chatParticipant.getUser().getUserId().equals(message.getSenderUserId())) {
+        if (!chatParticipant.getChatUser().getUserId().equals(message.getSenderUserId())) {
             return false;
         }
 

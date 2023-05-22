@@ -1,19 +1,19 @@
 package com.messenger.friendsapp.application.command.handler;
 
 import com.messenger.friendsapp.application.command.DeleteFriendCommand;
-import com.messenger.friendsapp.domain.repository.BlacklistRepository;
+import com.messenger.friendsapp.domain.service.DomainBlacklistService;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RemoveFromBlacklistCommandHandler {
-    private final BlacklistRepository blacklistRepository;
+    private final DomainBlacklistService domainBlacklistService;
 
-    public RemoveFromBlacklistCommandHandler(BlacklistRepository blacklistRepository) {
-        this.blacklistRepository = blacklistRepository;
+    public RemoveFromBlacklistCommandHandler(DomainBlacklistService domainBlacklistService) {
+        this.domainBlacklistService = domainBlacklistService;
     }
 
     public void handle(@NonNull DeleteFriendCommand command) {
-        blacklistRepository.delete(command.getRequesterId(), command.getAddresseeId());
+        domainBlacklistService.removeFromBlacklist(command.getRequesterId(), command.getAddresseeId());
     }
 }

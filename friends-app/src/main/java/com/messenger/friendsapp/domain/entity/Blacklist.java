@@ -1,11 +1,14 @@
 package com.messenger.friendsapp.domain.entity;
 
+import com.messenger.sharedlib.ddd.domain.DomainEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /*
@@ -19,6 +22,8 @@ public class Blacklist {
     @NonNull private UUID requesterId;
     @NonNull private Addressee addressee;
     private LocalDate additionDate;
+
+    @NonNull private List<DomainEvent> domainEvents = new ArrayList<>();
 
     private Blacklist(@NonNull UUID requesterId, @NonNull Addressee addressee) {
         this.requesterId = requesterId;
@@ -42,6 +47,10 @@ public class Blacklist {
         blacklist.setId(blacklistId);
         blacklist.setAdditionDate(additionDate);
         return blacklist;
+    }
+
+    public void clearEvents() {
+        this.domainEvents.clear();
     }
 
     private void generateId() {

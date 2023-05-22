@@ -52,6 +52,7 @@ public class UserEntityMapperImpl implements UserEntityMapper {
                 .withBirthDate(birthDate)
                 .withCity(user.getCity())
                 .withAvatar(user.getAvatar())
+                .withDomainEvents(user.getDomainEvents())
                 .build();
     }
 
@@ -78,5 +79,6 @@ public class UserEntityMapperImpl implements UserEntityMapper {
         userEntity.setBirthDate(birthDate);
         userEntity.setCity(user.getCity());
         userEntity.setAvatar(user.getAvatar());
+        userEntity.setDomainEvents(user.getDomainEvents());
     }
 }

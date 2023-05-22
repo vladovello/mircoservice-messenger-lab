@@ -11,16 +11,6 @@
       "description": "Connection string for accessing some microservice."
     },
     {
-      "name": "app.services.friends.timeout",
-      "type": "java.lang.Integer",
-      "description": "Timeout for connection."
-    },
-    {
-      "name": "app.services.friends.api-key",
-      "type": "java.lang.String",
-      "description": "Api key to authorize on friends microservice."
-    },
-    {
       "name": "app.security.integrations.api-key",
       "type": "java.lang.String",
       "description": "Api key for authorizing external clients."
@@ -82,8 +72,43 @@
     },
     {
       "name": "app.security.jwt-auth.access-exp",
-      "type": "java.lang.String",
+      "type": "java.time.LocalDate",
       "description": "Access token expiration time."
+    },
+    {
+      "name": "app.services.friends.base-url",
+      "type": "java.lang.String",
+      "description": "Base url for integration requests to friends service."
+    },
+    {
+      "name": "app.services.friends.root-path",
+      "type": "java.lang.String",
+      "description": "Root path following the base url used in a friends service integration request ."
+    },
+    {
+      "name": "app.services.friends.timeout",
+      "type": "java.lang.Integer",
+      "description": "Timeout for a friends service integration requests."
+    },
+    {
+      "name": "app.services.friends.api-key",
+      "type": "java.lang.String",
+      "description": "Api key used for authorization in a friends service integration requests."
+    },
+    {
+      "name": "app.rabbitmq.host",
+      "type": "java.lang.String",
+      "description": "RabbitMQ host."
+    },
+    {
+      "name": "app.rabbitmq.username",
+      "type": "java.lang.String",
+      "description": "RabbitMQ server username."
+    },
+    {
+      "name": "app.rabbitmq.password",
+      "type": "java.lang.String",
+      "description": "RabbitMQ server password."
     }
   ]
 }

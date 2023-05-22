@@ -29,6 +29,7 @@
     <properties>
         <java.version>11</java.version>
         <spring-boot.version>2.7.10</spring-boot.version>
+        <spring-rabbit-test.version>2.4.12</spring-rabbit-test.version>
     </properties>
 
     <dependencies>
@@ -60,6 +61,21 @@
                 <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+
+            <!-- RabbitMQ |START| -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.amqp</groupId>
+                <artifactId>spring-rabbit-test</artifactId>
+                <version>${spring-rabbit-test.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- RabbitMQ |END| -->
+
             <!-- Spring boot starters |END| -->
         </dependencies>
     </dependencyManagement>

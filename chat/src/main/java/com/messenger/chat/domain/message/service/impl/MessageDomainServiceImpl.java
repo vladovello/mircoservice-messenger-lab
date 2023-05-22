@@ -38,7 +38,7 @@ public class MessageDomainServiceImpl implements MessageDomainService {
     @Override
     public Result<Unit> changeMessage(ChatParticipant chatParticipant, Message message) {
         if (!PermissionManager.canManageMessage(chatParticipant, message)) {
-            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getUser().getUserId()));
+            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getChatUser().getUserId()));
         }
 
         messageRepository.save(message);
@@ -49,7 +49,7 @@ public class MessageDomainServiceImpl implements MessageDomainService {
     @Override
     public Result<Unit> deleteMessage(ChatParticipant chatParticipant, Message message) {
         if (!PermissionManager.canManageMessage(chatParticipant, message)) {
-            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getUser().getUserId()));
+            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getChatUser().getUserId()));
         }
 
         messageRepository.delete(message);

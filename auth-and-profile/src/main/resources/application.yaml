@@ -18,6 +18,11 @@ spring:
     username: root
     password: cvsecure
     driverClassName: org.postgresql.Driver
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
 
 app:
   security:
@@ -33,6 +38,7 @@ app:
         - /api/users/auth/register
         - /api/users/auth/login
         - /api/users/profile/all
+        - /api/users/profile/test
       validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
       access-exp: 00:05:00
       root-path: /api

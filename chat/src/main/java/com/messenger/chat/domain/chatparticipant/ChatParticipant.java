@@ -2,9 +2,8 @@ package com.messenger.chat.domain.chatparticipant;
 
 import com.messenger.chat.domain.chat.ChatRole;
 import com.messenger.chat.domain.chat.Permission;
-import com.messenger.chat.domain.user.User;
+import com.messenger.chat.domain.user.ChatUser;
 import com.messenger.sharedlib.ddd.domain.DomainEntity;
-import com.messenger.sharedlib.ddd.domain.UuidIdentity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,15 +22,13 @@ import java.util.stream.Collectors;
 public class ChatParticipant extends DomainEntity {
     @Id
     @Column(nullable = false)
-    @Convert(converter = UuidIdentity.class)
     @NonNull
     private UUID chatParticipantId;
-    @Column(nullable = false) private UUID userId;
+    @Column(name = "chatUserId", nullable = false) private UUID userId;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "chatUserId", insertable = false, updatable = false)
+    private ChatUser chatUser;
     @Column(nullable = false)
-    @Convert(converter = UuidIdentity.class)
     @NonNull
     private UUID chatId;
     @ManyToMany

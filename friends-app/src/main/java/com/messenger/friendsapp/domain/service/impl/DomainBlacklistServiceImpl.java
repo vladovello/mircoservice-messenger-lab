@@ -1,7 +1,8 @@
 package com.messenger.friendsapp.domain.service.impl;
 
-import com.messenger.friendsapp.domain.entity.Blacklist;
 import com.messenger.friendsapp.domain.entity.Addressee;
+import com.messenger.friendsapp.domain.entity.Blacklist;
+import com.messenger.friendsapp.domain.event.BlacklistItemDeletedEvent;
 import com.messenger.friendsapp.domain.repository.BlacklistRepository;
 import com.messenger.friendsapp.domain.service.DomainBlacklistService;
 import lombok.NonNull;
@@ -24,5 +25,23 @@ public class DomainBlacklistServiceImpl implements DomainBlacklistService {
         }
 
         blacklistRepository.save(Blacklist.createNewBlacklist(requesterId, addressee));
+    }
+
+    @Override
+    public void removeFromBlacklist(UUID requesterId, UUID addresseeId) {
+        var optionalBlacklistItem = blacklistRepository.getByRequesterIdAndAddresseeId(requesterId, addresseeId);
+
+        if (optionalBlacklistItem.isEmpty()) {
+            return;
+        }
+
+        var blacklistItem = optionalBlacklistItem.get();
+        blacklistItem.getDomainEvents().add(new BlacklistItemDeletedEvent(
+                blacklistItem.getId(),
+                blacklistItem.getRequesterId(),
+                blacklistItem.getAddressee()
+        ));
+
+        blacklistRepository.delete(blacklistItem);
     }
 }

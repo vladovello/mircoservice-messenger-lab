@@ -1,12 +1,15 @@
 package com.messenger.friendsapp.domain.entity;
 
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
+import com.messenger.sharedlib.ddd.domain.DomainEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,6 +20,8 @@ public class Friendship {
     @NonNull private Addressee addressee;
     @NonNull private FriendshipStatus friendshipStatus;
     private LocalDate additionDate;
+
+    @NonNull private List<DomainEvent> domainEvents = new ArrayList<>();
 
     private Friendship(
             @NonNull UUID requesterId,
@@ -40,6 +45,7 @@ public class Friendship {
     }
 
     public static @NonNull Friendship createNewFriendship(UUID requesterId, Addressee addressee) {
+
         return createNewFriendship(requesterId, addressee, FriendshipStatus.PENDING);
     }
 
@@ -54,6 +60,10 @@ public class Friendship {
         friendship.setId(friendshipId);
         friendship.setAdditionDate(additionDate);
         return friendship;
+    }
+
+    public void clearEvents() {
+        this.domainEvents.clear();
     }
 
     public void setMutualStatus() {

@@ -1,10 +1,15 @@
 package com.messenger.friendsapp.infra.persistence.entity;
 
+import com.messenger.sharedlib.ddd.domain.DomainEvent;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -40,6 +45,10 @@ public class BlacklistEntity {
     @Setter
     private LocalDate deletionDate;
 
+    @Transient
+    @Setter
+    private List<DomainEvent> domainEvents;
+
     public BlacklistEntity(
             UUID id,
             UUID requesterId,
@@ -58,6 +67,20 @@ public class BlacklistEntity {
         this.addresseeLastName = addresseeLastName;
         this.addresseeFullName = addresseeFullName;
         this.additionDate = additionDate;
+    }
+
+    @DomainEvents
+    public List<DomainEvent> domainEvents() {
+        return Collections.unmodifiableList(domainEvents);
+    }
+
+    @AfterDomainEventPublication
+    public void clearDomainEvents() {
+        domainEvents.clear();
+    }
+
+    public void addEvent(DomainEvent domainEvent) {
+        domainEvents.add(domainEvent);
     }
 
     public void setAdditionDate() {

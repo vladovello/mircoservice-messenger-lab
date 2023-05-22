@@ -37,7 +37,7 @@ public final class FriendshipEntityMapper {
 
     @Contract("_ -> new")
     public static @NonNull FriendshipEntity mapToEntity(@NonNull Friendship friendship) {
-        return new FriendshipEntity(
+        var fe = new FriendshipEntity(
                 friendship.getId(),
                 friendship.getRequesterId(),
                 friendship.getAddressee().getId(),
@@ -48,5 +48,8 @@ public final class FriendshipEntityMapper {
                 friendship.getFriendshipStatus(),
                 friendship.getAdditionDate()
         );
+        fe.setDomainEvents(friendship.getDomainEvents());
+
+        return fe;
     }
 }

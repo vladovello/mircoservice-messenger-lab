@@ -2,10 +2,8 @@ package com.messenger.friendsapp.presentation.controller;
 
 import com.messenger.friendsapp.application.command.AddToBlacklistCommand;
 import com.messenger.friendsapp.application.command.DeleteFriendCommand;
-import com.messenger.friendsapp.application.command.SynchronizeBlacklistDataCommand;
 import com.messenger.friendsapp.application.command.handler.AddToBlacklistCommandHandler;
 import com.messenger.friendsapp.application.command.handler.RemoveFromBlacklistCommandHandler;
-import com.messenger.friendsapp.application.command.handler.SynchronizeBlacklistDataCommandHandler;
 import com.messenger.friendsapp.application.query.IsUserInBlacklistQuery;
 import com.messenger.friendsapp.application.query.handler.IsUserInBlacklistQueryHandler;
 import com.messenger.friendsapp.presentation.controller.dto.AddToBlacklistDto;
@@ -26,21 +24,18 @@ public class BlacklistController {
     private final RemoveFromBlacklistCommandHandler removeFromBlacklistCommandHandler;
     private final AddToBlacklistCommandHandler addToBlacklistCommandHandler;
     private final IsUserInBlacklistQueryHandler isUserInBlacklistQueryHandler;
-    private final SynchronizeBlacklistDataCommandHandler synchronizeBlacklistDataCommandHandler;
 
     public BlacklistController(
             RemoveFromBlacklistCommandHandler removeFromBlacklistCommandHandler,
             AddToBlacklistCommandHandler addToBlacklistCommandHandler,
-            IsUserInBlacklistQueryHandler isUserInBlacklistQueryHandler,
-            SynchronizeBlacklistDataCommandHandler synchronizeBlacklistDataCommandHandler
+            IsUserInBlacklistQueryHandler isUserInBlacklistQueryHandler
     ) {
         this.removeFromBlacklistCommandHandler = removeFromBlacklistCommandHandler;
         this.addToBlacklistCommandHandler = addToBlacklistCommandHandler;
         this.isUserInBlacklistQueryHandler = isUserInBlacklistQueryHandler;
-        this.synchronizeBlacklistDataCommandHandler = synchronizeBlacklistDataCommandHandler;
     }
 
-    @DeleteMapping("delete/{blacklistedId:UUID}")
+    @DeleteMapping("delete/{blacklistedId}")
     public ResponseEntity<Void> removeFromBlacklist(
             @PathVariable UUID blacklistedId,
             @NonNull Authentication authentication
@@ -77,16 +72,5 @@ public class BlacklistController {
                 addresseeId
         ));
         return ResponseEntity.ok(new IsUserInBlackListDto(isBlacklisted));
-    }
-
-    @PatchMapping("synchronize")
-    public ResponseEntity<Void> synchronizeFullName(@RequestParam UUID friendId) {
-        var result = synchronizeBlacklistDataCommandHandler.handle(new SynchronizeBlacklistDataCommand(friendId));
-
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.noContent().build();
     }
 }

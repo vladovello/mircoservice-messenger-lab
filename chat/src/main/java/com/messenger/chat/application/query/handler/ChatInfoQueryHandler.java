@@ -46,8 +46,8 @@ public class ChatInfoQueryHandler implements QueryHandler<ChatInfoQuery, Result<
                     .findFirst().get();
 
             chatInfoDto = new ChatInfoDto(
-                    secondDialogueUser.getUser().getFullName().getValue(),
-                    secondDialogueUser.getUser().getAvatarId(),
+                    secondDialogueUser.getChatUser().getFullName().getValue(),
+                    secondDialogueUser.getChatUser().getAvatarId(),
                     chat.getCreationDate()
             );
         } else {

@@ -5,13 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "app.services.friends")
+@ConfigurationProperties("spring.rabbitmq")
 @Getter
 @Setter
 @ToString
-public class ServiceIntegrationProps {
-    private String baseUrl;
-    private String rootPath;
-    private int timeout;
-    private String apiKey;
+public class RabbitMqProps {
+    private String host;
+    private String username;
+    private String password;
 }

@@ -3,9 +3,7 @@ package com.messenger.chat.domain.message;
 import lombok.Getter;
 import lombok.NonNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -15,9 +13,12 @@ public class Attachment {
     @Column(nullable = false)
     @NonNull
     private UUID id;
-    @Column(nullable = false)
+    @Column(name = "messageId", nullable = false)
     @NonNull
     private UUID messageId;
+    @ManyToOne
+    @JoinColumn(name = "messageId", insertable = false, updatable = false)
+    private Message message;
     @Column(nullable = false)
     @NonNull
     private UUID storageId;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -49,7 +48,12 @@ public class ChatParticipantRepositoryImpl implements ChatParticipantRepository 
 
         var ownerRole = optionalOwnerRole.get();
 
-        return chatParticipantRepositoryJpa.findByChatIdAndChatRolesContaining(chatId, Set.of(ownerRole));
+        // TODO: 19.05.2023 I don't know how to create this query with JPA. I'm to low on time, so I'm writing this shit. I feel sorry...
+        var participants = chatParticipantRepositoryJpa.findAllByChatId(chatId);
+
+        return participants.stream()
+                .filter(chatParticipant -> chatParticipant.getChatRoles().contains(ownerRole))
+                .findFirst();
     }
 
     @Override

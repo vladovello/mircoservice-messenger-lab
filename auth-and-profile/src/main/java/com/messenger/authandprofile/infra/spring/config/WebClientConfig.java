@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.infra.spring.config;
 
-import com.messenger.authandprofile.infra.spring.config.props.ServiceIntegrationProps;
+import com.messenger.authandprofile.infra.spring.config.props.IntegrationProps;
 import com.messenger.security.SecurityConst;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -21,25 +21,27 @@ import java.util.concurrent.TimeUnit;
 @Setter
 @Slf4j
 public class WebClientConfig {
-    private final ServiceIntegrationProps props;
+    private final IntegrationProps props;
 
-    public WebClientConfig(ServiceIntegrationProps props) {
+    public WebClientConfig(IntegrationProps props) {
         this.props = props;
     }
 
     @Bean(name = "friendsClient")
     public WebClient createFriendsWebClient() {
+        var friendsProps = props.getFriends();
+
         final var httpClient = HttpClient
                 .create()
-                .headers(entries -> entries.add(SecurityConst.HEADER_API_KEY, props.getApiKey()))
-                .responseTimeout(Duration.ofMillis(props.getTimeout()))
+                .headers(entries -> entries.add(SecurityConst.HEADER_API_KEY, friendsProps.getApiKey()))
+                .responseTimeout(Duration.ofMillis(friendsProps.getTimeout()))
                 .doOnConnected(conn -> conn
-                        .addHandlerLast(new ReadTimeoutHandler(props.getTimeout(), TimeUnit.MILLISECONDS))
-                        .addHandlerLast(new WriteTimeoutHandler(props.getTimeout(), TimeUnit.MILLISECONDS)));
+                        .addHandlerLast(new ReadTimeoutHandler(friendsProps.getTimeout(), TimeUnit.MILLISECONDS))
+                        .addHandlerLast(new WriteTimeoutHandler(friendsProps.getTimeout(), TimeUnit.MILLISECONDS)));
 
         return WebClient
                 .builder()
-                .baseUrl(props.getBaseUrl() + props.getRootPath())
+                .baseUrl(friendsProps.getBaseUrl() + friendsProps.getRootPath())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
     }

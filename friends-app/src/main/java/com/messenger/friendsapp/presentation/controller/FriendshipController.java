@@ -2,10 +2,8 @@ package com.messenger.friendsapp.presentation.controller;
 
 import com.messenger.friendsapp.application.command.AddFriendCommand;
 import com.messenger.friendsapp.application.command.DeleteFriendCommand;
-import com.messenger.friendsapp.application.command.SynchronizeFriendDataCommand;
 import com.messenger.friendsapp.application.command.handler.AddFriendCommandHandler;
 import com.messenger.friendsapp.application.command.handler.DeleteFriendCommandHandler;
-import com.messenger.friendsapp.application.command.handler.SynchronizeFriendDataCommandHandler;
 import com.messenger.friendsapp.application.dto.FriendDto;
 import com.messenger.friendsapp.application.dto.FriendsListDto;
 import com.messenger.friendsapp.application.query.FriendsListQuery;
@@ -40,22 +38,19 @@ public class FriendshipController {
     private final FriendsListQueryHandler friendsListQueryHandler;
     private final AddFriendCommandHandler addFriendCommandHandler;
     private final DeleteFriendCommandHandler deleteFriendCommandHandler;
-    private final SynchronizeFriendDataCommandHandler synchronizeFriendDataCommandHandler;
 
     public FriendshipController(
             SearchFriendsByParamsQueryHandler searchFriendsByParamsQueryHandler,
             GetFriendInfoQueryHandler getFriendInfoQueryHandler,
             FriendsListQueryHandler friendsListQueryHandler,
             AddFriendCommandHandler addFriendCommandHandler,
-            DeleteFriendCommandHandler deleteFriendCommandHandler,
-            SynchronizeFriendDataCommandHandler synchronizeFriendDataCommandHandler
+            DeleteFriendCommandHandler deleteFriendCommandHandler
     ) {
         this.searchFriendsByParamsQueryHandler = searchFriendsByParamsQueryHandler;
         this.getFriendInfoQueryHandler = getFriendInfoQueryHandler;
         this.friendsListQueryHandler = friendsListQueryHandler;
         this.addFriendCommandHandler = addFriendCommandHandler;
         this.deleteFriendCommandHandler = deleteFriendCommandHandler;
-        this.synchronizeFriendDataCommandHandler = synchronizeFriendDataCommandHandler;
     }
 
     @PostMapping("search")
@@ -134,14 +129,14 @@ public class FriendshipController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("synchronize")
-    public ResponseEntity<Void> synchronizeFullName(@RequestParam UUID friendId) {
-        var result = synchronizeFriendDataCommandHandler.handle(new SynchronizeFriendDataCommand(friendId));
-
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.noContent().build();
-    }
+//    @PatchMapping("synchronize")
+//    public ResponseEntity<Void> synchronizeFullName(@RequestParam UUID friendId) {
+//        var result = synchronizeFriendDataCommandHandler.handle(new SynchronizeFriendDataCommand(friendId));
+//
+//        if (result.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        return ResponseEntity.noContent().build();
+//    }
 }

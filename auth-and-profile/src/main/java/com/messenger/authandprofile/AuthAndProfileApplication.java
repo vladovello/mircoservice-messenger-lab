@@ -11,5 +11,5 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 public class AuthAndProfileApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthAndProfileApplication.class, args);
-   }
+    }
 }

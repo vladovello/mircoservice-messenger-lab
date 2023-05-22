@@ -25,7 +25,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: 13.05.2023 think about creating ChatManagingDomainService instead of Chat and ChatParticipant Domain Services
 public class ChatDomainServiceImpl extends DomainService implements ChatDomainService {
     private final ChatParticipantRepository chatParticipantRepository;
     private final ChatRepository chatRepository;
@@ -144,7 +143,7 @@ public class ChatDomainServiceImpl extends DomainService implements ChatDomainSe
 
         // 3. Check if deleting user has enough permissions
         if (!PermissionManager.canKickMember(deletingChatParticipant, beingDeletedChatParticipant)) {
-            return Result.failure(new NotEnoughPermissionsException(deletingChatParticipant.getUser().getUserId()));
+            return Result.failure(new NotEnoughPermissionsException(deletingChatParticipant.getChatUser().getUserId()));
         }
 
         chatParticipantRepository.delete(beingDeletedChatParticipant);

@@ -13,12 +13,13 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
-public class User extends DomainEntity {
+public class ChatUser extends DomainEntity {
     @Id
     @Column(nullable = false)
     @NonNull
@@ -31,22 +32,27 @@ public class User extends DomainEntity {
     @NonNull
     private UUID avatarId;
 
-    protected User(@NonNull UUID userId, @NonNull FullName fullName, @NonNull UUID avatarId) {
+    protected ChatUser(@NonNull UUID userId, @NonNull FullName fullName, UUID avatarId) {
         this.userId = userId;
         this.fullName = fullName;
-        this.avatarId = avatarId;
+
+        if (Objects.isNull(avatarId)) {
+            this.avatarId = UUID.nameUUIDFromBytes(new byte[0]);
+        } else {
+            this.avatarId = avatarId;
+        }
     }
 
-    protected User() {
+    protected ChatUser() {
         // For JPA
     }
 
     @Contract(value = "_, _, _ -> new", pure = true)
-    public static @NonNull User reconstruct(
+    public static @NonNull ChatUser reconstruct(
             @NonNull UUID userId,
             @NonNull FullName fullName,
-            @NonNull UUID avatarId
+            UUID avatarId
     ) {
-        return new User(userId, fullName, avatarId);
+        return new ChatUser(userId, fullName, avatarId);
     }
 }

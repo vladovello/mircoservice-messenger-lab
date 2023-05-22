@@ -72,6 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
         var userEntity = userEntityMapper.mapToUserEntity(user);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepositoryJpa.save(userEntity);
+        user.clearEvents();
     }
 
     @Override
@@ -80,6 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
         optionalUserEntity.ifPresentOrElse(userEntity -> {
             userEntityMapper.mapDomainToUserEntity(updatedUser, userEntity);
             userRepositoryJpa.save(userEntity);
+            updatedUser.clearEvents();
         }, () -> {
             throw UserNotFoundException.byId(id);
         });

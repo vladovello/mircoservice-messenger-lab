@@ -5,7 +5,7 @@ import com.messenger.chat.domain.message.converter.MessageTextConverter;
 import com.messenger.chat.domain.message.event.MessageCreatedDomainEvent;
 import com.messenger.chat.domain.message.valueobject.EventMessageText;
 import com.messenger.chat.domain.message.valueobject.MessageText;
-import com.messenger.chat.domain.user.User;
+import com.messenger.chat.domain.user.ChatUser;
 import com.messenger.sharedlib.ddd.domain.BusinessRuleViolationException;
 import com.messenger.sharedlib.ddd.domain.DomainEntity;
 import com.messenger.sharedlib.ddd.domain.DomainEvent;
@@ -15,13 +15,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 // INFO: Чтобы убедиться, что событие будет доставлен только один раз (за исключением ситуаций, когда сервер упал) можно добавить
 //  различные состояния у событий: PENDING, LOCKED, PROCESSED. Все обработчики обязаны будут реализовать интерфейс, с
@@ -32,18 +31,18 @@ import java.util.UUID;
 @Entity
 public class Message extends DomainEntity {
     @Id
-    @Column(nullable = false)
+    @Column(name = "messageId", nullable = false)
     @NonNull
     private UUID id;
     @Column(nullable = false)
     @NonNull
     private UUID chatId;
-    @Column(nullable = false)
+    @Column(name = "userId", nullable = false)
     @NonNull
     private UUID senderUserId;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    private ChatUser chatUser;
     @Column(nullable = false)
     @NonNull
     private LocalDateTime creationDate;
@@ -56,7 +55,7 @@ public class Message extends DomainEntity {
     private Set<Attachment> attachments;
 
     @Transient
-    private final Collection<DomainEvent> domainEvents;
+    private final List<DomainEvent> domainEvents;
 
     protected Message(
             @NonNull UUID id,
@@ -138,6 +137,16 @@ public class Message extends DomainEntity {
             Set<Attachment> attachments
     ) {
         return new Message(id, chatId, senderUserId, messageText, creationDate, attachments);
+    }
+
+    @DomainEvents
+    public List<DomainEvent> domainEvents() {
+        return Collections.unmodifiableList(domainEvents);
+    }
+
+    @AfterDomainEventPublication
+    public void clearDomainEvents() {
+        domainEvents.clear();
     }
 
     private static @NonNull UUID generateId() {

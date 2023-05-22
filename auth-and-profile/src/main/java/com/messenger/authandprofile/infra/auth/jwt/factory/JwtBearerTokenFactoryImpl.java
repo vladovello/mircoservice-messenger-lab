@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Date;
 import java.util.Map;
 
 public final class JwtBearerTokenFactoryImpl implements JwtBearerTokenFactory {
@@ -39,8 +40,9 @@ public final class JwtBearerTokenFactoryImpl implements JwtBearerTokenFactory {
     private String generateToken(@NonNull Map<String, ?> claims, @NonNull JwtBearerTokenParameters options) {
         return Jwts.builder()
                 .setIssuer(options.getIssuer())
-                .setExpiration(options.getExpirationDate())
                 .setClaims(claims)
+                .setIssuedAt(new Date())
+                .setExpiration(options.getExpirationDate())
                 .signWith(options.getSigningKey())
                 .compact();
     }
