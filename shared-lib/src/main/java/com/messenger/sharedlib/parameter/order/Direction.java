@@ -1,8 +1,6 @@
 package com.messenger.sharedlib.parameter.order;
 
-import java.io.Serializable;
-
-public abstract class Direction implements Serializable {
+public abstract class Direction {
     protected SortingOrder sortingOrder;
 
     protected Direction(SortingOrder sortingOrder) {

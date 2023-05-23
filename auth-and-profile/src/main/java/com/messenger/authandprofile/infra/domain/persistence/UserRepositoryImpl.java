@@ -5,6 +5,7 @@ import com.messenger.authandprofile.application.profile.model.parameter.order.So
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.entity.User;
 import com.messenger.authandprofile.domain.repository.UserRepository;
+import com.messenger.authandprofile.infra.domain.persistence.entity.metadata.UserEntityFields;
 import com.messenger.authandprofile.infra.domain.persistence.mapper.UserEntityMapper;
 import lombok.NonNull;
 import org.springframework.data.domain.PageRequest;
@@ -93,12 +94,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private @NonNull Sort getUserFilterParamsSorting(@NonNull UserFilterParams userFilterParams) {
-        return getSortParam("login", userFilterParams.getLogin().getSortingOrder())
-                .and(getSortParam("fullName", userFilterParams.getFullName().getSortingOrder()))
-                .and(getSortParam("phoneNumber", userFilterParams.getPhoneNumber().getSortingOrder()))
-                .and(getSortParam("registrationDate", userFilterParams.getRegistrationDate().getSortingOrder()))
-                .and(getSortParam("birthDate", userFilterParams.getBirthDate().getSortingOrder()))
-                .and(getSortParam("city", userFilterParams.getCity().getSortingOrder()));
+        return getSortParam(UserEntityFields.LOGIN_NAME, userFilterParams.getLogin().getSortingOrder())
+                .and(getSortParam(UserEntityFields.FULL_NAME_NAME, userFilterParams.getFullName().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.PHONE_NUMBER_NAME, userFilterParams.getPhoneNumber().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.REGISTRATION_DATE_NAME, userFilterParams.getRegistrationDate().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.BIRTH_DATE_NAME, userFilterParams.getBirthDate().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.CITY_NAME, userFilterParams.getCity().getSortingOrder()));
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {

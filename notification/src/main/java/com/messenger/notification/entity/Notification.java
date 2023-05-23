@@ -5,50 +5,47 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Notification {
     @Id
     @Column(nullable = false)
     @NonNull
-    private UUID id;
+    protected UUID id;
     @Column(nullable = false)
     @NonNull
-    private NotificationType notificationType;
+    protected NotificationType notificationType;
     @Column(nullable = false)
     @NonNull
-    private String notificationMessage;
+    protected String notificationMessage;
     @Column(nullable = false)
     @NonNull
-    private UUID userId;
+    protected UUID userId;
     @Column
-    private LocalDateTime readingDate;
+    protected LocalDateTime readingDate;
     @Column(nullable = false)
     @NonNull
-    private NotificationStatus status;
+    protected NotificationStatus status;
     @Column
-    private LocalDateTime receivingDate;
+    protected LocalDateTime receivingDate;
 
     protected Notification(
-            @NonNull UUID id,
             @NonNull NotificationType notificationType,
             @NonNull String notificationMessage,
-            @NonNull UUID userId,
-            @NonNull NotificationStatus status
+            @NonNull UUID userId
     ) {
-        this.id = id;
+        this.id = generateId();
         this.notificationType = notificationType;
         this.notificationMessage = notificationMessage;
         this.userId = userId;
+        this.status = NotificationStatus.NOT_SEND;
         this.readingDate = null;
-        this.status = status;
         this.receivingDate = null;
     }
 
@@ -56,37 +53,35 @@ public class Notification {
         // For JPA
     }
 
-    public static @NonNull Notification createNew(
-            NotificationType notificationType,
-            String notificationMessage,
-            UUID userId
-    ) {
-        return new Notification(
-                generateId(),
-                notificationType,
-                notificationMessage,
-                userId,
-                NotificationStatus.NOT_SEND
-        );
+    public void markReceived() {
+        this.receivingDate = LocalDateTime.now();
+        this.status = NotificationStatus.PENDING;
     }
 
-    public static @NonNull Notification reconstruct(
-            UUID notificationId,
-            NotificationType notificationType,
-            String notificationMessage,
-            NotificationStatus notificationStatus,
-            UUID userId
-    ) {
-        return new Notification(
-                notificationId,
-                notificationType,
-                notificationMessage,
-                userId,
-                notificationStatus
-        );
+    public void changeStatus(@NonNull NotificationStatus status) {
+        switch (status) {
+            case NOT_SEND:
+                this.receivingDate = null;
+                this.readingDate = null;
+                break;
+            case PENDING:
+                if (this.status == NotificationStatus.VIEWED) {
+                    this.receivingDate = LocalDateTime.now();
+                }
+                this.readingDate = null;
+                break;
+            case VIEWED:
+                if (this.status == NotificationStatus.NOT_SEND) {
+                    this.receivingDate = LocalDateTime.now();
+                }
+                this.readingDate = LocalDateTime.now();
+                break;
+        }
+
+        this.status = status;
     }
 
-    private static @NonNull UUID generateId() {
+    protected static @NonNull UUID generateId() {
         return UUID.randomUUID();
     }
 }

@@ -4,14 +4,22 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: friends-api
-          uri: http://localhost:1112/
-          predicates:
-            - Path=/api/friends/**
         - id: authandprofile-api
           uri: http://localhost:1111/
           predicates:
             - Path=/api/users/**
+        - id: friends-api
+          uri: http://localhost:1112/
+          predicates:
+            - Path=/api/friends/**
+        - id: chats-api
+          uri: http://localhost:1113/
+          predicates:
+            - Path=/api/chats/**
+        - id: notifications-api
+          uri: http://localhost:1114/
+          predicates:
+            - Path=/api/chats/**
 
         - id: friends-integration
           uri: http://localhost:1112/

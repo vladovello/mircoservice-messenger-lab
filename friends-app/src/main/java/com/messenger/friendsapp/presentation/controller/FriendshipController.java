@@ -128,15 +128,4 @@ public class FriendshipController {
         deleteFriendCommandHandler.handle(new DeleteFriendCommand(principal.getId(), friendId));
         return ResponseEntity.noContent().build();
     }
-
-//    @PatchMapping("synchronize")
-//    public ResponseEntity<Void> synchronizeFullName(@RequestParam UUID friendId) {
-//        var result = synchronizeFriendDataCommandHandler.handle(new SynchronizeFriendDataCommand(friendId));
-//
-//        if (result.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        return ResponseEntity.noContent().build();
-//    }
 }

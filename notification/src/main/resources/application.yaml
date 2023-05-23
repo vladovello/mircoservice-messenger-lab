@@ -2,21 +2,21 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-  port: 1112
+  port: 1114
 
 spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL82Dialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/friends
-    username: friends_user
-    password: odinochestvo
+    url: jdbc:postgresql://localhost:5432/notifications
+    username: notif_user
+    password: notif
     driverClassName: org.postgresql.Driver
   rabbitmq:
     host: localhost
@@ -29,6 +29,7 @@ app:
     jwt-auth:
       permit-all:
         - /swagger-ui/index.html
+        - /api/notifications/test
       validation-key: 899udf089u899udf089u899udf089u899udf089u899udf089u899udf089u
       root-path: /api
     integrations:

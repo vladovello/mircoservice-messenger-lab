@@ -52,8 +52,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         PayloadPrincipal userData;
         try {
-            log.info("Access token expiration ");
-
             var key = Keys.hmacShaKeyFor(validationParams.getValidationKey().getBytes(StandardCharsets.UTF_8));
             var data = Jwts.parserBuilder()
                     .setSigningKey(key)

@@ -7,7 +7,7 @@ import com.messenger.sharedlib.parameter.order.Direction;
 import com.messenger.sharedlib.parameter.order.SortingOrder;
 import lombok.Getter;
 
-// TODO: 20.04.2023 move Direction to Param classess
+// TODO: 20.04.2023 move Direction to Param classes
 //  Param class may contain Direction and Field classes. IntervalField and DiscreteField may extend Field abstract class
 //  while Param classes may extend Param abstract class. This will make the classes more extensible.
 @SuppressWarnings("rawtypes")
