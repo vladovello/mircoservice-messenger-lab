@@ -78,8 +78,7 @@ public class NotificationController {
         } catch (NotificationDoesNotBelongToUserException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiError(
                     HttpStatus.FORBIDDEN,
-                    e.getMessage(),
-                    HttpStatus.FORBIDDEN.getReasonPhrase()
+                    e.getMessage()
             ));
         }
     }

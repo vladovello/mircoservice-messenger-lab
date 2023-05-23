@@ -2,6 +2,7 @@ package com.messenger.chat.application.command.handler;
 
 import com.messenger.chat.application.command.CommandHandler;
 import com.messenger.chat.application.command.SendMessageInDialogueCommand;
+import com.messenger.chat.application.command.exception.UserBlacklistedException;
 import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.chat.service.ChatDomainService;
@@ -12,7 +13,9 @@ import com.messenger.chat.domain.user.repository.BlacklistRepository;
 import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SendMessageInDialogueCommandHandler implements CommandHandler<SendMessageInDialogueCommand, Result<Unit>> {
     private final MessageDomainService messageDomainService;
     private final BlacklistRepository blacklistRepository;
@@ -52,25 +55,25 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
         }
 
         if (blacklistRepository.isUserIsBlacklistedByOther(command.getSenderId(), command.getRecipientId())) {
-            return Result.failure(new Exception());
+            return Result.failure(new UserBlacklistedException(command.getSenderId(), command.getRecipientId()));
         }
 
         var messageText = MessageText.create(command.getMessageText());
 
         if (messageText.isFailure()) {
-            return Result.failure(new Exception());
+            return Result.failure(messageText.exceptionOrNull());
         }
 
         var message = Message.createNew(chat.getId(), command.getSenderId(), messageText.getOrNull());
 
         if (message.isFailure()) {
-            return Result.failure(new Exception());
+            return Result.failure(message.exceptionOrNull());
         }
 
         var result = messageDomainService.sendMessage(message.getOrNull());
 
         if (result.isFailure()) {
-            return Result.failure(new Exception());
+            return Result.failure(result.exceptionOrNull());
         }
 
         return Result.success();

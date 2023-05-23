@@ -10,10 +10,12 @@ import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepos
 import com.messenger.chat.domain.message.repository.MessageRepository;
 import com.messenger.sharedlib.util.Result;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ChatMessagesPaginationQueryHandler implements
         QueryHandler<ChatMessagesPaginationQuery, Result<List<MessageDto>>> {
     private final MessageRepository messageRepository;

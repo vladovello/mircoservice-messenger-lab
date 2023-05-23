@@ -10,7 +10,9 @@ import com.messenger.chat.domain.message.valueobject.MessageText;
 import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SendMessageInMultiCommandHandler implements CommandHandler<SendMessageInMultiCommand, Result<Unit>> {
     private final ChatRepository chatRepository;
     private final MessageDomainService messageDomainService;
@@ -40,7 +42,7 @@ public class SendMessageInMultiCommandHandler implements CommandHandler<SendMess
         var message = Message.createNew(command.getChatId(), command.getSenderId(), messageText.getOrNull());
 
         if (message.isFailure()) {
-            return Result.failure(new Exception());
+            return Result.failure(message.exceptionOrNull());
         }
 
         var result = messageDomainService.sendMessage(message.getOrNull());

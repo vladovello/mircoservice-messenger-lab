@@ -22,7 +22,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         var apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "Something went wrong on the server"
         );
 

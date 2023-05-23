@@ -3,6 +3,7 @@ package com.messenger.authandprofile.presentation.errorhandling;
 import com.messenger.authandprofile.domain.exception.email.InvalidEmailExceptionBusiness;
 import com.messenger.authandprofile.shared.exception.AlreadyExistsException;
 import com.messenger.authandprofile.shared.exception.BusinessRuleViolationException;
+import com.messenger.sharedlib.presentation.errorhandling.ApiError;
 import lombok.NonNull;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,7 +30,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
 
-        var apiError = new ApiError(HttpStatus.BAD_REQUEST, "Invalid data was send", ex.getMessage());
+        var apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
@@ -42,7 +43,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     ) {
         logger.info(ex.getClass().getName());
 
-        var apiError = new ApiError(HttpStatus.BAD_REQUEST, "Invalid data was send", ex.getMessage());
+        var apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -56,7 +57,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     ) {
         logger.info(ex.getClass().getName());
 
-        var apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.getMessage());
+        var apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -69,7 +70,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     ) {
         logger.info("request" + request.getUserPrincipal());
 
-        var apiError = new ApiError(HttpStatus.FORBIDDEN, "It's not allowed to perform this action", ex.getMessage());
+        var apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -82,7 +83,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     ) {
         logger.info(ex.getClass().getName() + ex.getMessage());
 
-        var apiError = new ApiError(HttpStatus.CONFLICT, "There is a conflicting data", ex.getMessage());
+        var apiError = new ApiError(HttpStatus.CONFLICT, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -95,7 +96,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         var apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                "Something went wrong on the server",
                 ex.getMessage()
         );
         return handleExceptionInternal(

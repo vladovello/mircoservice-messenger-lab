@@ -64,7 +64,7 @@ public class ChatDomainServiceImpl extends DomainService implements ChatDomainSe
     @Override
     @Transactional
     public Result<Chat> createDialogueChat(UUID userId1, UUID userId2) {
-        if (!chatRepository.isDialogueExists(userId1, userId2)) {
+        if (chatRepository.isDialogueExists(userId1, userId2)) {
             return Result.failure(new ChatAlreadyExistsException(userId1, userId2));
         }
 

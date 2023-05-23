@@ -23,6 +23,12 @@ public class ApiError {
         errors = List.of(error);
     }
 
+    public ApiError(final HttpStatus status, final String message) {
+        this.status = status;
+        this.message = message;
+        errors = List.of(status.getReasonPhrase());
+    }
+
     public void setError(final String error) {
         errors = List.of(error);
     }

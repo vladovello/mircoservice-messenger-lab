@@ -93,7 +93,7 @@ public class ChatController {
 
         var result = chatInfoQueryHandler.handle(new ChatInfoQuery(principal.getId(), chatId));
 
-        return result.fold(chatInfoDto -> ResponseEntity.ok(result.getOrNull()), e -> {
+        return result.fold(ResponseEntity::ok, e -> {
             if (e instanceof NotFoundException) return ResponseEntity.notFound().build();
             return createBadRequestResponse(e.getMessage());
         });
@@ -113,12 +113,11 @@ public class ChatController {
         return ResponseEntity.ok(previewChatInfoListDto);
     }
 
-    private static @NonNull ResponseEntity<Object> createBadRequestResponse(String error) {
+    private static @NonNull ResponseEntity<Object> createBadRequestResponse(String message) {
         return ResponseEntity.badRequest()
                 .body(new ApiError(
                         HttpStatus.BAD_REQUEST,
-                        "Invalid data was send",
-                        error
+                        message
                 ));
     }
 }
