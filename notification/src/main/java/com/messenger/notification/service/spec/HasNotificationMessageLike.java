@@ -26,8 +26,8 @@ public class HasNotificationMessageLike implements Specification<Notification> {
     ) {
         if (notificationMessage != null && notificationMessage.getValue() != null) {
             return criteriaBuilder.like(
-                    root.get(NotificationFieldNames.NOTIFICATION_MESSAGE),
-                    "%" + notificationMessage.getValue() + "%"
+                    criteriaBuilder.lower(root.get(NotificationFieldNames.NOTIFICATION_MESSAGE)),
+                    "%" + notificationMessage.getValue().toLowerCase() + "%"
             );
         }
 

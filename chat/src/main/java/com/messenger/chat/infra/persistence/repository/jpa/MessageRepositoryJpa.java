@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public interface MessageRepositoryJpa extends JpaRepository<Message, UUID>, JpaSpecificationExecutor<Message>,
         PagingAndSortingRepository<Message, UUID> {
+
     Optional<Message> findFirstByChatIdOrderByCreationDateDesc(UUID chatId);
     Page<Message> findAllByChatId(Pageable pageable, UUID chatId);
     List<Message> findAllByChatIdAndCreationDateBetween(UUID chatId, LocalDateTime creationDateStart, LocalDateTime creationDateEnd);

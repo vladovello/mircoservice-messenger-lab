@@ -2,7 +2,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-  port: 1114
+  port: 1113
 
 spring:
   jpa:

@@ -11,8 +11,9 @@ import com.messenger.chat.application.query.dto.PreviewChatInfoListDto;
 import com.messenger.chat.application.query.handler.ChatMessagesPaginationQueryHandler;
 import com.messenger.chat.application.query.handler.MessageListQueryHandler;
 import com.messenger.chat.domain.chatparticipant.exception.UserDoesNotExistsInChatException;
-import com.messenger.chat.presentation.chat.dto.CreateMessageDialogueDto;
-import com.messenger.chat.presentation.chat.dto.CreateMessageMultiDto;
+import com.messenger.chat.domain.user.exception.UserDoesNotExistsException;
+import com.messenger.chat.presentation.message.dto.CreateMessageDialogueDto;
+import com.messenger.chat.presentation.message.dto.CreateMessageMultiDto;
 import com.messenger.security.jwt.PayloadPrincipal;
 import com.messenger.sharedlib.exception.NotFoundException;
 import com.messenger.sharedlib.presentation.errorhandling.ApiError;
@@ -48,9 +49,9 @@ public class MessageController {
 
     @GetMapping("search")
     public ResponseEntity<PreviewChatInfoListDto> getMessageList(
-            int pageNumber,
-            int pageSize,
-            String messageText,
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam(required = false) String messageText,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();
@@ -65,8 +66,8 @@ public class MessageController {
         return ResponseEntity.ok(previewChatInfoListDto);
     }
 
-    @GetMapping("chat/{chatId}")
-    public ResponseEntity<Object> searchPaginated(
+    @GetMapping("chat/{chatId}/messages")
+    public ResponseEntity<Object> getMessagesPaginated(
             @PathVariable UUID chatId,
             @RequestParam int offset,
             @NonNull Authentication authentication
@@ -100,8 +101,9 @@ public class MessageController {
                 createMessageDialogueDto.getMessageText()
         ));
 
-        return result.fold(ResponseEntity::ok, e -> {
-            if (e instanceof UserDoesNotExistsInChatException)
+        return result.fold(unit -> ResponseEntity.noContent().build(), e -> {
+            if (e instanceof UserDoesNotExistsException) return ResponseEntity.notFound().build();
+            else if (e instanceof UserDoesNotExistsInChatException)
                 return ResponseEntity.internalServerError().body(new ApiError(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         e.getMessage()
@@ -125,8 +127,9 @@ public class MessageController {
                 createMessageMultiDto.getMessageText()
         ));
 
-        return result.fold(ResponseEntity::ok, e -> {
-            if (e instanceof UserDoesNotExistsInChatException)
+        return result.fold(unit -> ResponseEntity.noContent().build(), e -> {
+            if (e instanceof NotFoundException) return ResponseEntity.notFound().build();
+            else if (e instanceof UserDoesNotExistsInChatException)
                 return ResponseEntity.internalServerError().body(new ApiError(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         e.getMessage()

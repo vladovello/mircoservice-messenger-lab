@@ -132,23 +132,24 @@ public class ChatQueryRepositoryImpl implements ChatQueryRepository {
         return secondDialogueUser.getChatUser().getFullName().getValue();
     }
 
+    private static <T> @NonNull Specification<T> likeSpecification(String fieldName, String searchField) {
+        return (root, query, criteriaBuilder) -> {
+            if (searchField == null) {
+                return criteriaBuilder.and();
+            }
+
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get(fieldName).as(String.class)),
+                    "%" + searchField.toLowerCase() + "%"
+            );
+        };
+    }
+
     private static @NonNull Specification<Chat> hasChatNameLike(String chatName) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                root.get("chatName"),
-                "%" + chatName + "%"
-        );
+        return likeSpecification("chatName", chatName);
     }
 
     private static @NonNull Specification<Message> hasMessageTextLike(String messageText) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                root.get("messageText"),
-                "%" + messageText + "%"
-        );
+        return likeSpecification("messageText", messageText);
     }
 }
-
-/*
- * select chatId, chatName, messageText, sendingDate, senderId, hasAttachment, attachmentName
- * from chat
- * join message on message.creationDate = max(message.creationDate)
- */

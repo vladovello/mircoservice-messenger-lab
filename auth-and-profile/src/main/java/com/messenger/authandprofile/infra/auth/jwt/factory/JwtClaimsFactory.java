@@ -16,7 +16,6 @@ public final class JwtClaimsFactory {
     public static @NonNull Map<String, Object> getUserClaims(@NonNull User user) {
         var claims = new HashMap<String, Object>();
         claims.put(Claims.SUBJECT, user.getId().toString());
-        claims.put("log", user.getLogin().getValue());
         return claims;
     }
 }

@@ -9,7 +9,9 @@ import com.messenger.chat.domain.chat.service.ChatDomainService;
 import com.messenger.chat.domain.message.Message;
 import com.messenger.chat.domain.message.service.MessageDomainService;
 import com.messenger.chat.domain.message.valueobject.MessageText;
+import com.messenger.chat.domain.user.exception.UserDoesNotExistsException;
 import com.messenger.chat.domain.user.repository.BlacklistRepository;
+import com.messenger.chat.domain.user.repository.UserRepository;
 import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;
@@ -21,17 +23,20 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
     private final BlacklistRepository blacklistRepository;
     private final ChatDomainService chatDomainService;
     private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
 
     public SendMessageInDialogueCommandHandler(
             MessageDomainService messageDomainService,
             BlacklistRepository blacklistRepository,
             ChatDomainService chatDomainService,
-            ChatRepository chatRepository
+            ChatRepository chatRepository,
+            UserRepository userRepository
     ) {
         this.messageDomainService = messageDomainService;
         this.blacklistRepository = blacklistRepository;
         this.chatDomainService = chatDomainService;
         this.chatRepository = chatRepository;
+        this.userRepository = userRepository;
     }
 
     // 1. Проверить, что чат существует м/у пользователями. Если нет, то создать чат
@@ -39,6 +44,10 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
     // 3. Сохранить сообщение и выйти из функции
     @Override
     public Result<Unit> handle(@NonNull SendMessageInDialogueCommand command) {
+        if (!userRepository.isUserExists(command.getRecipientId())) {
+            return Result.failure(new UserDoesNotExistsException(command.getRecipientId()));
+        }
+
         var optionalChat = chatRepository.getDialogue(command.getSenderId(), command.getRecipientId());
         Chat chat;
 

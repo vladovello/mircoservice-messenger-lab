@@ -1,17 +1,20 @@
 package com.messenger.chat.application.query;
 
-import lombok.AllArgsConstructor;
+import com.messenger.sharedlib.pagination.PageNumberPaginatedQuery;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ChatListQuery {
+@EqualsAndHashCode(callSuper = true)
+public class ChatListQuery extends PageNumberPaginatedQuery {
     private UUID requesterId;
-    private int pageNumber;
-    private int pageSize;
     private String chatName;
+
+    public ChatListQuery(UUID requesterId, int pageNumber, int pageSize, String chatName) {
+        super(pageNumber, pageSize);
+        this.requesterId = requesterId;
+        this.chatName = chatName;
+    }
 }

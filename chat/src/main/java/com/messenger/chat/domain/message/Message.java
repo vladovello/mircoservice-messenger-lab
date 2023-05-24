@@ -1,6 +1,7 @@
 package com.messenger.chat.domain.message;
 
 import com.messenger.chat.domain.businessrule.StringIsNotBlankRule;
+import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.message.converter.MessageTextConverter;
 import com.messenger.chat.domain.message.event.MessageCreatedDomainEvent;
 import com.messenger.chat.domain.message.valueobject.EventMessageText;
@@ -29,27 +30,38 @@ import java.util.*;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
+@Table(indexes = {@Index(name = "idx_message_text", columnList = "messageText")})
 public class Message extends DomainEntity {
     @Id
     @Column(name = "messageId", nullable = false)
     @NonNull
     private UUID id;
-    @Column(nullable = false)
+
+    @Column(name = "chatId", nullable = false)
     @NonNull
     private UUID chatId;
+
+    @ManyToOne
+    @JoinColumn(name = "chatId", insertable = false, updatable = false)
+    private Chat chat;
+
     @Column(name = "userId", nullable = false)
     @NonNull
     private UUID senderUserId;
+
     @ManyToOne
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     private ChatUser chatUser;
+
     @Column(nullable = false)
     @NonNull
     private LocalDateTime creationDate;
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 5000)
     @Convert(converter = MessageTextConverter.class)
     @NonNull
     private MessageText messageText;
+
     @Column
     @OneToMany
     private Set<Attachment> attachments;

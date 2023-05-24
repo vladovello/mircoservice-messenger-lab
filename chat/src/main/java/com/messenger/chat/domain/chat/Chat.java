@@ -3,6 +3,8 @@ package com.messenger.chat.domain.chat;
 import com.messenger.chat.domain.chat.converter.ChatNameConverter;
 import com.messenger.chat.domain.chat.valueobject.ChatName;
 import com.messenger.chat.domain.chat.valueobject.ChatType;
+import com.messenger.chat.domain.chatparticipant.ChatParticipant;
+import com.messenger.chat.domain.message.Message;
 import com.messenger.sharedlib.ddd.domain.DomainEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,22 +22,35 @@ import java.util.UUID;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
+@Table(indexes = {@Index(columnList = "chatName")})
 public class Chat extends DomainEntity {
     @Id
     @Column(nullable = false)
     @NonNull
     private UUID id;
-    @Column(nullable = false) private UUID avatarId;
+
+    @Column private UUID avatarId;
+
     @Column(nullable = false)
     @NonNull
     private ChatType chatType;
+
     @Column
     @Convert(converter = ChatNameConverter.class)
     private ChatName chatName;
-    @OneToMany
-    @JoinColumn(name = "roleId")
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
     @NonNull
     private Set<ChatRole> roles;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @NonNull
+    private Set<ChatParticipant> chatParticipants;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @NonNull
+    private Set<Message> messages;
+
     @Column(nullable = false)
     @NonNull
     private LocalDateTime creationDate;

@@ -8,6 +8,7 @@ import com.messenger.chat.application.query.ChatInfoQuery;
 import com.messenger.chat.application.query.ChatListQuery;
 import com.messenger.chat.application.query.handler.ChatInfoQueryHandler;
 import com.messenger.chat.application.query.handler.ChatListQueryHandler;
+import com.messenger.chat.domain.chatparticipant.exception.UserAlreadyInChatException;
 import com.messenger.chat.presentation.chat.dto.ChangeChatDto;
 import com.messenger.chat.presentation.chat.dto.CreateChatDto;
 import com.messenger.security.jwt.PayloadPrincipal;
@@ -63,16 +64,17 @@ public class ChatController {
         );
     }
 
-    @PatchMapping("change")
+    @PatchMapping("{chatId}/change")
     public ResponseEntity<Object> changeChat(
-            @NonNull ChangeChatDto changeChatDto,
+            @PathVariable UUID chatId,
+            @RequestBody @NonNull ChangeChatDto changeChatDto,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();
 
         var result = changeMultiChatCommandHandler.handle(new ChangeMultiChatCommand(
                 principal.getId(),
-                changeChatDto.getChatId(),
+                chatId,
                 changeChatDto.getChatName(),
                 changeChatDto.getAvatarId(),
                 changeChatDto.getUsersList()
@@ -80,6 +82,11 @@ public class ChatController {
 
         return result.fold(unit -> ResponseEntity.noContent().build(), e -> {
             if (e instanceof NotFoundException) return ResponseEntity.notFound().build();
+            else if (e instanceof UserAlreadyInChatException)
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(
+                        HttpStatus.CONFLICT,
+                        e.getMessage()
+                ));
             return createBadRequestResponse(e.getMessage());
         });
     }
@@ -99,11 +106,11 @@ public class ChatController {
         });
     }
 
-    @GetMapping("list")
+    @GetMapping("search")
     public ResponseEntity<Object> getChatList(
             @RequestParam int pageNumber,
             @RequestParam int pageSize,
-            @RequestParam String chatName,
+            @RequestParam(required = false) String chatName,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();

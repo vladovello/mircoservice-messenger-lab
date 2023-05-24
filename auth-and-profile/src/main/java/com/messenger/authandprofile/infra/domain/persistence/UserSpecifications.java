@@ -33,8 +33,8 @@ public final class UserSpecifications {
         logSpecCreation("fullName");
 
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                root.get(UserEntityFields.FULL_NAME_NAME),
-                "%" + fullName + "%"
+                criteriaBuilder.lower(root.get(UserEntityFields.FULL_NAME_NAME)),
+                "%" + fullName.toLowerCase() + "%"
         );
     }
 

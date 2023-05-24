@@ -19,7 +19,7 @@ spring:
         - id: notifications-api
           uri: http://localhost:1114/
           predicates:
-            - Path=/api/chats/**
+            - Path=/api/notifications/**
 
         - id: friends-integration
           uri: http://localhost:1112/

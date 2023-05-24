@@ -27,7 +27,7 @@ public class UserListQueryHandler implements Command.Handler<UserListQuery, Eith
 
     @Override
     public Either<Exception, UserListDto> handle(@NonNull UserListQuery query) {
-        if (query.getPageSize() < 1) {
+        if (query.getPageSize() < 0) {
             return Either.left(new ConstraintViolationException("Page size must not be less than one"));
         }
 

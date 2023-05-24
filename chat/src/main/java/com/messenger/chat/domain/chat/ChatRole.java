@@ -8,10 +8,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,15 +26,23 @@ public class ChatRole implements Comparable<ChatRole> {
     @Column(nullable = false)
     @NonNull
     private UUID roleId;
-    @Column(nullable = false)
+
+    @Column(name = "chatId", nullable = false)
     @NonNull
     private UUID chatId;
+
+    @ManyToOne
+    @JoinColumn(name = "chatId", insertable = false, updatable = false)
+    private Chat chat;
+
     @Column(nullable = false)
     @Convert(converter = ChatRoleNameConverter.class)
     @NonNull
     private ChatRoleName chatRoleName;
+
     @Column(nullable = false)
     private int permissions;
+
     @Column(nullable = false) private int priority;
 
     protected ChatRole(

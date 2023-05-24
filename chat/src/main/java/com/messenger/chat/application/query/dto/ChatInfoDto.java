@@ -1,5 +1,6 @@
 package com.messenger.chat.application.query.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -10,7 +11,9 @@ import java.util.UUID;
 public class ChatInfoDto {
     @NonNull private String chatName;
     @NonNull private UUID avatarId;
-    @NonNull private LocalDateTime creationDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NonNull
+    private LocalDateTime creationDate;
     private UUID ownerId;
 
     public ChatInfoDto(@NonNull String chatName, @NonNull UUID avatarId, @NonNull LocalDateTime creationDate) {

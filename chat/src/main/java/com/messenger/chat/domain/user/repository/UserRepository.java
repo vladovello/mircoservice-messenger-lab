@@ -10,5 +10,6 @@ import java.util.UUID;
 //  сервис, о котором ни в домене, ни в слое приложения знать не будут.
 public interface UserRepository {
     Optional<ChatUser> getUser(UUID userId);
+    boolean isUserExists(UUID userId);
     void save(ChatUser user);
 }

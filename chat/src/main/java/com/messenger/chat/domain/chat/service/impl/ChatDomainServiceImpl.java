@@ -37,25 +37,29 @@ public class ChatDomainServiceImpl extends DomainService implements ChatDomainSe
         this.chatRepository = chatRepository;
     }
 
+    // TODO: 24.05.2023 check if avatar is null
     @Override
     @Transactional
-    public Chat createMultiChat(ChatName chatName, UUID ownerId, UUID avatarId, @NonNull List<UUID> participantIds) {
+    public Chat createMultiChat(ChatName chatName, UUID ownerId, UUID avatarId, @NonNull List<UUID> userIds) {
         var chat = Chat.createMulti(avatarId, chatName);
         var owner = ChatParticipant.createNew(ownerId, chat.getId(), chat.getOwnerRole().get(), chat.getEveryoneRole());
 
-        for (var participantId : participantIds) {
+        chatRepository.save(chat);
+        chatParticipantRepository.save(owner);
+
+        for (var userId : userIds) {
+            if (chatParticipantRepository.isUserBelongsToChat(chat.getId(), userId)) {
+                continue;
+            }
+
             var chatParticipant = ChatParticipant.createNew(
-                    participantId,
+                    userId,
                     chat.getId(),
                     chat.getEveryoneRole()
             );
 
             chatParticipantRepository.save(chatParticipant);
         }
-
-        // INFO: maybe this saves is redundant
-        chatParticipantRepository.save(owner);
-        chatRepository.save(chat);
 
         return chat;
     }

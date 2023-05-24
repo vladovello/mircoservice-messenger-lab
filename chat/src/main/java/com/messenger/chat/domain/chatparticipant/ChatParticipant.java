@@ -1,5 +1,6 @@
 package com.messenger.chat.domain.chatparticipant;
 
+import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.ChatRole;
 import com.messenger.chat.domain.chat.Permission;
 import com.messenger.chat.domain.user.ChatUser;
@@ -19,18 +20,27 @@ import java.util.stream.Collectors;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
+@Table(indexes = {@Index(name = "idx_chat_user_id_chat_id_unique", columnList = "chatId, chatUserId", unique = true)})
 public class ChatParticipant extends DomainEntity {
     @Id
     @Column(nullable = false)
     @NonNull
     private UUID chatParticipantId;
+
     @Column(name = "chatUserId", nullable = false) private UUID userId;
+
     @ManyToOne
     @JoinColumn(name = "chatUserId", insertable = false, updatable = false)
     private ChatUser chatUser;
-    @Column(nullable = false)
+
+    @Column(name = "chatId", nullable = false)
     @NonNull
     private UUID chatId;
+
+    @ManyToOne
+    @JoinColumn(name = "chatId", insertable = false, updatable = false)
+    private Chat chat;
+
     @ManyToMany
     @JoinTable
     @NonNull

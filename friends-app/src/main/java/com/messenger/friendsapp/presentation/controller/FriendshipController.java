@@ -57,9 +57,9 @@ public class FriendshipController {
     public ResponseEntity<FriendsListDto> getFriendsByParams(
             @RequestParam int pageNumber,
             @RequestParam int pageSize,
-            @RequestParam DiscreteParam<String> fullName,
-            @RequestParam IntervalParam<LocalDate> additionDate,
-            @RequestParam DiscreteParam<UUID> friendId,
+            @RequestParam(required = false) DiscreteParam<String> fullName,
+            @RequestParam(required = false) IntervalParam<LocalDate> additionDate,
+            @RequestParam(required = false) DiscreteParam<UUID> friendId,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();

@@ -37,7 +37,7 @@ public class NotificationController {
     public ResponseEntity<NotificationListDto> getNotificationList(
             int pageNumber,
             int pageSize,
-            @RequestBody @NonNull SearchParamsDto searchParamsDto,
+            @RequestBody(required = false) @NonNull SearchParamsDto searchParamsDto,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();

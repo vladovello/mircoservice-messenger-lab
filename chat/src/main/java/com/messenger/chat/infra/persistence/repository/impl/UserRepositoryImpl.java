@@ -22,6 +22,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean isUserExists(UUID userId) {
+        return userRepositoryJpa.existsById(userId);
+    }
+
+    @Override
     public void save(ChatUser user) {
         userRepositoryJpa.save(user);
     }

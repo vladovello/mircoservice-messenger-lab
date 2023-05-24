@@ -25,8 +25,8 @@ public final class FriendshipEntitySpecs {
 
         // TODO: 21.04.2023 case independent search
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                root.get(FriendshipEntityFields.FULL_NAME_NAME),
-                "%" + fullName + "%"
+                criteriaBuilder.lower(root.get(FriendshipEntityFields.FULL_NAME_NAME)),
+                "%" + fullName.toLowerCase() + "%"
         );
     }
 

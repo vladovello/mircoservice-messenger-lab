@@ -13,18 +13,23 @@ public class Attachment {
     @Column(nullable = false)
     @NonNull
     private UUID id;
+
     @Column(name = "messageId", nullable = false)
     @NonNull
     private UUID messageId;
+
     @ManyToOne
     @JoinColumn(name = "messageId", insertable = false, updatable = false)
     private Message message;
+
     @Column(nullable = false)
     @NonNull
     private UUID storageId;
+
     @Column(nullable = false)
     @NonNull
     private String fileName;
+
     @Column(nullable = false) private long fileSize;
 
     public Attachment(

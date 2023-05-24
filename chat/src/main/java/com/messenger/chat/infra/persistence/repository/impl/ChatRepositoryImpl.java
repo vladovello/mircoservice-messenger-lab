@@ -7,6 +7,7 @@ import com.messenger.chat.domain.chatparticipant.ChatParticipant;
 import com.messenger.chat.infra.persistence.repository.jpa.ChatParticipantRepositoryJpa;
 import com.messenger.chat.infra.persistence.repository.jpa.ChatRepositoryJpa;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Slf4j
 public class ChatRepositoryImpl implements ChatRepository {
     private final ChatRepositoryJpa chatRepositoryJpa;
     private final ChatParticipantRepositoryJpa chatParticipantRepositoryJpa;
@@ -38,12 +40,15 @@ public class ChatRepositoryImpl implements ChatRepository {
         var chats1 = chatParticipantRepositoryJpa.findAllByUserId(userId1);
         var chats2 = chatParticipantRepositoryJpa.findAllByUserId(userId2);
 
-        var optionalDialogueChat = chats1.stream()
-                .filter(chats2::contains)
+        var optionalChatIdProj = chats1.stream()
+                .filter(chats1IdProj -> chats2
+                        .stream()
+                        .anyMatch(chats2IdProj -> chats1IdProj.getChatId().equals(chats2IdProj.getChatId()))
+                )
                 .filter(chatIdProjection -> getChatType(chatIdProjection.getChatId()) == ChatType.DIALOGUE)
                 .findFirst();
 
-        return optionalDialogueChat.map(chatIdProjection -> chatRepositoryJpa.findById(
+        return optionalChatIdProj.map(chatIdProjection -> chatRepositoryJpa.findById(
                         chatIdProjection.getChatId()
                 ).get()
         );
@@ -51,7 +56,8 @@ public class ChatRepositoryImpl implements ChatRepository {
 
     @Override
     public ChatType getChatType(UUID chatId) {
-        return chatRepositoryJpa.findChatTypeById(chatId);
+        var optionalChat = chatRepositoryJpa.findById(chatId);
+        return optionalChat.map(Chat::getChatType).orElse(ChatType.UNKNOWN);
     }
 
     @Override

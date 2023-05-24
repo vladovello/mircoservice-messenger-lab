@@ -9,6 +9,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PayloadPrincipal {
     private final UUID id;
-    private final String login;
 }
 

@@ -75,6 +75,9 @@ public class ProfileController {
     public ResponseEntity<UserListDto> getAllSorted(@NonNull @RequestBody UserListQuery userListQuery) {
         CQSLoggerProbe.execStarted(LogoutUserCommand.class);
 
+        userListQuery.setPageNumber(userListQuery.getPageNumber());
+        userListQuery.setPageSize(userListQuery.getPageSize());
+
         var either = userListQuery.execute(pipeline);
 
         CQSLoggerProbe.execFinished(UserListQuery.class);

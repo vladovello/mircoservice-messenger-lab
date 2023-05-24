@@ -1,5 +1,6 @@
 package com.messenger.chat.application.query.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.messenger.chat.domain.message.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class MessageDto {
     private UUID messageId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime sendingDate;
     private String messageText;
     private String senderName;

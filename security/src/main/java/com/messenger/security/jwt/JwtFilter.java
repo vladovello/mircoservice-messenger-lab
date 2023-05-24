@@ -61,8 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
             var idStr = String.valueOf(data.getBody().getSubject());
 
             userData = new PayloadPrincipal(
-                    idStr == null ? null : UUID.fromString(idStr),
-                    String.valueOf(data.getBody().get("log"))
+                    idStr == null ? null : UUID.fromString(idStr)
             );
         } catch (JwtException e) {
             throw new UnauthorizedException(e.getMessage());
