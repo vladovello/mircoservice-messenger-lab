@@ -20,10 +20,12 @@ public abstract class PageNumberPaginatedQuery {
     }
 
     public void setPageSize(int pageSize) {
-        if (pageSize < 1 || pageSize > 500) {
+        if (pageSize < 1 || pageSize > getMaxPageSize()) {
             this.pageSize = 10;
         } else {
             this.pageSize = pageSize;
         }
     }
+
+    public abstract int getMaxPageSize();
 }

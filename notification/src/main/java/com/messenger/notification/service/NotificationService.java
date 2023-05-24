@@ -13,6 +13,7 @@ import com.messenger.notification.service.spec.IsUserIdMatches;
 import com.messenger.notification.service.spec.ReceivingDateInInterval;
 import com.messenger.sharedlib.parameter.dto.DiscreteParamDto;
 import com.messenger.sharedlib.parameter.dto.IntervalParamDto;
+import com.messenger.sharedlib.parameter.mapper.ParamMapper;
 import com.messenger.sharedlib.parameter.order.SortingOrder;
 import com.messenger.sharedlib.parameter.param.DiscreteParam;
 import com.messenger.sharedlib.parameter.param.IntervalParam;
@@ -34,11 +35,6 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public void errorTest() {
-        String s = null;
-        s.length();
-    }
-
     @Transactional
     public List<NotificationDto> getNotificationsPaginatedWithParams(
             int pageNumber,
@@ -55,9 +51,9 @@ public class NotificationService {
             pageSize = 10;
         }
 
-        var receivingDate = IntervalParam.fromDto(receivingDateDto);
-        var notificationTypes = DiscreteParam.fromDto(notificationTypesDto);
-        var notificationMessage = DiscreteParam.fromDto(notificationMessageDto);
+        var receivingDate = ParamMapper.intervalFromDto(receivingDateDto);
+        var notificationTypes = ParamMapper.discreteFromDto(notificationTypesDto);
+        var notificationMessage = ParamMapper.discreteFromDto(notificationMessageDto);
 
         var pageRequest = PageRequest.of(
                 pageNumber,

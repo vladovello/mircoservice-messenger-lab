@@ -98,10 +98,4 @@ public class NotificationController {
 
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("error-test")
-    public ResponseEntity<Void> errorTest() {
-        notificationService.errorTest();
-        return ResponseEntity.ok().build();
-    }
 }

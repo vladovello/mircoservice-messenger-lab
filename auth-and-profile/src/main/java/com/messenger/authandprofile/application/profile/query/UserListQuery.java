@@ -28,4 +28,9 @@ public class UserListQuery extends PageNumberPaginatedQuery implements Command<E
     private IntervalParamDto<LocalDate> registrationDate;
     private IntervalParamDto<LocalDate> birthDate;
     private DiscreteParamDto<String> city;
+
+    @Override
+    public int getMaxPageSize() {
+        return 50;
+    }
 }

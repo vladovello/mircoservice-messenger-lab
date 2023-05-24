@@ -16,8 +16,8 @@ import com.messenger.friendsapp.domain.exception.UserIsBlockedException;
 import com.messenger.friendsapp.presentation.controller.dto.AddFriendDto;
 import com.messenger.friendsapp.presentation.controller.dto.FriendsListRequestDto;
 import com.messenger.security.jwt.PayloadPrincipal;
-import com.messenger.sharedlib.parameter.param.DiscreteParam;
-import com.messenger.sharedlib.parameter.param.IntervalParam;
+import com.messenger.sharedlib.parameter.dto.DiscreteParamDto;
+import com.messenger.sharedlib.parameter.dto.IntervalParamDto;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
@@ -57,9 +57,9 @@ public class FriendshipController {
     public ResponseEntity<FriendsListDto> getFriendsByParams(
             @RequestParam int pageNumber,
             @RequestParam int pageSize,
-            @RequestParam(required = false) DiscreteParam<String> fullName,
-            @RequestParam(required = false) IntervalParam<LocalDate> additionDate,
-            @RequestParam(required = false) DiscreteParam<UUID> friendId,
+            @RequestParam(required = false) DiscreteParamDto<String> fullName,
+            @RequestParam(required = false) IntervalParamDto<LocalDate> additionDate,
+            @RequestParam(required = false) DiscreteParamDto<UUID> friendId,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();

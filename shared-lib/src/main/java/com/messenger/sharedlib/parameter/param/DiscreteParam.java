@@ -1,6 +1,5 @@
 package com.messenger.sharedlib.parameter.param;
 
-import com.messenger.sharedlib.parameter.dto.DiscreteParamDto;
 import com.messenger.sharedlib.parameter.field.Field;
 import com.messenger.sharedlib.parameter.order.SortingOrder;
 import lombok.Setter;
@@ -21,12 +20,5 @@ public class DiscreteParam<T> extends Field<T> {
     @Contract(" -> new")
     public static <T> @NotNull DiscreteParam<T> createDefault() {
         return new DiscreteParam<>();
-    }
-
-    public static <T> @NotNull DiscreteParam<T> fromDto(DiscreteParamDto<T> dto) {
-        return dto == null ? DiscreteParam.createDefault() : new DiscreteParam<>(
-                dto.getValue(),
-                dto.getSortingOrder()
-        );
     }
 }

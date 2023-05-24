@@ -17,4 +17,9 @@ public class MessageListQuery extends PageNumberPaginatedQuery {
         this.requesterId = requesterId;
         this.messageText = messageText;
     }
+
+    @Override
+    public int getMaxPageSize() {
+        return 50;
+    }
 }

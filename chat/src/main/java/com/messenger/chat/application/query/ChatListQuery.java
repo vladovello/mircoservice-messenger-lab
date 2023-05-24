@@ -17,4 +17,9 @@ public class ChatListQuery extends PageNumberPaginatedQuery {
         this.requesterId = requesterId;
         this.chatName = chatName;
     }
+
+    @Override
+    public int getMaxPageSize() {
+        return 50;
+    }
 }
