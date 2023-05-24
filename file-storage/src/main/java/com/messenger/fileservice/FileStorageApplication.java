@@ -1,17 +1,15 @@
-package com.messenger.chat;
+package com.messenger.fileservice;
 
-import com.messenger.security.EnableSpringSecurity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
+@ConfigurationPropertiesScan("com.messenger.fileservice")
 @SpringBootApplication
-@ConfigurationPropertiesScan("com.messenger.chat")
-@EnableSpringSecurity
-public class ChatApplication {
+public class FileStorageApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChatApplication.class, args);
+		SpringApplication.run(FileStorageApplication.class, args);
 	}
 
 }

@@ -1,0 +1,5 @@
+minio:
+  access-key: njTkKGHomJm8dodDd52p
+  secret-key: 1yr8GUrSK8YZMlgAGR7SMOkqSalVNgDuh0s3R0F6
+  bucket: messenger-file-storage
+  url: http://localhost:9000

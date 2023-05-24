@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @EnableSpringSecurity
-@ConfigurationPropertiesScan
+@ConfigurationPropertiesScan("com.messenger.authandprofile")
 public class AuthAndProfileApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthAndProfileApplication.class, args);
