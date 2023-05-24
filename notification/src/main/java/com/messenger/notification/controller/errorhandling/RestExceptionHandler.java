@@ -1,4 +1,4 @@
-package com.messenger.notification.service.exception;
+package com.messenger.notification.controller.errorhandling;
 
 import com.messenger.sharedlib.presentation.errorhandling.ApiError;
 import org.springframework.http.HttpHeaders;
