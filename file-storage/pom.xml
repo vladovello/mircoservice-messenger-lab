@@ -40,6 +40,12 @@
 			<artifactId>minio</artifactId>
 			<version>${minio.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.messenger</groupId>
+			<artifactId>shared-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

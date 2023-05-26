@@ -1,3 +1,27 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 1115
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+#  jpa:
+#    database: POSTGRESQL
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/chats
+#    username: chat_user
+#    password: iamchatuser
+#    driverClassName: org.postgresql.Driver
+
 minio:
   access-key: njTkKGHomJm8dodDd52p
   secret-key: 1yr8GUrSK8YZMlgAGR7SMOkqSalVNgDuh0s3R0F6

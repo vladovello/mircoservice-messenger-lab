@@ -1,4 +1,4 @@
-package com.messenger.fileservice.config;
+package com.messenger.fileservice.server.config;
 
 import io.minio.MinioClient;
 import lombok.Data;

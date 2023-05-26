@@ -1,6 +1,6 @@
 package com.messenger.fileservice.server;
 
 public interface FileServer {
-    String upload(byte[] content);
+    String upload(String fileName, byte[] content);
     byte[] download(String id);
 }

@@ -35,6 +35,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @Override
+    @ExceptionHandler({HttpMessageNotReadableException.class})
     protected @NonNull ResponseEntity<Object> handleHttpMessageNotReadable(
             final @NonNull HttpMessageNotReadableException ex,
             final @NonNull HttpHeaders headers,
@@ -86,8 +87,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         var apiError = new ApiError(HttpStatus.CONFLICT, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
-
-    // 412
 
     // 500
     @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class})
