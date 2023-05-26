@@ -22,6 +22,7 @@ import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,6 +30,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/chats/")
 @RouterOperation
+@Validated
 public class MessageController {
     private final MessageListQueryHandler messageListQueryHandler;
     private final ChatMessagesPaginationQueryHandler chatMessagesPaginationQueryHandler;

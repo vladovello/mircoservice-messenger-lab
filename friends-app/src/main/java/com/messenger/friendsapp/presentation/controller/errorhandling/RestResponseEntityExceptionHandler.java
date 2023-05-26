@@ -12,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     public RestResponseEntityExceptionHandler() {
         super();
@@ -84,8 +84,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         var apiError = new ApiError(HttpStatus.CONFLICT, ex.getMessage());
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
-
-    // 412
 
     // 500
     @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class})

@@ -13,13 +13,16 @@ import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("api/friends/blacklist")
 @RouterOperation
+@Validated
 public class BlacklistController {
     private final RemoveFromBlacklistCommandHandler removeFromBlacklistCommandHandler;
     private final AddToBlacklistCommandHandler addToBlacklistCommandHandler;
@@ -63,7 +66,7 @@ public class BlacklistController {
 
     @GetMapping("check")
     public ResponseEntity<IsUserInBlackListDto> isUserInBlacklist(
-            UUID addresseeId,
+            @Valid @RequestParam UUID addresseeId,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();

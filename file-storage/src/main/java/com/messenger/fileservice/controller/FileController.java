@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("api/file")
 @Slf4j
+@Validated
 public class FileController {
     private final FileServer fileServer;
 
@@ -37,7 +39,7 @@ public class FileController {
         }
     }
 
-    @GetMapping(value = "{id}/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> download(@PathVariable String id) {
         return ResponseEntity.ok(fileServer.download(id));
     }

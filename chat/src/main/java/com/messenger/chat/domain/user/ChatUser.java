@@ -28,8 +28,7 @@ public class ChatUser extends DomainEntity {
     @Convert(converter = FullNameConverter.class)
     @NonNull
     private FullName fullName;
-    @Column(nullable = false)
-    @NonNull
+    @Column
     private UUID avatarId;
 
     protected ChatUser(@NonNull UUID userId, @NonNull FullName fullName, UUID avatarId) {

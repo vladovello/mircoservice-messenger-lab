@@ -4,8 +4,6 @@ import com.messenger.notification.dto.ChangeStatusDto;
 import com.messenger.notification.dto.NotificationListDto;
 import com.messenger.notification.dto.SearchParamsDto;
 import com.messenger.notification.dto.UnreadCountDto;
-import com.messenger.notification.entity.NotificationFactory;
-import com.messenger.notification.repository.NotificationRepository;
 import com.messenger.notification.service.NotificationService;
 import com.messenger.notification.service.exception.NotificationDoesNotBelongToUserException;
 import com.messenger.security.jwt.PayloadPrincipal;
@@ -14,23 +12,17 @@ import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/notifications")
+@Validated
 public class NotificationController {
     private final NotificationService notificationService;
-    private final NotificationRepository notificationRepository;
 
-    public NotificationController(
-            NotificationService notificationService,
-            NotificationRepository notificationRepository
-    ) {
+    public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
-        this.notificationRepository = notificationRepository;
     }
 
     @PostMapping("list")
@@ -81,21 +73,5 @@ public class NotificationController {
                     e.getMessage()
             ));
         }
-    }
-
-    @PostMapping("test")
-    public ResponseEntity<Void> test() {
-        var uuids = List.of(
-                UUID.fromString("007509d2-4bb9-4c9a-9b82-856b919e7ef1"),
-                UUID.fromString("c81b4c63-5ac6-458a-afe1-109cd186357d"),
-                UUID.fromString("550000f2-9731-4dcf-9cb8-201727c958a3")
-        );
-
-        for (int i = 0; i < 15; i++) {
-            var notif = NotificationFactory.userLoggedNotification(uuids.get(i % 3));
-            notificationRepository.save(notif);
-        }
-
-        return ResponseEntity.ok().build();
     }
 }

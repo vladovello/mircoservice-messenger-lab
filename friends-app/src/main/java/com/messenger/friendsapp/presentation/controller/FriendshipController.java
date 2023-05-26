@@ -14,24 +14,24 @@ import com.messenger.friendsapp.application.query.handler.GetFriendInfoQueryHand
 import com.messenger.friendsapp.application.query.handler.SearchFriendsByParamsQueryHandler;
 import com.messenger.friendsapp.domain.exception.UserIsBlockedException;
 import com.messenger.friendsapp.presentation.controller.dto.AddFriendDto;
+import com.messenger.friendsapp.presentation.controller.dto.FriendsByParamsDto;
 import com.messenger.friendsapp.presentation.controller.dto.FriendsListRequestDto;
 import com.messenger.security.jwt.PayloadPrincipal;
-import com.messenger.sharedlib.parameter.dto.DiscreteParamDto;
-import com.messenger.sharedlib.parameter.dto.IntervalParamDto;
 import lombok.NonNull;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("api/friends/friendship")
 @RouterOperation
+@Validated
 public class FriendshipController {
     private final SearchFriendsByParamsQueryHandler searchFriendsByParamsQueryHandler;
     private final GetFriendInfoQueryHandler getFriendInfoQueryHandler;
@@ -57,9 +57,7 @@ public class FriendshipController {
     public ResponseEntity<FriendsListDto> getFriendsByParams(
             @RequestParam int pageNumber,
             @RequestParam int pageSize,
-            @RequestParam(required = false) DiscreteParamDto<String> fullName,
-            @RequestParam(required = false) IntervalParamDto<LocalDate> additionDate,
-            @RequestParam(required = false) DiscreteParamDto<UUID> friendId,
+            @RequestBody(required = false) FriendsByParamsDto friendsByParamsDto,
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();
@@ -67,9 +65,9 @@ public class FriendshipController {
                 pageNumber,
                 pageSize,
                 principal.getId(),
-                fullName,
-                additionDate,
-                friendId
+                friendsByParamsDto.getFullName(),
+                friendsByParamsDto.getAdditionDate(),
+                friendsByParamsDto.getFriendId()
         ));
         return ResponseEntity.ok(friendsListDto);
     }

@@ -1,0 +1,972 @@
+{
+	"info": {
+		"_postman_id": "5fd8484c-bc57-44c4-b6a8-c5047c90d8d0",
+		"name": "Messenger API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21795118"
+	},
+	"item": [
+		{
+			"name": "Auth and profile",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Refresh",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxNDM3NTVhZC1kMDQ3LTRjZDMtOTAxYi1lNzNlYzAwMGQzNWQiLCJsb2ciOiJra29rayJ9.DAXLXEoMcT9B7tsZKS3pG-4BG4v613ZwF1kyg6U3BSDaiaQznc_J9GQm6uviuL7i\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/auth/refresh",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"YumeNikki\",\n  \"email\": \"sss@aaaa.uu\",\n  \"password\": \"1sS)_#@ds\",\n  \"firstName\": \"Yume\",\n  \"lastName\": \"Nikki\",\n  \"middleName\": \"Bzhhhh\",\n  \"phoneNumber\": \"8174928834\",\n  \"birthDate\": \"2002-04-21\",\n  \"city\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/auth/register",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"aabaa\",\n  \"password\": \"1sS)_#@ds\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/auth/login",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"accessToken\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzYmVmNzc4Ny00ZTAyLTQxYjgtYWE3NC03MGRhNzA5YjBlZDAiLCJsb2ciOiJhYWJhYSJ9.d9btMlgJaD0XV99B2zzMt9Nj3nSWY5krlsyGLZC7q5OPzEXQ2xLMD3ZIntCGngR6\",\n  \"refreshToken\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzYmVmNzc4Ny00ZTAyLTQxYjgtYWE3NC03MGRhNzA5YjBlZDAiLCJsb2ciOiJhYWJhYSJ9.d9btMlgJaD0XV99B2zzMt9Nj3nSWY5krlsyGLZC7q5OPzEXQ2xLMD3ZIntCGngR6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/auth/logout",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Get Self",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/users/profile/self",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										"self"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search All Paginated",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pageSize\": 5,\n  \"pageNumber\": 0,\n  \"email\": {\n    \"value\": \"string\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"login\": {\n    \"value\": \"string\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"fullName\": {\n    \"value\": \"string\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"phoneNumber\": {\n    \"value\": \"string\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"registrationDate\": {\n    \"from\": \"2023-05-24\",\n    \"to\": \"2023-05-24\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"birthDate\": {\n    \"from\": \"2023-05-24\",\n    \"to\": \"2023-05-24\",\n    \"sortingOrder\": \"ASC\"\n  },\n  \"city\": {\n    \"value\": \"string\",\n    \"sortingOrder\": \"ASC\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/profile/all",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Other",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/users/profile/other/?requestedId=143755ad-d047-4cd3-901b-e73ec000d35d",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										"other",
+										""
+									],
+									"query": [
+										{
+											"key": "requestedId",
+											"value": "143755ad-d047-4cd3-901b-e73ec000d35d"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"3bef7787-4e02-41b8-aa74-70da709b0ed0\",\n  \"firstName\": \"Peter\",\n  \"middleName\": \"Vasilevich\",\n  \"lastName\": \"Lozhechkin\",\n  \"birthDate\": \"1985-03-08\",\n  \"phoneNumber\": \"80627572839\",\n  \"city\": \"Saint Petersburg\",\n  \"avatar\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/users/profile/edit",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Friends",
+			"item": [
+				{
+					"name": "Friendship",
+					"item": [
+						{
+							"name": "Sorting",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pageNumber\": 1,\n  \"pageSize\": 2,\n  \"userId\": \"3bef7787-4e02-41b8-aa74-70da709b0ed0\",\n  \"fullName\": {\n    \"sortingOrder\": \"ASC\",\n    \"value\": \"string\"\n  },\n  \"additionDate\": {\n    \"sortingOrder\": \"ASC\",\n    \"interval\": {\n      \"from\": \"2000-02-04\",\n      \"to\": \"2022-02-04\"\n    }\n  },\n  \"friendId\": {\n    \"sortingOrder\": \"ASC\",\n    \"value\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/friends/friendship/search",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"friendship",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Friend",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{gateway-api}}/friends/friendship/:friendId",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"friendship",
+										":friendId"
+									],
+									"variable": [
+										{
+											"key": "friendId",
+											"value": "143755ad-d047-4cd3-901b-e73ec000d35d"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Friends List",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pageNumber\": 1,\n    \"pageSize\": 1,\n    \"fullName\": \"oleg oleg olege\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/friends/friendship/all",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"friendship",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Friend",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"addresseeId\": \"dbdca39f-5b54-48e9-bed9-b31151e66284\",\n    \"firstName\": \"Oleg\",\n    \"middleName\": \"olge\",\n    \"lastName\": \"oleg\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/friends/friendship/add",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"friendship",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Friend",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{gateway-api}}/friends/friendship/delete/:friendId",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"friendship",
+										"delete",
+										":friendId"
+									],
+									"variable": [
+										{
+											"key": "friendId",
+											"value": "dbdca39f-5b54-48e9-bed9-b31151e66284"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blacklist",
+					"item": [
+						{
+							"name": "Delete Blacklist Item",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{gateway-api}}/friends/blacklist/delete/:blacklistedId",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"blacklist",
+										"delete",
+										":blacklistedId"
+									],
+									"variable": [
+										{
+											"key": "blacklistedId",
+											"value": "dbdca39f-5b54-48e9-bed9-b31151e66284"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Is User Is In Blacklist",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{gateway-api}}/friends/blacklist/check?addresseeId=dbdca39f-5b54-48e9-bed9-b31151e66284",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"blacklist",
+										"check"
+									],
+									"query": [
+										{
+											"key": "addresseeId",
+											"value": "dbdca39f-5b54-48e9-bed9-b31151e66284"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add To Blacklist",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"addresseeId\": \"dbdca39f-5b54-48e9-bed9-b31151e66284\",\n    \"firstName\": \"Oleg\",\n    \"middleName\": \"Oleg\",\n    \"lastName\": \"olege\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/friends/blacklist/add",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"friends",
+										"blacklist",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get Notifications Paged",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"receivingDate\": {\n        \"sortingOrder\": \"ASC\",\n        \"from\": \"2000-02-04\",\n        \"to\": \"2023-06-04\"\n    },\n    \"notificationTypes\": {\n        \"sortingOrder\": \"ASC\",\n        \"value\": [\n            \"USER_LOGGED_IN\",\n            \"MESSAGE_SENT\",\n            \"FRIENDSHIP_CREATED\",\n            \"FRIENDSHIP_REMOVED\",\n            \"BLACKLIST_CREATED\",\n            \"BLACKLIST_REMOVED\"\n        ]\n    },\n    \"notificationText\": {\n        \"sortingOrder\": \"ASC\",\n        \"value\": \"Someone\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway-api}}/notifications/list?pageNumber=0&pageSize=10",
+							"host": [
+								"{{gateway-api}}"
+							],
+							"path": [
+								"notifications",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unread Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway-api}}/notifications/unread-count",
+							"host": [
+								"{{gateway-api}}"
+							],
+							"path": [
+								"notifications",
+								"unread-count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Notification Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notificationIds\": [\"ffdaa737-872d-465f-a122-46f64dc9847e\", \"e0e2e6b7-ffd3-4a25-8a16-5e7cec0b02fa\"],\n    \"notificationStatus\": \"VIEWED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway-api}}/notifications/change-status",
+							"host": [
+								"{{gateway-api}}"
+							],
+							"path": [
+								"notifications",
+								"change-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chats",
+			"item": [
+				{
+					"name": "Chat",
+					"item": [
+						{
+							"name": "Create Chat",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chatName\": \"5A класс\",\n    \"avatarId\": \"0ebd9b26-13c9-4581-b244-50d4c2eefaea\",\n    \"usersList\": [\n        \"b59d1c60-3e34-4b48-9d05-923b3238899c\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/create",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Chat Info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/:chatId/info",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										":chatId",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "chatId",
+											"value": "afded594-3874-4380-9a50-a8948094b42a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search Chats",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/search?pageNumber=0&pageSize=5&chatName",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										"search"
+									],
+									"query": [
+										{
+											"key": "pageNumber",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "5"
+										},
+										{
+											"key": "chatName",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Chat",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chatName\": \"dobrie_parnishki\",\n    \"avatarId\": \"d41d8cd9-8f00-3204-a980-0998ecf8427e\",\n    \"usersList\": [\n        \"b59d1c60-3e34-4b48-9d05-923b3238899c\",\n        \"1099e6f8-4a0d-4793-95b9-003c79173baa\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/:chatId/change",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										":chatId",
+										"change"
+									],
+									"variable": [
+										{
+											"key": "chatId",
+											"value": "afded594-3874-4380-9a50-a8948094b42a"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Message",
+					"item": [
+						{
+							"name": "Search In Messages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/chats/search?pageNumber=0&pageSize=5&messageText=My",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"search"
+									],
+									"query": [
+										{
+											"key": "pageNumber",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "5"
+										},
+										{
+											"key": "messageText",
+											"value": "My"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Messages From Chat Paginated",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/:chatId/messages?offset=0",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										":chatId",
+										"messages"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									],
+									"variable": [
+										{
+											"key": "chatId",
+											"value": "32c7af40-3f87-4a83-bc8f-c10e42f20d81"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Message To Dialogue",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"recipientId\": \"d416cad5-4aff-47bb-a945-86d1174d4767\",\n    \"messageText\": \"Hello, Adam. What are you doing now? AHAHAHAHAH. the comic effect of the joke is that it is an ironically trite beginning of the dialogue)\",\n    \"attachments\": [\n        {\n            \"id\": \"string\",\n            \"fileName\": \"string\",\n            \"size\": 12\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/dialogue/send",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										"dialogue",
+										"send"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Message To Multi Chat",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chatId\": \"32c7af40-3f87-4a83-bc8f-c10e42f20d81\",\n    \"messageText\": \"Basic m ulti chat message shit im tired please let me out i want to touch the grass please\",\n    \"attachments\": [\n        {\n            \"id\": \"cd395386-faba-4fec-8cae-962e798c7c72:mrazota.png\",\n            \"fileName\": \"mrazota.png\",\n            \"size\": 190974\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{gateway-api}}/chats/chat/multi/send",
+									"host": [
+										"{{gateway-api}}"
+									],
+									"path": [
+										"chats",
+										"chat",
+										"multi",
+										"send"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "File Storage",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/vladovello/Pictures/mrazota.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{gateway-api}}/file/upload",
+							"host": [
+								"{{gateway-api}}"
+							],
+							"path": [
+								"file",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download File",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{gateway-api}}/file/download/327dbdb4-dfa5-42ac-8f29-69a5e8e0d9c6:mrazota.png",
+							"host": [
+								"{{gateway-api}}"
+							],
+							"path": [
+								"file",
+								"download",
+								"327dbdb4-dfa5-42ac-8f29-69a5e8e0d9c6:mrazota.png"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwZWJkOWIyNi0xM2M5LTQ1ODEtYjI0NC01MGQ0YzJlZWZhZWEiLCJsb2ciOiJhYWJhYSIsImlhdCI6MTY4NDY5NDk1MiwiZXhwIjoxNjg1NzMwOTUyfQ.PpF720IhRXHDznPEi9OwXkJIoSTDr2vjG8McgcistT-yN1COKanOxcttAj0CELXU",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authandprofile",
+			"value": "localhost:1111/api/users",
+			"type": "string"
+		},
+		{
+			"key": "friends",
+			"value": "localhost:1112/api",
+			"type": "string"
+		},
+		{
+			"key": "gateway-api",
+			"value": "localhost:1110/api",
+			"type": "string"
+		},
+		{
+			"key": "gateway-integration",
+			"value": "localhost:1110/integration",
+			"type": "string"
+		}
+	]
+}
