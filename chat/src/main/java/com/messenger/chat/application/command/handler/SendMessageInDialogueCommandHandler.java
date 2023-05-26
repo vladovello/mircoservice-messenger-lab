@@ -7,6 +7,7 @@ import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.chat.service.ChatDomainService;
 import com.messenger.chat.domain.message.Message;
+import com.messenger.chat.domain.message.service.AttachmentDomainService;
 import com.messenger.chat.domain.message.service.MessageDomainService;
 import com.messenger.chat.domain.message.valueobject.MessageText;
 import com.messenger.chat.domain.user.exception.UserDoesNotExistsException;
@@ -24,19 +25,22 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
     private final ChatDomainService chatDomainService;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
+    private final AttachmentDomainService attachmentDomainService;
 
     public SendMessageInDialogueCommandHandler(
             MessageDomainService messageDomainService,
             BlacklistRepository blacklistRepository,
             ChatDomainService chatDomainService,
             ChatRepository chatRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            AttachmentDomainService attachmentDomainService
     ) {
         this.messageDomainService = messageDomainService;
         this.blacklistRepository = blacklistRepository;
         this.chatDomainService = chatDomainService;
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
+        this.attachmentDomainService = attachmentDomainService;
     }
 
     // 1. Проверить, что чат существует м/у пользователями. Если нет, то создать чат
@@ -73,13 +77,25 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
             return Result.failure(messageText.exceptionOrNull());
         }
 
-        var message = Message.createNew(chat.getId(), command.getSenderId(), messageText.getOrNull());
+        var messageResult = Message.createNew(chat.getId(), command.getSenderId(), messageText.getOrNull());
 
-        if (message.isFailure()) {
-            return Result.failure(message.exceptionOrNull());
+        if (messageResult.isFailure()) {
+            return Result.failure(messageResult.exceptionOrNull());
         }
 
-        var result = messageDomainService.sendMessage(message.getOrNull());
+        var message = messageResult.getOrNull();
+
+        var attachmentsResult = attachmentDomainService.createAttachments(command.getAttachments(), message.getId());
+
+        if (attachmentsResult.isFailure()) {
+            return Result.failure(attachmentsResult.exceptionOrNull());
+        }
+
+        var attachments = attachmentsResult.getOrNull();
+
+        message.assignAttachments(attachments);
+
+        var result = messageDomainService.saveMessage(message);
 
         if (result.isFailure()) {
             return Result.failure(result.exceptionOrNull());

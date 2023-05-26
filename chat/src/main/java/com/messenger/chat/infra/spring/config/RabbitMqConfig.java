@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.messenger.chat.infra.spring.config.prop.RabbitMqProps;
 import lombok.NonNull;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -20,19 +17,39 @@ public class RabbitMqConfig {
     private static final String MESSAGE_CREATED_EXCHANGE = "messageCreatedExchange";
 
     private final RabbitMqProps rabbitMqProps;
+    private final String dlq;
+    private final String dlx;
+
 
     public RabbitMqConfig(RabbitMqProps rabbitMqProps) {
         this.rabbitMqProps = rabbitMqProps;
+        this.dlq = rabbitMqProps.getQueueName() + ".dlq";
+        this.dlx = rabbitMqProps.getQueueName() + ".dlx";
     }
 
     @Bean
     Queue queue() {
-        return new Queue(rabbitMqProps.getQueueName(), true);
+        return QueueBuilder.durable(rabbitMqProps.getQueueName()).deadLetterExchange(dlx).build();
+    }
+
+    @Bean
+    Queue deadLetterQueue() {
+        return QueueBuilder.durable(dlq).build();
     }
 
     @Bean
     FanoutExchange exchange() {
         return new FanoutExchange(MESSAGE_CREATED_EXCHANGE, true, false);
+    }
+
+    @Bean
+    FanoutExchange deadLetterExchange() {
+        return new FanoutExchange(dlx);
+    }
+
+    @Bean
+    Binding deadLetterBinding() {
+        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange());
     }
 
     @Bean

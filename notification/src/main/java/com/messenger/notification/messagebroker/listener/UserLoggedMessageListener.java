@@ -6,7 +6,9 @@ import com.messenger.sharedlib.rabbitmq.message.auth.UserLoggedMessage;
 import lombok.NonNull;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
 
+@Component
 @RabbitListener(queues = "notificationQ")
 public class UserLoggedMessageListener {
     private final NotificationRepository notificationRepository;

@@ -25,7 +25,7 @@ public class MessageDomainServiceImpl implements MessageDomainService {
     }
 
     @Override
-    public Result<Unit> sendMessage(@NonNull Message message) {
+    public Result<Unit> saveMessage(@NonNull Message message) {
         if (!chatParticipantRepository.isUserBelongsToChat(message.getChatId(), message.getSenderUserId())) {
             return Result.failure(new UserDoesNotExistsInChatException(message.getSenderUserId(), message.getChatId()));
         }
@@ -42,7 +42,6 @@ public class MessageDomainServiceImpl implements MessageDomainService {
         }
 
         messageRepository.save(message);
-
         return Result.success();
     }
 

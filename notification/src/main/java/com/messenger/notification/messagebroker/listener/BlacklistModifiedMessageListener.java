@@ -8,7 +8,9 @@ import com.messenger.sharedlib.rabbitmq.message.blacklist.BlacklistItemDeletedMe
 import lombok.NonNull;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
 
+@Component
 @RabbitListener(queues = "notificationQ")
 public class BlacklistModifiedMessageListener {
     private final NotificationRepository notificationRepository;

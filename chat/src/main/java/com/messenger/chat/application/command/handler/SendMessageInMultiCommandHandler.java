@@ -5,6 +5,7 @@ import com.messenger.chat.application.command.SendMessageInMultiCommand;
 import com.messenger.chat.domain.chat.exception.ChatNotFoundException;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.message.Message;
+import com.messenger.chat.domain.message.service.AttachmentDomainService;
 import com.messenger.chat.domain.message.service.MessageDomainService;
 import com.messenger.chat.domain.message.valueobject.MessageText;
 import com.messenger.sharedlib.util.Result;
@@ -16,13 +17,16 @@ import org.springframework.stereotype.Service;
 public class SendMessageInMultiCommandHandler implements CommandHandler<SendMessageInMultiCommand, Result<Unit>> {
     private final ChatRepository chatRepository;
     private final MessageDomainService messageDomainService;
+    private final AttachmentDomainService attachmentDomainService;
 
     public SendMessageInMultiCommandHandler(
             ChatRepository chatRepository,
-            MessageDomainService messageDomainService
+            MessageDomainService messageDomainService,
+            AttachmentDomainService attachmentDomainService
     ) {
         this.chatRepository = chatRepository;
         this.messageDomainService = messageDomainService;
+        this.attachmentDomainService = attachmentDomainService;
     }
 
     // 1. Проверить, что чат существует
@@ -39,13 +43,25 @@ public class SendMessageInMultiCommandHandler implements CommandHandler<SendMess
             return Result.failure(messageText.exceptionOrNull());
         }
 
-        var message = Message.createNew(command.getChatId(), command.getSenderId(), messageText.getOrNull());
+        var messageResult = Message.createNew(command.getChatId(), command.getSenderId(), messageText.getOrNull());
 
-        if (message.isFailure()) {
-            return Result.failure(message.exceptionOrNull());
+        if (messageResult.isFailure()) {
+            return Result.failure(messageResult.exceptionOrNull());
         }
 
-        var result = messageDomainService.sendMessage(message.getOrNull());
+        var message = messageResult.getOrNull();
+
+        var attachmentsResult = attachmentDomainService.createAttachments(command.getAttachments(), message.getId());
+
+        if (attachmentsResult.isFailure()) {
+            return Result.failure(attachmentsResult.exceptionOrNull());
+        }
+
+        var attachments = attachmentsResult.getOrNull();
+
+        message.assignAttachments(attachments);
+
+        var result = messageDomainService.saveMessage(message);
 
         if (result.isFailure()) {
             return Result.failure(result.exceptionOrNull());

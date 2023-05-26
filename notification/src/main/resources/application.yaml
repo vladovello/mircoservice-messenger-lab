@@ -42,23 +42,32 @@ app:
       timeout: 3000
       api-key: lozhka_s_degtem
   rabbitmq:
-    queues:
-      - name: notificationQ
-        durable: true
-    bindings:
-      - destination: notificationQ
-        destination-type: queue
-        exchange: blacklistModifiedExchange
-        routing-key: ""
-      - destination: notificationQ
-        destination-type: queue
-        exchange: friendshipModifiedExchange
-        routing-key: ""
-      - destination: notificationQ
-        destination-type: queue
-        exchange: messageCreatedExchange
-        routing-key: ""
-      - destination: notificationQ
-        destination-type: queue
-        exchange: userLoggedExchange
-        routing-key: ""
+    queueName: notificationQ
+#    queues:
+#      - name: notificationQ
+#        durable: true
+#      - name: notificationQ.dlq
+#        durable: true
+#        arguments:
+#          x-dead-letter-exchange: notificationQ.dlx
+#    exchanges:
+#      - name: notificationQ.dlx
+#        type: fanout
+#        durable: true
+#    bindings:
+#      - destination: notificationQ
+#        destination-type: queue
+#        exchange: blacklistModifiedExchange
+#        routing-key: ""
+#      - destination: notificationQ
+#        destination-type: queue
+#        exchange: friendshipModifiedExchange
+#        routing-key: ""
+#      - destination: notificationQ
+#        destination-type: queue
+#        exchange: messageCreatedExchange
+#        routing-key: ""
+#      - destination: notificationQ
+#        destination-type: queue
+#        exchange: userLoggedExchange
+#        routing-key: ""

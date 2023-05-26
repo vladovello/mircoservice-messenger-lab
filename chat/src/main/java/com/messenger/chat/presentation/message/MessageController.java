@@ -98,7 +98,8 @@ public class MessageController {
         var result = sendMessageInDialogueCommandHandler.handle(new SendMessageInDialogueCommand(
                 principal.getId(),
                 createMessageDialogueDto.getRecipientId(),
-                createMessageDialogueDto.getMessageText()
+                createMessageDialogueDto.getMessageText(),
+                createMessageDialogueDto.getAttachments()
         ));
 
         return result.fold(unit -> ResponseEntity.noContent().build(), e -> {
@@ -124,7 +125,8 @@ public class MessageController {
         var result = sendMessageInMultiCommandHandler.handle(new SendMessageInMultiCommand(
                 principal.getId(),
                 createMessageMultiDto.getChatId(),
-                createMessageMultiDto.getMessageText()
+                createMessageMultiDto.getMessageText(),
+                createMessageMultiDto.getAttachments()
         ));
 
         return result.fold(unit -> ResponseEntity.noContent().build(), e -> {

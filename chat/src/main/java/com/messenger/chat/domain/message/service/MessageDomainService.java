@@ -6,7 +6,11 @@ import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 
 public interface MessageDomainService {
-    Result<Unit> sendMessage(Message message);
+    /**
+     * @param message message to save
+     * @return {@code Result<Unit>} describing whether the result of the function execution was successful
+     */
+    Result<Unit> saveMessage(Message message);
 
     Result<Unit> changeMessage(ChatParticipant actionPerformer, Message message);
 

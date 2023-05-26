@@ -1,31 +1,30 @@
 package com.messenger.chat.infra.persistence.repository.impl;
 
-import com.messenger.chat.domain.user.repository.BlacklistRepository;
+import com.messenger.chat.domain.message.repository.FileStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-import java.util.UUID;
+import java.util.List;
 
 @Repository
-public class BlacklistRepositoryImpl implements BlacklistRepository {
-    private final WebClient friendsService;
+public class FileStorageRepositoryImpl implements FileStorageRepository {
+    private final WebClient fileStorageService;
     private static final int RETRY_TIMEOUT_DURATION_MILLIS = 3000;
 
-    public BlacklistRepositoryImpl(@Qualifier("friendsClient") WebClient friendsService) {
-        this.friendsService = friendsService;
+    public FileStorageRepositoryImpl(@Qualifier("fileStorageClient") WebClient fileStorageService) {
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
-    public boolean isUserIsBlacklistedByOther(UUID userId, UUID otherUserId) {
-        var response = friendsService
+    public boolean isFilesExists(List<String> ids) {
+        var response = fileStorageService
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/friends/blacklist/check")
-                        .queryParam("userId", userId.toString())
-                        .queryParam("otherId", otherUserId.toString())
+                        .pathSegment("file", "exists")
+                        .queryParam("ids", ids)
                         .build()
                 )
                 .retrieve()

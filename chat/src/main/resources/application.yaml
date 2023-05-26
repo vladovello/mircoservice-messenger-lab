@@ -40,5 +40,10 @@ app:
       root-path: /integration
       timeout: 3000
       api-key: lozhka_s_degtem
+    file-storage:
+      base-url: http://localhost:1115
+      root-path: /integration
+      timeout: 3000
+      api-key: lozhka_s_degtem
   rabbitmq:
     queueName: chatQ

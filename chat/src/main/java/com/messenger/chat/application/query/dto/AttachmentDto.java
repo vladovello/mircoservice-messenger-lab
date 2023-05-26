@@ -10,5 +10,5 @@ import java.util.UUID;
 public class AttachmentDto {
     private UUID id;
     private String name;
-    private AttachmentSizeDto attachmentSize;
+    private AttachmentSizeDto size;
 }

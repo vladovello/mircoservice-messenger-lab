@@ -63,7 +63,7 @@ public class Message extends DomainEntity {
     private MessageText messageText;
 
     @Column
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Attachment> attachments;
 
     @Transient
@@ -159,6 +159,10 @@ public class Message extends DomainEntity {
     @AfterDomainEventPublication
     public void clearDomainEvents() {
         domainEvents.clear();
+    }
+
+    public void assignAttachments(List<Attachment> attachments) {
+        this.attachments = new HashSet<>(attachments);
     }
 
     private static @NonNull UUID generateId() {

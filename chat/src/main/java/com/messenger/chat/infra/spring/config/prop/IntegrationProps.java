@@ -8,4 +8,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class IntegrationProps {
     ServiceIntegrationProps friends;
+    ServiceIntegrationProps fileStorage;
 }

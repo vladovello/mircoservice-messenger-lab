@@ -25,11 +25,11 @@ public class FileController {
     public ResponseEntity<UploadFileResponseDto> uploadFile(@RequestParam @NonNull MultipartFile file) {
         try {
             log.info("Uploading '{}' file", file.getOriginalFilename());
+            var uploadFileResult = fileServer.upload(file.getOriginalFilename(), file.getBytes());
+
             return ResponseEntity.ok(new UploadFileResponseDto(
-                    fileServer.upload(
-                            file.getOriginalFilename(),
-                            file.getBytes()
-                    ),
+                    uploadFileResult.getFileId(),
+                    uploadFileResult.getFileName(),
                     file.getSize()
             ));
         } catch (IOException e) {
@@ -37,7 +37,7 @@ public class FileController {
         }
     }
 
-    @GetMapping(value = "download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "{id}/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> download(@PathVariable String id) {
         return ResponseEntity.ok(fileServer.download(id));
     }

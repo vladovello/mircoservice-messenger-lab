@@ -20,14 +20,22 @@ spring:
           uri: http://localhost:1114/
           predicates:
             - Path=/api/notifications/**
-
-        - id: friends-integration
-          uri: http://localhost:1112/
+        - id: file-storage-api
+          uri: http://localhost:1115/
           predicates:
-            - Path=/integration/friends/**
+            - Path=/api/file/**
+
         - id: authandprofile-integration
           uri: http://localhost:1111/
           predicates:
             - Path=/integration/users/**
+        - id: friends-integration
+          uri: http://localhost:1112/
+          predicates:
+            - Path=/integration/friends/**
+        - id: file-storage-integration
+          uri: http://localhost:1115/
+          predicates:
+            - Path=/integration/file/**
 server:
   port: 1110

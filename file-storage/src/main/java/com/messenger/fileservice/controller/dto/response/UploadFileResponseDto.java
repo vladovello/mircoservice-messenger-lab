@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UploadFileResponseDto {
-    private String fileId;
+    private String id;
+    private String name;
     private long size;
 }
