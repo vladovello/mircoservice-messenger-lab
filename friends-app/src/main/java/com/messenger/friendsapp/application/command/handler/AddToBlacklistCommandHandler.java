@@ -15,6 +15,10 @@ public class AddToBlacklistCommandHandler {
         this.domainBlacklistService = domainBlacklistService;
     }
 
+    /**
+     * Adds user to requester's blacklist
+     * @param command CQS command for appropriate handler
+     */
     public void handle(@NonNull AddToBlacklistCommand command) {
         domainBlacklistService.addToBlacklist(
                 command.getRequesterId(),

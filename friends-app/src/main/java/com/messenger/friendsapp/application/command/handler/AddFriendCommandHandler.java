@@ -16,6 +16,10 @@ public class AddFriendCommandHandler {
         this.domainFriendshipService = domainFriendshipService;
     }
 
+    /**
+     * Adds friend to requester's friend list
+     * @param command CQS command for appropriate handler
+     */
     public void handle(@NonNull AddFriendCommand command) throws UserIsBlockedException {
         domainFriendshipService.addToFriendshipList(
                 command.getRequesterId(),

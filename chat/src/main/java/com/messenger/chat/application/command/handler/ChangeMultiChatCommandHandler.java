@@ -31,6 +31,14 @@ public class ChangeMultiChatCommandHandler implements CommandHandler<ChangeMulti
         this.chatRepository = chatRepository;
     }
 
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<Unit>} describing whether the result of the function execution was successful
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code IllegalChatTypeException},<br>
+     * {@code ChatParticipantNotFoundException}
+     */
     @Override
     public Result<Unit> handle(@NonNull ChangeMultiChatCommand command) {
         var optionalChat = chatRepository.getChat(command.getChatId());

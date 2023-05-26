@@ -19,6 +19,12 @@ public class ProfileChangedEventCommandHandler implements CommandHandler<Profile
         this.userRepository = userRepository;
     }
 
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<Unit>} describing whether the result of the function execution was successful
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code BusinessRuleViolationException}
+     */
     @Override
     public Result<Unit> handle(ProfileChangedEventCommand command) {
         log.info(String.format("ProfileChangedEventCommand received: %s", command));

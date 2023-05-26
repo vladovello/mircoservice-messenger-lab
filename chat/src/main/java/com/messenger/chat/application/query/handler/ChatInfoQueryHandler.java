@@ -23,6 +23,13 @@ public class ChatInfoQueryHandler implements QueryHandler<ChatInfoQuery, Result<
         this.chatRepository = chatRepository;
     }
 
+    /**
+     * @param query CQS query for appropriate handler
+     * @return {@code Result<ChatInfoDto>} describing whether the result of the function execution was successful.
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code ChatParticipantNotFoundException}
+     */
     @Override
     public Result<ChatInfoDto> handle(@NonNull ChatInfoQuery query) {
         var optionalChat = chatRepository.getChat(query.getChatId());

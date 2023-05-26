@@ -31,6 +31,13 @@ public class ChatMessagesPaginationQueryHandler implements
         this.chatParticipantRepository = chatParticipantRepository;
     }
 
+    /**
+     * @param query CQS query for appropriate handler
+     * @return {@code Result<ChatInfoDto>} describing whether the result of the function execution was successful.
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code UserDoesNotExistsInChatException}
+     */
     @Override
     public Result<List<MessageDto>> handle(@NonNull ChatMessagesPaginationQuery query) {
         if (!chatRepository.isChatExists(query.getChatId())) {

@@ -13,6 +13,11 @@ public class IsUserInBlacklistQueryHandler {
         this.blacklistRepository = blacklistRepository;
     }
 
+    /**
+     * Checks if user is in other's blacklist
+     * @param query CQS command for appropriate handler
+     * @return {@code true} if user is in other's blacklist and {@code false} otherwise
+     */
     public boolean handle(@NonNull IsUserInBlacklistQuery query) {
         return blacklistRepository.isRequesterBlocked(query.getRequesterId(), query.getAddresseeId());
     }

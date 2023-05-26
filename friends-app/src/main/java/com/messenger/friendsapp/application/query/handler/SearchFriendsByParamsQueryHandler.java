@@ -17,6 +17,11 @@ public class SearchFriendsByParamsQueryHandler {
         this.friendshipRepository = friendshipRepository;
     }
 
+    /**
+     * Makes a paginated search in user's friend list by various parameters
+     * @param query CQS command for appropriate handler
+     * @return {@code FriendsListDto} representing paginated request of user's friends
+     */
     public FriendsListDto handle(@NonNull SearchFriendsByParamsQuery query) {
         var friends = friendshipRepository.findAllFriendsPaginatedByParams(
                 query.getPageNumber(),

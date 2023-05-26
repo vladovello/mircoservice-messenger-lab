@@ -27,6 +27,13 @@ public class CreateMultiChatCommandHandler implements CommandHandler<CreateMulti
     //  пайплайн, в который встроится проверщик этих правил (условно, BanManager).
     //  2. Можно также вынести проверки за репозиторий, чтобы тот получал на вход subject и object и смотрел, забанен ли
     //  subject у object'а (не оч способ).
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<ChatCommandDto>} describing whether the result of the function execution was successful.
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code BusinessRuleViolationException}
+     */
     @Override
     public Result<ChatCommandDto> handle(@NonNull CreateMultiChatCommand command) {
         var chatName = ChatName.create(command.getChatName());

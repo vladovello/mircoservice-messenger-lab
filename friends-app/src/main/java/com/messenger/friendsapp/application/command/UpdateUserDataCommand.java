@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class SynchronizeUserDataCommand {
+public class UpdateUserDataCommand {
     private UUID userId;
     private String firstName;
     private String lastName;

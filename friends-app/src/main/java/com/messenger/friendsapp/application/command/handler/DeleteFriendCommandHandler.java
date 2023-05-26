@@ -13,6 +13,10 @@ public class DeleteFriendCommandHandler {
         this.domainFriendshipService = domainFriendshipService;
     }
 
+    /**
+     * Removes friend from user's friend list
+     * @param command CQS command for appropriate handler
+     */
     public void handle(@NonNull DeleteFriendCommand command) {
         domainFriendshipService.removeFromFriendshipList(command.getRequesterId(), command.getAddresseeId());
     }

@@ -5,6 +5,7 @@ import com.messenger.notification.dto.NotificationListDto;
 import com.messenger.notification.dto.SearchParamsDto;
 import com.messenger.notification.dto.UnreadCountDto;
 import com.messenger.notification.service.NotificationService;
+import com.messenger.notification.service.impl.NotificationServiceImpl;
 import com.messenger.notification.service.exception.NotificationDoesNotBelongToUserException;
 import com.messenger.security.jwt.PayloadPrincipal;
 import com.messenger.sharedlib.presentation.errorhandling.ApiError;
@@ -61,11 +62,14 @@ public class NotificationController {
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();
         try {
-            var count = notificationService.changeStatus(
+            notificationService.changeStatus(
                     principal.getId(),
                     changeStatusDto.getNotificationIds(),
                     changeStatusDto.getNotificationStatus()
             );
+
+            var count = notificationService.getUnreadCount(principal.getId());
+
             return ResponseEntity.ok(new UnreadCountDto(count));
         } catch (NotificationDoesNotBelongToUserException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiError(

@@ -12,8 +12,22 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ChatDomainService {
+    /**
+     * Creates multi chat
+     * @param chatName name of the chat
+     * @param avatarId avatar id of the chat
+     * @param ownerId user with owner id owning the chat
+     * @param participantIds participants of this chat invited by owner
+     * @return {@code Chat}
+     */
     Chat createMultiChat(ChatName chatName, UUID avatarId, UUID ownerId, List<UUID> participantIds);
 
+    /**
+     * Creates dialogue chat
+     * @param userId1 first user participating in chat
+     * @param userId2 second user participating in chat
+     * @return {@code Result<Chat>} describing whether the result of the function execution was successful.
+     */
     Result<Chat> createDialogueChat(UUID userId1, UUID userId2);
 
     Chat createChatWithDefaultAvatar(ChatType chatType, ChatName chatName);

@@ -17,6 +17,11 @@ public class FriendsListQueryHandler {
         this.friendshipRepository = friendshipRepository;
     }
 
+    /**
+     * Makes a paginated search in user's friend list by full name
+     * @param query CQS query for appropriate handler
+     * @return list of representations of user's friends
+     */
     public List<FriendDto> handle(@NonNull FriendsListQuery query) {
         var friendshipList = friendshipRepository.findAllFriendsPaginatedByFullName(
                 query.getPageNumber(),

@@ -31,6 +31,14 @@ public class SendMessageInMultiCommandHandler implements CommandHandler<SendMess
 
     // 1. Проверить, что чат существует
     // 2. Отправить сообщение через доменный сервис
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<Unit>} describing whether the result of the function execution was successful
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code BusinessRuleViolationException},<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code AttachmentNotFoundInStorageException}
+     */
     @Override
     public Result<Unit> handle(@NonNull SendMessageInMultiCommand command) {
         if (!chatRepository.isChatExists(command.getChatId())) {

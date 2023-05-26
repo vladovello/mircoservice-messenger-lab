@@ -16,6 +16,10 @@ public class GetFriendInfoQueryHandler {
         this.friendshipRepository = friendshipRepository;
     }
 
+    /**
+     * @param query CQS command for appropriate handler
+     * @return Representation of a single user's friend
+     */
     public Optional<FriendDto> handle(@NonNull GetFriendInfoQuery query) {
         var friendship = friendshipRepository.findFriend(query.getUserId(), query.getFriendId());
         return friendship.map(FriendDto::fromFriendship);

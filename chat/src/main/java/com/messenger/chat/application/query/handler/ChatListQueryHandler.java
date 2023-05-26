@@ -15,6 +15,10 @@ public class ChatListQueryHandler implements QueryHandler<ChatListQuery, Preview
         this.chatQueryRepository = chatQueryRepository;
     }
 
+    /**
+     * @param query CQS query for appropriate handler
+     * @return {@code Result<PreviewChatInfoListDto>} describing whether the result of the function execution was successful.
+     */
     @Override
     public PreviewChatInfoListDto handle(@NonNull ChatListQuery query) {
         return new PreviewChatInfoListDto(

@@ -46,6 +46,14 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
     // 1. Проверить, что чат существует м/у пользователями. Если нет, то создать чат
     // 2. Проверить, может ли пользователь отправлять другому сообщения. Если нет, то выйти из функции
     // 3. Сохранить сообщение и выйти из функции
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<Unit>} describing whether the result of the function execution was successful
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code BusinessRuleViolationException},<br>
+     * {@code UserDoesNotExistsException},<br>
+     * {@code UserBlacklistedException}
+     */
     @Override
     public Result<Unit> handle(@NonNull SendMessageInDialogueCommand command) {
         if (!userRepository.isUserExists(command.getRecipientId())) {

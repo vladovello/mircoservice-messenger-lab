@@ -20,6 +20,14 @@ public class UserCreatedEventCommandHandler implements CommandHandler<UserCreate
         this.userRepository = userRepository;
     }
 
+    /**
+     * @param command CQS command for appropriate handler
+     * @return {@code Result<ChatCommandDto>} describing whether the result of the function execution was successful.
+     * @implNote This method can return {@code Result} with either:<br>
+     * {@code BusinessRuleViolationException},<br>
+     * {@code ChatNotFoundException},<br>
+     * {@code AttachmentNotFoundInStorageException
+     */
     @Override
     public Result<Unit> handle(@NonNull UserCreatedEventCommand command) {
         log.info(String.format("UserCreatedEventCommand received: %s", command));
