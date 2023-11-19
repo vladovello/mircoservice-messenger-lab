@@ -18,6 +18,9 @@
         <module>shared-lib</module>
         <module>security</module>
         <module>api-gateway</module>
+        <module>notification</module>
+        <module>file-storage</module>
+        <module>chat</module>
     </modules>
 
     <groupId>com.messenger</groupId>
@@ -27,7 +30,7 @@
     <description>University microservice messenger project</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>21</java.version>
         <spring-boot.version>2.7.10</spring-boot.version>
         <spring-rabbit-test.version>2.4.12</spring-rabbit-test.version>
     </properties>

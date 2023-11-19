@@ -71,9 +71,7 @@ public class OneOf2<T1, T2> implements OneOf {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OneOf2)) return false;
-
-        var oneOf2 = (OneOf2<?, ?>) o;
+        if (!(o instanceof OneOf2<?, ?> oneOf2)) return false;
 
         if (getIndex() != oneOf2.getIndex()) return false;
         if (!Objects.equals(value1, oneOf2.value1)) return false;

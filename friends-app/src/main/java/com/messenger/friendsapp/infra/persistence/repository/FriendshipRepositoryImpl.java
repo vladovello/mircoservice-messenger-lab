@@ -182,13 +182,9 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {
-        switch (sortingOrder) {
-            case ASC:
-                return Sort.by(Sort.Direction.ASC, propertyName);
-            case DESC:
-                return Sort.by(Sort.Direction.DESC, propertyName);
-            default:
-                throw new AssertionError(sortingOrder);
-        }
+        return switch (sortingOrder) {
+            case ASC -> Sort.by(Sort.Direction.ASC, propertyName);
+            case DESC -> Sort.by(Sort.Direction.DESC, propertyName);
+        };
     }
 }

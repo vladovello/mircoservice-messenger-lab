@@ -16,7 +16,6 @@
     <description>friends-app</description>
 
     <properties>
-        <java.version>11</java.version>
         <postgres.version>42.6.0</postgres.version>
         <springdoc.version>1.7.0</springdoc.version>
     </properties>

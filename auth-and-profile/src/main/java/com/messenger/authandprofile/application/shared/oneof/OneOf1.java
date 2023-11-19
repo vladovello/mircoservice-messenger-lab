@@ -48,9 +48,7 @@ public class OneOf1<T1> implements OneOf {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OneOf1)) return false;
-
-        var oneOf1 = (OneOf1<?>) o;
+        if (!(o instanceof OneOf1<?> oneOf1)) return false;
 
         if (getIndex() != oneOf1.getIndex()) return false;
         return Objects.equals(value1, oneOf1.value1);

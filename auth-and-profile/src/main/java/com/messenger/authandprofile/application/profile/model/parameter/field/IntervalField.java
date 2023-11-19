@@ -7,7 +7,7 @@ import com.messenger.authandprofile.application.profile.model.parameter.order.Di
 import com.messenger.authandprofile.application.profile.model.parameter.order.SortingOrder;
 import lombok.Getter;
 
-// TODO: 20.04.2023 move Direction to Param classess
+// TODO: 20.04.2023 move Direction to Param classes
 @SuppressWarnings("rawtypes")
 public abstract class IntervalField<T extends Comparable> extends Direction {
     @Getter protected final Range<T> interval;

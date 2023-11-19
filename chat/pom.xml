@@ -15,7 +15,6 @@
 	<description>chat</description>
 
 	<properties>
-		<java.version>11</java.version>
 		<postgres.version>42.6.0</postgres.version>
 	</properties>
 

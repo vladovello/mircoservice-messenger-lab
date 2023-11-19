@@ -15,7 +15,6 @@
 	<description>file-storage</description>
 
 	<properties>
-		<java.version>11</java.version>
 		<minio.version>8.5.2</minio.version>
 	</properties>
 
