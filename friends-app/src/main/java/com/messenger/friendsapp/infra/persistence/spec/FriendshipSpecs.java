@@ -15,8 +15,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Slf4j
-public final class FriendshipEntitySpecs {
-    private FriendshipEntitySpecs() {
+public final class FriendshipSpecs {
+    private FriendshipSpecs() {
     }
 
     @Contract(value = "_ -> new", pure = true)

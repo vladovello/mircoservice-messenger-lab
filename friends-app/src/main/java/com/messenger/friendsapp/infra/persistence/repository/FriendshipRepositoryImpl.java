@@ -6,7 +6,7 @@ import com.messenger.friendsapp.domain.repository.FriendshipRepository;
 import com.messenger.friendsapp.domain.valueobject.FullName;
 import com.messenger.friendsapp.infra.persistence.entity.metadata.FriendshipEntityFields;
 import com.messenger.friendsapp.infra.persistence.mapper.FriendshipEntityMapper;
-import com.messenger.friendsapp.infra.persistence.spec.FriendshipEntitySpecs;
+import com.messenger.friendsapp.infra.persistence.spec.FriendshipSpecs;
 import com.messenger.sharedlib.parameter.order.SortingOrder;
 import com.messenger.sharedlib.parameter.param.DiscreteParam;
 import com.messenger.sharedlib.parameter.param.IntervalParam;
@@ -64,7 +64,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     ) {
         var pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC);
 
-        var spec = FriendshipEntitySpecs.searchFullNameLike(fullName).and(FriendshipEntitySpecs.isRequesterIdMatches(
+        var spec = FriendshipSpecs.searchFullNameLike(fullName).and(FriendshipSpecs.isRequesterIdMatches(
                 userId));
         var page = friendshipRepositoryJpa.findAll(spec, pageRequest);
 
@@ -88,7 +88,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
                 getFriendshipFilterParamsSorting(fullName, additionDate, friendId)
         );
 
-        var page = friendshipRepositoryJpa.findAll(FriendshipEntitySpecs.filterFriendships(
+        var page = friendshipRepositoryJpa.findAll(FriendshipSpecs.filterFriendships(
                 userId,
                 fullName,
                 additionDate,

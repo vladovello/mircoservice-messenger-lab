@@ -53,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAllUsersPaginatedWithParams(int pageNumber, int pageSize, UserFilterParams userFilterParams) {
         var pageRequest = PageRequest.of(pageNumber, pageSize, getUserFilterParamsSorting(userFilterParams));
 
-        var pageUsers = userRepositoryJpa.findAll(UserSpecifications.filterUsers(userFilterParams), pageRequest);
+        var pageUsers = userRepositoryJpa.findAll(UserSpecs.filterUsers(userFilterParams), pageRequest);
 
         return pageUsers.map(userEntityMapper::mapToDomainModel).getContent();
     }

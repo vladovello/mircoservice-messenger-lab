@@ -14,8 +14,8 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 
 @Slf4j
-public final class UserSpecifications {
-    private UserSpecifications() {
+public final class UserSpecs {
+    private UserSpecs() {
     }
 
     @Contract(value = "_ -> new", pure = true)
@@ -106,10 +106,12 @@ public final class UserSpecifications {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Contract(pure = true)
-    private static <T extends Comparable> @NonNull Specification<UserEntity> getIntervalSpecWithDefaults(String fieldName,
+    private static <T extends Comparable> @NonNull Specification<UserEntity> getIntervalSpecWithDefaults(
+            String fieldName,
             Range<T> range,
             @NonNull T lowerBoundDefault,
-            @NonNull T upperBoundDefault) {
+            @NonNull T upperBoundDefault
+    ) {
         return (root, query, criteriaBuilder) -> {
             if (range == null) {
                 return null;
