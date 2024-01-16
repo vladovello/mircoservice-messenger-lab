@@ -7,7 +7,6 @@ import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.repository.ChatRepository;
 import com.messenger.chat.domain.chat.service.ChatDomainService;
 import com.messenger.chat.domain.message.Message;
-import com.messenger.chat.domain.message.service.AttachmentDomainService;
 import com.messenger.chat.domain.message.service.MessageDomainService;
 import com.messenger.chat.domain.message.valueobject.MessageText;
 import com.messenger.chat.domain.user.exception.UserDoesNotExistsException;
@@ -25,27 +24,25 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
     private final ChatDomainService chatDomainService;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final AttachmentDomainService attachmentDomainService;
 
     public SendMessageInDialogueCommandHandler(
             MessageDomainService messageDomainService,
             BlacklistRepository blacklistRepository,
             ChatDomainService chatDomainService,
             ChatRepository chatRepository,
-            UserRepository userRepository,
-            AttachmentDomainService attachmentDomainService
+            UserRepository userRepository
     ) {
         this.messageDomainService = messageDomainService;
         this.blacklistRepository = blacklistRepository;
         this.chatDomainService = chatDomainService;
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
-        this.attachmentDomainService = attachmentDomainService;
     }
 
     // 1. Проверить, что чат существует м/у пользователями. Если нет, то создать чат
     // 2. Проверить, может ли пользователь отправлять другому сообщения. Если нет, то выйти из функции
     // 3. Сохранить сообщение и выйти из функции
+
     /**
      * @param command CQS command for appropriate handler
      * @return {@code Result<Unit>} describing whether the result of the function execution was successful
@@ -92,23 +89,8 @@ public class SendMessageInDialogueCommandHandler implements CommandHandler<SendM
         }
 
         var message = messageResult.getOrNull();
+        var attachments = command.attachmentsToDomain();
 
-        var attachmentsResult = attachmentDomainService.createAttachments(command.getAttachments(), message.getId());
-
-        if (attachmentsResult.isFailure()) {
-            return Result.failure(attachmentsResult.exceptionOrNull());
-        }
-
-        var attachments = attachmentsResult.getOrNull();
-
-        message.assignAttachments(attachments);
-
-        var result = messageDomainService.saveMessage(message);
-
-        if (result.isFailure()) {
-            return Result.failure(result.exceptionOrNull());
-        }
-
-        return Result.success();
+        return messageDomainService.assignAttachments(message, attachments);
     }
 }
