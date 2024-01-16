@@ -2,8 +2,8 @@ package com.messenger.friendsapp.infra.event;
 
 import com.messenger.friendsapp.domain.event.FriendshipCreatedEvent;
 import com.messenger.friendsapp.domain.event.FriendshipDeletedEvent;
-import com.messenger.sharedlib.rabbitmq.message.friends.FriendshipCreatedMessage;
-import com.messenger.sharedlib.rabbitmq.message.friends.FriendshipDeletedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.friends.FriendshipCreatedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.friends.FriendshipDeletedMessage;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;

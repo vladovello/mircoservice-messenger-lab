@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.messenger.sharedlib.parameter.order.SortingOrder.ASC;
+
 @Repository
 public class FriendshipRepositoryImpl implements FriendshipRepository {
     private final FriendshipRepositoryJpa friendshipRepositoryJpa;
@@ -64,8 +66,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     ) {
         var pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC);
 
-        var spec = FriendshipSpecs.searchFullNameLike(fullName).and(FriendshipSpecs.isRequesterIdMatches(
-                userId));
+        var spec = FriendshipSpecs.filterFriendships(userId, fullName, null, null);
         var page = friendshipRepositoryJpa.findAll(spec, pageRequest);
 
         var friendships = FriendshipEntityMapper.mapToDomainModelList(page.getContent());
@@ -78,9 +79,9 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
             int pageNumber,
             int pageSize,
             UUID userId,
-            DiscreteParam<String> fullName,
-            IntervalParam<LocalDate> additionDate,
-            DiscreteParam<UUID> friendId
+            @NonNull DiscreteParam<String> fullName,
+            @NonNull IntervalParam<LocalDate> additionDate,
+            @NonNull DiscreteParam<UUID> friendId
     ) {
         var pageRequest = PageRequest.of(
                 pageNumber,
@@ -90,9 +91,9 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
 
         var page = friendshipRepositoryJpa.findAll(FriendshipSpecs.filterFriendships(
                 userId,
-                fullName,
-                additionDate,
-                friendId
+                fullName.getValue(),
+                additionDate.getInterval(),
+                friendId.getValue()
         ), pageRequest);
 
         var friendships = FriendshipEntityMapper.mapToDomainModelList(page.getContent());
@@ -151,29 +152,26 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
                     friendship.getRequesterId()
             );
 
-            boolean isDeleted = false;
-
-            if (fe.isPresent()) {
-                isDeleted = fe.get().getDeletionDate() != null;
-            }
+            boolean isDeleted = fe.isPresent() && fe.get().getDeletionDate() != null;
 
             return isRequesterBlocked || isAddresseeBlocked || isDeleted;
         });
     }
 
+    // TODO: выраженные аргументы. Челы изменяются - это не очевидно, т.к. нет возвращаемого значения
     private @NonNull Sort getFriendshipFilterParamsSorting(
             DiscreteParam<String> fullName,
             IntervalParam<LocalDate> additionDate,
             DiscreteParam<UUID> friendId
     ) {
         if (fullName == null) {
-            fullName = DiscreteParam.createDefault();
+            fullName = DiscreteParam.defaultNullValue();
         }
         if (additionDate == null) {
-            additionDate = IntervalParam.createDefault();
+            additionDate = IntervalParam.defaultNullValue();
         }
         if (friendId == null) {
-            friendId = DiscreteParam.createDefault();
+            friendId = DiscreteParam.defaultNullValue();
         }
 
         return getSortParam(FriendshipEntityFields.FULL_NAME_NAME, fullName.getSortingOrder())
@@ -182,9 +180,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {
-        return switch (sortingOrder) {
-            case ASC -> Sort.by(Sort.Direction.ASC, propertyName);
-            case DESC -> Sort.by(Sort.Direction.DESC, propertyName);
-        };
+        if (sortingOrder == ASC) return Sort.by(Sort.Direction.ASC, propertyName);
+        return Sort.by(Sort.Direction.DESC, propertyName);
     }
 }

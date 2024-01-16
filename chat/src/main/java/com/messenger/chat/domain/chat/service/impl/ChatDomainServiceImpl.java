@@ -15,8 +15,8 @@ import com.messenger.chat.domain.chatparticipant.exception.NotEnoughPermissionsE
 import com.messenger.chat.domain.chatparticipant.exception.UserAlreadyInChatException;
 import com.messenger.chat.domain.chatparticipant.exception.UserDoesNotExistsInChatException;
 import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepository;
-import com.messenger.sharedlib.ddd.domain.BusinessRuleViolationException;
-import com.messenger.sharedlib.ddd.domain.DomainService;
+import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
+import com.messenger.sharedlib.domain.ddd.DomainService;
 import com.messenger.sharedlib.util.Result;
 import com.messenger.sharedlib.util.Unit;
 import lombok.NonNull;

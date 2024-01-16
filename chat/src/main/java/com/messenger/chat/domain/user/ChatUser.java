@@ -2,7 +2,7 @@ package com.messenger.chat.domain.user;
 
 import com.messenger.chat.domain.user.converter.FullNameConverter;
 import com.messenger.chat.domain.user.valueobject.FullName;
-import com.messenger.sharedlib.ddd.domain.DomainEntity;
+import com.messenger.sharedlib.domain.ddd.DomainEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;

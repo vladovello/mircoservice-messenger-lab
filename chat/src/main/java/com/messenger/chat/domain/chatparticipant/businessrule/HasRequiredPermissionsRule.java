@@ -2,7 +2,7 @@ package com.messenger.chat.domain.chatparticipant.businessrule;
 
 import com.messenger.chat.domain.chat.Permission;
 import com.messenger.chat.domain.chatparticipant.ChatParticipant;
-import com.messenger.sharedlib.ddd.domain.BusinessRule;
+import com.messenger.sharedlib.domain.ddd.BusinessRule;
 
 import java.util.Set;
 

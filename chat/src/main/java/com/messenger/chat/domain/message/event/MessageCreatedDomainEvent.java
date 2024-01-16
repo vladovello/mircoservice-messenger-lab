@@ -1,7 +1,7 @@
 package com.messenger.chat.domain.message.event;
 
 import com.messenger.chat.domain.message.valueobject.EventMessageText;
-import com.messenger.sharedlib.ddd.domain.BaseDomainEvent;
+import com.messenger.sharedlib.domain.ddd.BaseDomainEvent;
 import lombok.Getter;
 
 import java.util.UUID;

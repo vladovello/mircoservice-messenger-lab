@@ -2,7 +2,7 @@ package com.messenger.notification.messagebroker.listener;
 
 import com.messenger.notification.entity.NotificationFactory;
 import com.messenger.notification.repository.NotificationRepository;
-import com.messenger.sharedlib.rabbitmq.message.chat.MessageCreatedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.chat.MessageCreatedMessage;
 import lombok.NonNull;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

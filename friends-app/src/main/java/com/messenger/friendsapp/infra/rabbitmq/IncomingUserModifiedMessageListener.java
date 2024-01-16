@@ -2,7 +2,7 @@ package com.messenger.friendsapp.infra.rabbitmq;
 
 import com.messenger.friendsapp.application.command.UpdateUserDataCommand;
 import com.messenger.friendsapp.application.command.handler.UpdateUserDataCommandHandler;
-import com.messenger.sharedlib.rabbitmq.message.profile.ProfileChangedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.profile.ProfileChangedMessage;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;

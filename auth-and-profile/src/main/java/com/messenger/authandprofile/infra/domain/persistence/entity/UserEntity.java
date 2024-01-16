@@ -1,6 +1,6 @@
 package com.messenger.authandprofile.infra.domain.persistence.entity;
 
-import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

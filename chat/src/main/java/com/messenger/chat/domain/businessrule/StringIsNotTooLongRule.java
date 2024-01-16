@@ -1,6 +1,6 @@
 package com.messenger.chat.domain.businessrule;
 
-import com.messenger.sharedlib.ddd.domain.BusinessRule;
+import com.messenger.sharedlib.domain.ddd.BusinessRule;
 
 public class StringIsNotTooLongRule implements BusinessRule {
     private final String str;

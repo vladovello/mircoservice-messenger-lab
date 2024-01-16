@@ -1,7 +1,7 @@
 package com.messenger.friendsapp.presentation.controller;
 
 import com.messenger.friendsapp.application.command.AddToBlacklistCommand;
-import com.messenger.friendsapp.application.command.DeleteFriendCommand;
+import com.messenger.friendsapp.application.command.RemoveFromBlacklistCommand;
 import com.messenger.friendsapp.application.command.handler.AddToBlacklistCommandHandler;
 import com.messenger.friendsapp.application.command.handler.RemoveFromBlacklistCommandHandler;
 import com.messenger.friendsapp.application.query.IsUserInBlacklistQuery;
@@ -44,7 +44,7 @@ public class BlacklistController {
             @NonNull Authentication authentication
     ) {
         var principal = (PayloadPrincipal) authentication.getPrincipal();
-        removeFromBlacklistCommandHandler.handle(new DeleteFriendCommand(principal.getId(), blacklistedId));
+        removeFromBlacklistCommandHandler.handle(new RemoveFromBlacklistCommand(principal.getId(), blacklistedId));
         return ResponseEntity.noContent().build();
     }
 

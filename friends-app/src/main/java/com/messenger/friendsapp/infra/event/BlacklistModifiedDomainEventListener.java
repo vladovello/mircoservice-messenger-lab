@@ -2,8 +2,8 @@ package com.messenger.friendsapp.infra.event;
 
 import com.messenger.friendsapp.domain.event.BlacklistItemCreatedEvent;
 import com.messenger.friendsapp.domain.event.BlacklistItemDeletedEvent;
-import com.messenger.sharedlib.rabbitmq.message.blacklist.BlacklistItemCreatedMessage;
-import com.messenger.sharedlib.rabbitmq.message.blacklist.BlacklistItemDeletedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.blacklist.BlacklistItemCreatedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.blacklist.BlacklistItemDeletedMessage;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;

@@ -1,6 +1,6 @@
 package com.messenger.friendsapp.domain.entity;
 
-import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;

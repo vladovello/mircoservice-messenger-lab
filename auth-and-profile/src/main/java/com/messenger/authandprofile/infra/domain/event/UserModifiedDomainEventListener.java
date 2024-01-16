@@ -2,8 +2,8 @@ package com.messenger.authandprofile.infra.domain.event;
 
 import com.messenger.authandprofile.domain.event.ProfileChangedEvent;
 import com.messenger.authandprofile.domain.event.UserCreatedEvent;
-import com.messenger.sharedlib.rabbitmq.message.profile.ProfileChangedMessage;
-import com.messenger.sharedlib.rabbitmq.message.profile.UserCreatedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.profile.ProfileChangedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.profile.UserCreatedMessage;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;

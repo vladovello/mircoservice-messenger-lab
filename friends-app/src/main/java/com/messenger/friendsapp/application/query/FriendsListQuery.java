@@ -1,6 +1,6 @@
 package com.messenger.friendsapp.application.query;
 
-import com.messenger.sharedlib.pagination.PageNumberPaginatedQuery;
+import com.messenger.sharedlib.infra.pagination.PageNumberPaginatedQuery;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

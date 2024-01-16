@@ -1,6 +1,6 @@
 package com.messenger.friendsapp.infra.persistence.entity;
 
-import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.AfterDomainEventPublication;

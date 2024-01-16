@@ -1,7 +1,7 @@
 package com.messenger.chat.infra.event;
 
 import com.messenger.chat.domain.message.event.MessageCreatedDomainEvent;
-import com.messenger.sharedlib.rabbitmq.message.chat.MessageCreatedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.chat.MessageCreatedMessage;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;

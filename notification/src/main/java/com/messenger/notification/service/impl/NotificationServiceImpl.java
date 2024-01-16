@@ -53,9 +53,9 @@ public class NotificationServiceImpl implements NotificationService {
             pageSize = 10;
         }
 
-        var receivingDate = ParamMapper.intervalFromDto(receivingDateDto);
-        var notificationTypes = ParamMapper.discreteFromDto(notificationTypesDto);
-        var notificationMessage = ParamMapper.discreteFromDto(notificationMessageDto);
+        var receivingDate = ParamMapper.intervalFromDtoOrDefault(receivingDateDto);
+        var notificationTypes = ParamMapper.discreteFromDtoOrDefault(notificationTypesDto);
+        var notificationMessage = ParamMapper.discreteFromDtoOrDefault(notificationMessageDto);
 
         var pageRequest = PageRequest.of(
                 pageNumber,

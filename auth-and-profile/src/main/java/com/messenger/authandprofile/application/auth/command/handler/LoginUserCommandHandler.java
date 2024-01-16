@@ -10,7 +10,7 @@ import com.messenger.authandprofile.application.shared.mapper.UserMapper;
 import com.messenger.authandprofile.domain.exception.user.UserNotFoundException;
 import com.messenger.authandprofile.domain.model.valueobject.RegexPassword;
 import com.messenger.authandprofile.domain.repository.UserRepository;
-import com.messenger.sharedlib.rabbitmq.message.auth.UserLoggedMessage;
+import com.messenger.sharedlib.infra.rabbitmq.message.auth.UserLoggedMessage;
 import io.vavr.control.Either;
 import lombok.NonNull;
 import org.springframework.amqp.core.AmqpTemplate;

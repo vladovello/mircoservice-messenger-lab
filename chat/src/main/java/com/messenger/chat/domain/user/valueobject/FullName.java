@@ -2,8 +2,8 @@ package com.messenger.chat.domain.user.valueobject;
 
 import com.messenger.chat.domain.businessrule.StringIsNotBlankRule;
 import com.messenger.chat.domain.businessrule.StringIsNotTooLongRule;
-import com.messenger.sharedlib.ddd.domain.BusinessRuleViolationException;
-import com.messenger.sharedlib.ddd.domain.ValueObject;
+import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
+import com.messenger.sharedlib.domain.ddd.ValueObject;
 import com.messenger.sharedlib.util.Result;
 import lombok.*;
 import org.jetbrains.annotations.Contract;
