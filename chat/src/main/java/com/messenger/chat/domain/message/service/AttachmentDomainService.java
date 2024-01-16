@@ -1,7 +1,7 @@
 package com.messenger.chat.domain.message.service;
 
-import com.messenger.chat.application.command.dto.CreateAttachmentDto;
 import com.messenger.chat.domain.message.Attachment;
+import com.messenger.chat.domain.message.model.CreateAttachmentModel;
 import com.messenger.sharedlib.util.Result;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface AttachmentDomainService {
      * @return {@code Result<List<Attachment>>} describing whether the result of the function execution was successful.
      */
     Result<List<Attachment>> createAttachments(
-            List<CreateAttachmentDto> createAttachmentDtoList,
+            List<CreateAttachmentModel> createAttachmentDtoList,
             UUID messageId
     );
 }

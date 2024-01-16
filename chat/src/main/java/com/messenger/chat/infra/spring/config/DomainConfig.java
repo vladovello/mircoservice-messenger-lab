@@ -27,9 +27,10 @@ public class DomainConfig {
     @Bean
     public MessageDomainService messageDomainService(
             @Autowired MessageRepository messageRepository,
-            @Autowired ChatParticipantRepository chatParticipantRepository
+            @Autowired ChatParticipantRepository chatParticipantRepository,
+            @Autowired AttachmentDomainService attachmentDomainService
     ) {
-        return new MessageDomainServiceImpl(messageRepository, chatParticipantRepository);
+        return new MessageDomainServiceImpl(messageRepository, chatParticipantRepository, attachmentDomainService);
     }
 
     @Bean

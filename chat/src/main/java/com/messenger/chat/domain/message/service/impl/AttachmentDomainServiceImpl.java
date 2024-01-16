@@ -1,8 +1,8 @@
 package com.messenger.chat.domain.message.service.impl;
 
-import com.messenger.chat.application.command.dto.CreateAttachmentDto;
 import com.messenger.chat.domain.message.Attachment;
 import com.messenger.chat.domain.message.exception.AttachmentNotFoundInStorageException;
+import com.messenger.chat.domain.message.model.CreateAttachmentModel;
 import com.messenger.chat.domain.message.repository.FileStorageRepository;
 import com.messenger.chat.domain.message.service.AttachmentDomainService;
 import com.messenger.sharedlib.util.Result;
@@ -21,8 +21,8 @@ public class AttachmentDomainServiceImpl implements AttachmentDomainService {
     }
 
     @Override
-    public Result<List<Attachment>> createAttachments(@NonNull List<CreateAttachmentDto> createAttachmentDtoList, UUID messageId) {
-        var fileIds = createAttachmentDtoList.stream().map(CreateAttachmentDto::getId).collect(Collectors.toList());
+    public Result<List<Attachment>> createAttachments(@NonNull List<CreateAttachmentModel> createAttachmentDtoList, UUID messageId) {
+        var fileIds = createAttachmentDtoList.stream().map(CreateAttachmentModel::getId).collect(Collectors.toList());
 
         var isAllExists = fileStorageRepository.isFilesExists(fileIds);
 
