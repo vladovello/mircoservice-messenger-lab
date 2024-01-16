@@ -1,7 +1,7 @@
 package com.messenger.friendsapp.infra.persistence.entity;
 
 import com.messenger.friendsapp.domain.valueobject.FriendshipStatus;
-import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

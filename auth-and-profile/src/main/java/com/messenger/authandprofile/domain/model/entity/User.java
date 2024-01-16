@@ -3,7 +3,7 @@ package com.messenger.authandprofile.domain.model.entity;
 import com.messenger.authandprofile.domain.event.ProfileChangedEvent;
 import com.messenger.authandprofile.domain.event.UserCreatedEvent;
 import com.messenger.authandprofile.domain.model.valueobject.*;
-import com.messenger.sharedlib.ddd.domain.DomainEvent;
+import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -86,9 +86,11 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof User)) return false;
 
-        return getId().equals(user.getId());
+        User user = (User) o;
+
+        return id.equals(user.id);
     }
 
     @Override

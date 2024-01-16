@@ -10,16 +10,16 @@ public class ParamMapper {
     private ParamMapper() {
     }
 
-    public static <T extends Comparable> @NonNull IntervalParam<T> intervalFromDto(IntervalParamDto<T> dto) {
-        return dto == null ? IntervalParam.createDefault() : new IntervalParam<>(
+    public static <T extends Comparable> @NonNull IntervalParam<T> intervalFromDtoOrDefault(IntervalParamDto<T> dto) {
+        return dto == null ? IntervalParam.defaultNullValue() : new IntervalParam<>(
                 dto.getFrom(),
                 dto.getTo(),
                 dto.getSortingOrder()
         );
     }
 
-    public static <T> @NonNull DiscreteParam<T> discreteFromDto(DiscreteParamDto<T> dto) {
-        return dto == null ? DiscreteParam.createDefault() : new DiscreteParam<>(
+    public static <T> @NonNull DiscreteParam<T> discreteFromDtoOrDefault(DiscreteParamDto<T> dto) {
+        return dto == null ? DiscreteParam.defaultNullValue() : new DiscreteParam<>(
                 dto.getValue(),
                 dto.getSortingOrder()
         );

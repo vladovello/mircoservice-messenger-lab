@@ -1,7 +1,7 @@
 package com.messenger.chat.domain.chatparticipant.businessrule;
 
 import com.messenger.chat.domain.chat.valueobject.ChatType;
-import com.messenger.sharedlib.ddd.domain.BusinessRule;
+import com.messenger.sharedlib.domain.ddd.BusinessRule;
 
 public class ChatIsNotFullRule implements BusinessRule {
     private static final int MAX_MULTI_PARTICIPANTS_COUNT = 1_000_000;

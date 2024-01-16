@@ -1,6 +1,6 @@
 package com.messenger.friendsapp.infra.spring.config.props;
 
-import com.messenger.sharedlib.integration.props.ServiceIntegrationProps;
+import com.messenger.sharedlib.infra.props.ServiceIntegrationProps;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

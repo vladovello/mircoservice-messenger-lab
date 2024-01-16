@@ -1,14 +1,10 @@
 package com.messenger.chat.domain.message.valueobject;
 
 import com.messenger.chat.domain.businessrule.StringIsNotTooLongRule;
-import com.messenger.sharedlib.ddd.domain.BusinessRuleViolationException;
-import com.messenger.sharedlib.ddd.domain.ValueObject;
+import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
+import com.messenger.sharedlib.domain.ddd.ValueObject;
 import com.messenger.sharedlib.util.Result;
-import com.messenger.sharedlib.util.Unit;
 import lombok.*;
-
-import java.util.Iterator;
-import java.util.List;
 
 @Value
 @EqualsAndHashCode(callSuper = true)

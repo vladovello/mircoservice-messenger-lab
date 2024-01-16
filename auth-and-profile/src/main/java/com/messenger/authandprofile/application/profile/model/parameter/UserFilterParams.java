@@ -1,16 +1,19 @@
 package com.messenger.authandprofile.application.profile.model.parameter;
 
+import com.google.common.collect.Range;
 import com.messenger.authandprofile.application.profile.dto.DiscreteParamDto;
 import com.messenger.authandprofile.application.profile.dto.IntervalParamDto;
 import com.messenger.authandprofile.application.profile.model.parameter.param.DiscreteParam;
 import com.messenger.authandprofile.application.profile.model.parameter.param.IntervalParam;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 import org.jetbrains.annotations.Contract;
 
 import java.time.LocalDate;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@RequiredArgsConstructor
+@Getter
 public class UserFilterParams {
     private DiscreteParam<String> login;
     private DiscreteParam<String> fullName;
@@ -18,6 +21,30 @@ public class UserFilterParams {
     private IntervalParam<LocalDate> registrationDate;
     private IntervalParam<LocalDate> birthDate;
     private DiscreteParam<String> city;
+
+    public String getLoginValue() {
+        return getLogin().getValue();
+    }
+
+    public String getFullNameValue() {
+        return getFullName().getValue();
+    }
+
+    public String getPhoneNumberValue() {
+        return getPhoneNumber().getValue();
+    }
+
+    public String getCityValue() {
+        return getCity().getValue();
+    }
+
+    public Range<LocalDate> getRegistrationDateInterval() {
+        return getRegistrationDate().getInterval();
+    }
+
+    public Range<LocalDate> getBirthDateInterval() {
+        return getBirthDate().getInterval();
+    }
 
     @Contract(" -> new")
     public static @NonNull UserFilterParamsBuilder builder() {

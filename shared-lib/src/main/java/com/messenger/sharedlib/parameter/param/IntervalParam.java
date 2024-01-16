@@ -18,7 +18,7 @@ public class IntervalParam<T extends Comparable> extends IntervalField<T> {
     }
 
     @Contract(" -> new")
-    public static <T extends Comparable> @NotNull IntervalParam<T> createDefault() {
+    public static <T extends Comparable> @NotNull IntervalParam<T> defaultNullValue() {
         return new IntervalParam<>();
     }
 }

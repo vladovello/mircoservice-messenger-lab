@@ -1,7 +1,7 @@
 package com.messenger.friendsapp.domain.event;
 
 import com.messenger.friendsapp.domain.entity.Addressee;
-import com.messenger.sharedlib.ddd.domain.BaseDomainEvent;
+import com.messenger.sharedlib.domain.ddd.BaseDomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

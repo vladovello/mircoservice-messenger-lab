@@ -4,7 +4,7 @@ import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.chat.ChatRole;
 import com.messenger.chat.domain.chat.Permission;
 import com.messenger.chat.domain.user.ChatUser;
-import com.messenger.sharedlib.ddd.domain.DomainEntity;
+import com.messenger.sharedlib.domain.ddd.DomainEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;

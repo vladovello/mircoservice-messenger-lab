@@ -4,7 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.messenger.authandprofile.application.profile.dto.DiscreteParamDto;
 import com.messenger.authandprofile.application.profile.dto.IntervalParamDto;
 import com.messenger.authandprofile.application.profile.model.UserListDto;
-import com.messenger.sharedlib.pagination.PageNumberPaginatedQuery;
+import com.messenger.sharedlib.infra.pagination.PageNumberPaginatedQuery;
 import io.vavr.control.Either;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

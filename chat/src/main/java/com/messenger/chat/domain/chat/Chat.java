@@ -5,7 +5,7 @@ import com.messenger.chat.domain.chat.valueobject.ChatName;
 import com.messenger.chat.domain.chat.valueobject.ChatType;
 import com.messenger.chat.domain.chatparticipant.ChatParticipant;
 import com.messenger.chat.domain.message.Message;
-import com.messenger.sharedlib.ddd.domain.DomainEntity;
+import com.messenger.sharedlib.domain.ddd.DomainEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;

@@ -94,18 +94,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private @NonNull Sort getUserFilterParamsSorting(@NonNull UserFilterParams userFilterParams) {
-        return getSortParam(UserEntityFields.LOGIN_NAME, userFilterParams.getLogin().getSortingOrder())
-                .and(getSortParam(UserEntityFields.FULL_NAME_NAME, userFilterParams.getFullName().getSortingOrder()))
-                .and(getSortParam(UserEntityFields.PHONE_NUMBER_NAME, userFilterParams.getPhoneNumber().getSortingOrder()))
-                .and(getSortParam(UserEntityFields.REGISTRATION_DATE_NAME, userFilterParams.getRegistrationDate().getSortingOrder()))
-                .and(getSortParam(UserEntityFields.BIRTH_DATE_NAME, userFilterParams.getBirthDate().getSortingOrder()))
-                .and(getSortParam(UserEntityFields.CITY_NAME, userFilterParams.getCity().getSortingOrder()));
+        return getSortParam(UserEntityFields.LOGIN, userFilterParams.getLogin().getSortingOrder())
+                .and(getSortParam(UserEntityFields.FULL_NAME, userFilterParams.getFullName().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.PHONE_NUMBER, userFilterParams.getPhoneNumber().getSortingOrder()))
+                .and(getSortParam(
+                        UserEntityFields.REGISTRATION_DATE,
+                        userFilterParams.getRegistrationDate().getSortingOrder()
+                ))
+                .and(getSortParam(UserEntityFields.BIRTH_DATE, userFilterParams.getBirthDate().getSortingOrder()))
+                .and(getSortParam(UserEntityFields.CITY, userFilterParams.getCity().getSortingOrder()));
     }
 
     private @NonNull Sort getSortParam(String propertyName, @NonNull SortingOrder sortingOrder) {
-        return switch (sortingOrder) {
-            case ASC -> Sort.by(Sort.Direction.ASC, propertyName);
-            case DESC -> Sort.by(Sort.Direction.DESC, propertyName);
-        };
+        if (sortingOrder == SortingOrder.ASC) return Sort.by(Sort.Direction.ASC, propertyName);
+        return Sort.by(Sort.Direction.DESC, propertyName);
     }
 }

@@ -18,7 +18,7 @@ public class DiscreteParam<T> extends Field<T> {
     }
 
     @Contract(" -> new")
-    public static <T> @NotNull DiscreteParam<T> createDefault() {
+    public static <T> @NotNull DiscreteParam<T> defaultNullValue() {
         return new DiscreteParam<>();
     }
 }

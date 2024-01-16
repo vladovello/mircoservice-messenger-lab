@@ -1,6 +1,6 @@
 package com.messenger.chat.domain.message.valueobject;
 
-import com.messenger.sharedlib.ddd.domain.ValueObject;
+import com.messenger.sharedlib.domain.ddd.ValueObject;
 import lombok.*;
 
 @Value

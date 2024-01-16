@@ -1,6 +1,6 @@
 package com.messenger.chat.domain.chatparticipant.exception;
 
-import com.messenger.sharedlib.ddd.domain.BusinessRuleViolationException;
+import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
 
 public class NotEnoughPermissionsException extends BusinessRuleViolationException {
     public <T> NotEnoughPermissionsException(T userId) {
