@@ -40,11 +40,11 @@ public final class FriendshipEntityMapper {
         var fe = new FriendshipEntity(
                 friendship.getId(),
                 friendship.getRequesterId(),
-                friendship.getAddressee().getId(),
-                friendship.getAddressee().getFullName().getFirstName(),
-                friendship.getAddressee().getFullName().getMiddleName(),
-                friendship.getAddressee().getFullName().getLastName(),
-                friendship.getAddressee().getFullName().getName(),
+                friendship.getAddresseeId(),
+                friendship.getAddresseeFirstName(),
+                friendship.getAddresseeMiddleName(),
+                friendship.getAddresseeLastName(),
+                friendship.getAddresseeFullName(),
                 friendship.getFriendshipStatus(),
                 friendship.getAdditionDate()
         );

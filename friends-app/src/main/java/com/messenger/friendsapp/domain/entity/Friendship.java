@@ -15,13 +15,18 @@ import java.util.UUID;
 @Getter
 @Setter(value = AccessLevel.PROTECTED)
 public class Friendship {
-    @NonNull private UUID id;
-    @NonNull private UUID requesterId;
-    @NonNull private Addressee addressee;
-    @NonNull private FriendshipStatus friendshipStatus;
+    @NonNull
+    private UUID id;
+    @NonNull
+    private UUID requesterId;
+    @NonNull
+    private Addressee addressee;
+    @NonNull
+    private FriendshipStatus friendshipStatus;
     private LocalDate additionDate;
 
-    @NonNull private List<DomainEvent> domainEvents = new ArrayList<>();
+    @NonNull
+    private List<DomainEvent> domainEvents = new ArrayList<>();
 
     private Friendship(
             @NonNull UUID requesterId,
@@ -76,6 +81,26 @@ public class Friendship {
 
     public void setAdditionDate() {
         this.additionDate = LocalDate.now();
+    }
+
+    public UUID getAddresseeId() {
+        return addressee.getId();
+    }
+
+    public String getAddresseeFirstName() {
+        return addressee.getFullName().getFirstName();
+    }
+
+    public String getAddresseeLastName() {
+        return addressee.getFullName().getLastName();
+    }
+
+    public String getAddresseeMiddleName() {
+        return addressee.getFullName().getMiddleName();
+    }
+
+    public String getAddresseeFullName() {
+        return addressee.getFullName().getName();
     }
 
     private void generateId() {
