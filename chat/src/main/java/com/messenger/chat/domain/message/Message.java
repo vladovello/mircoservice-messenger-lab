@@ -23,7 +23,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-// INFO: Чтобы убедиться, что событие будет доставлен только один раз (за исключением ситуаций, когда сервер упал) можно добавить
+// INFO: Чтобы убедиться, что событие будет доставлено только один раз (за исключением ситуаций, когда сервер упал) можно добавить
 //  различные состояния у событий: PENDING, LOCKED, PROCESSED. Все обработчики обязаны будут реализовать интерфейс, с
 //  четырьмя методами: beforeProcessing, afterProcessing и process. В beforeProcessing и afterProcessing будет установка
 //  состояний LOCKED и PROCESSED соответственно, а метод process нужно будет реализовать.
@@ -116,39 +116,6 @@ public class Message extends DomainEntity {
         ));
 
         return Result.success(message);
-    }
-
-    @Contract("_, _, _, _ -> new")
-    public static @NonNull Result<Message> createNew(
-            @NonNull UUID chatId,
-            @NonNull UUID senderUserId,
-            @NonNull MessageText messageText,
-            @NonNull Set<Attachment> attachments
-    ) {
-        var messageId = generateId();
-
-        var message = new Message(messageId, chatId, senderUserId, messageText, LocalDateTime.now(), attachments);
-
-        message.domainEvents.add(new MessageCreatedDomainEvent(
-                messageId,
-                chatId,
-                senderUserId,
-                EventMessageText.create(messageText)
-        ));
-
-        return Result.success(message);
-    }
-
-    @Contract(value = "_, _, _, _, _, _ -> new", pure = true)
-    public static @NonNull Message reconstruct(
-            @NonNull UUID id,
-            @NonNull UUID chatId,
-            @NonNull UUID senderUserId,
-            @NonNull MessageText messageText,
-            @NonNull LocalDateTime creationDate,
-            Set<Attachment> attachments
-    ) {
-        return new Message(id, chatId, senderUserId, messageText, creationDate, attachments);
     }
 
     @DomainEvents
