@@ -1,8 +1,5 @@
 package com.messenger.chat.domain.message.service.impl;
 
-import com.messenger.chat.domain.chat.PermissionManager;
-import com.messenger.chat.domain.chatparticipant.ChatParticipant;
-import com.messenger.chat.domain.chatparticipant.exception.NotEnoughPermissionsException;
 import com.messenger.chat.domain.chatparticipant.exception.UserDoesNotExistsInChatException;
 import com.messenger.chat.domain.chatparticipant.repository.ChatParticipantRepository;
 import com.messenger.chat.domain.message.Message;
@@ -57,26 +54,5 @@ public class MessageDomainServiceImpl implements MessageDomainService {
         message.assignAttachments(attachments);
 
         return saveMessage(message);
-    }
-
-    @Override
-    public Result<Unit> changeMessage(ChatParticipant chatParticipant, Message message) {
-        if (!PermissionManager.canManageMessage(chatParticipant, message)) {
-            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getChatUser().getUserId()));
-        }
-
-        messageRepository.save(message);
-        return Result.success();
-    }
-
-    @Override
-    public Result<Unit> deleteMessage(ChatParticipant chatParticipant, Message message) {
-        if (!PermissionManager.canManageMessage(chatParticipant, message)) {
-            return Result.failure(new NotEnoughPermissionsException(chatParticipant.getChatUser().getUserId()));
-        }
-
-        messageRepository.delete(message);
-
-        return Result.success();
     }
 }
