@@ -1,13 +1,11 @@
 package com.messenger.chat.domain.message;
 
-import com.messenger.chat.domain.businessrule.StringIsNotBlankRule;
 import com.messenger.chat.domain.chat.Chat;
 import com.messenger.chat.domain.message.converter.MessageTextConverter;
 import com.messenger.chat.domain.message.event.MessageCreatedDomainEvent;
 import com.messenger.chat.domain.message.valueobject.EventMessageText;
 import com.messenger.chat.domain.message.valueobject.MessageText;
 import com.messenger.chat.domain.user.ChatUser;
-import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
 import com.messenger.sharedlib.domain.ddd.DomainEntity;
 import com.messenger.sharedlib.domain.ddd.DomainEvent;
 import com.messenger.sharedlib.util.Result;
@@ -99,12 +97,6 @@ public class Message extends DomainEntity {
             @NonNull MessageText messageText
     ) {
         var messageId = generateId();
-
-        try {
-            checkRule(new StringIsNotBlankRule(messageText.getText(), "Message"));
-        } catch (BusinessRuleViolationException e) {
-            return Result.failure(e);
-        }
 
         var message = new Message(messageId, chatId, senderUserId, messageText, LocalDateTime.now(), null);
 

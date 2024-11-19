@@ -7,7 +7,6 @@
         <groupId>com.messenger</groupId>
         <artifactId>messenger</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/>
     </parent>
 
     <artifactId>friends-app</artifactId>

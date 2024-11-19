@@ -4,6 +4,7 @@ import com.messenger.chat.application.command.dto.CreateAttachmentDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,8 +13,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 public class SendMessageInDialogueCommand extends SendMessageInChatCommand {
-    private UUID senderId;
-    private UUID recipientId;
-    private String messageText;
-    private List<CreateAttachmentDto> attachments;
+    private @NotNull UUID senderId;
+    private @NotNull UUID recipientId;
+    private @NotNull String messageText;
+    private @NotNull List<CreateAttachmentDto> attachments;
 }

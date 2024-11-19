@@ -1,5 +1,6 @@
 package com.messenger.chat.domain.message.valueobject;
 
+import com.messenger.chat.domain.businessrule.StringIsNotBlankRule;
 import com.messenger.chat.domain.businessrule.StringIsNotTooLongRule;
 import com.messenger.sharedlib.domain.ddd.BusinessRuleViolationException;
 import com.messenger.sharedlib.domain.ddd.ValueObject;
@@ -16,7 +17,8 @@ public class MessageText extends ValueObject {
 
     public static @NonNull Result<MessageText> create(@NonNull String text) {
         try {
-            checkRule(new StringIsNotTooLongRule(text, MAX_LENGTH, "message text"));
+            checkRule(new StringIsNotBlankRule(text, MessageText.class.getName()));
+            checkRule(new StringIsNotTooLongRule(text, MAX_LENGTH, MessageText.class.getName()));
         } catch (BusinessRuleViolationException e) {
             return Result.failure(e);
         }
