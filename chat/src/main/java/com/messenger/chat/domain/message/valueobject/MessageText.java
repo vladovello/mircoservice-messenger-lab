@@ -25,8 +25,4 @@ public class MessageText extends ValueObject {
 
         return Result.success(new MessageText(text));
     }
-
-    public boolean isBlank() {
-        return text.isBlank();
-    }
 }
